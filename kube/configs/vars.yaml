@@ -1,0 +1,10 @@
+---
+data:
+  CLUSTER_NAME: steropes
+  CLUSTER_ENV: homelab
+  CM_ISSUER_PROD: https://acme-v02.api.letsencrypt.org/directory
+metadata:
+  name: steropes-vars
+  namespace: flux-system
+kind: ConfigMap
+apiVersion: v1

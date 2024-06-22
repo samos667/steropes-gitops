@@ -1,0 +1,44 @@
+--- # Declare the source for my personnal repo + the kustomization
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  url: ssh://git@github.com/samos667/steropes-gitops
+  ref:
+    branch: main
+  secretRef:
+    name: steropes-flux-github-ssh-key
+  ignore: |
+    # exclude all to whitelist
+    /*
+    # include Kubernetes
+    !/kube
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: 0-steropes-config
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  path: ./kube/flux
+  prune: false
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: steropes-secrets-decrypt-sops-age
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: steropes-vars
+        optional: true
+      - kind: Secret
+        name: steropes-secrets
+        optional: true

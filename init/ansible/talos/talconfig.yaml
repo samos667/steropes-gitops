@@ -1,0 +1,195 @@
+# yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/a351543a1e22b248608bf8227d28bb32/raw/67dd33aa6fa623aa9f4907f535adf00cf64d9224/talconfig.json
+clusterName: steropes
+
+talosVersion: v1.7.1
+kubernetesVersion: v1.30.0
+endpoint: https://k.${DNS_LOCAL}:6443
+
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
+
+domain: cluster.local
+cniConfig:
+  name: none
+
+clusterPodNets:
+  - ${POD_CIDR_V4}
+clusterSvcNets:
+  - ${SVC_CIDR_V4}
+
+additionalApiServerCertSans: &san
+  - "${NETWORK_PREFIX}200"
+  - "${NETWORK_PREFIX}201"
+  - "${NETWORK_PREFIX}202"
+  - "${NETWORK_PREFIX}203"
+  - "k.${DNS_LOCAL}"
+  - "k.${DNS_PUBLIC}"
+  - "127.0.0.1" # KubePrism
+additionalMachineCertSans: *san
+
+nodes:
+  - hostname: fifi.${DNS_LOCAL}
+    schematic: &plugins
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+    ipAddress: ${NETWORK_PREFIX}201
+    installDiskSelector: &disk_selector
+      size: "<= 150GB"
+      type: "SSD"
+    controlPlane: true
+    nodeLabels: &qemu_label
+      rack: placard-1
+      type: qemu
+      zone: fr-home-1
+      arch: AMD64
+    disableSearchDomain: true
+    nameservers: ["${NETWORK_PREFIX}254"]
+    networkInterfaces: &network
+      - deviceSelector:
+          physical: true
+        dhcp: true
+        vip:
+          ip: "${NETWORK_PREFIX}200"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "${NETWORK_PREFIX}254"
+
+  - hostname: riri.${DNS_LOCAL}
+    ipAddress: ${NETWORK_PREFIX}202
+    schematic: *plugins
+    installDiskSelector:
+      size: "<= 200GB"
+    controlPlane: true
+    nodeLabels: *qemu_label
+    disableSearchDomain: true
+    nameservers: ["${NETWORK_PREFIX}254"]
+    networkInterfaces: *network
+
+  - hostname: loulou.${DNS_LOCAL}
+    ipAddress: ${NETWORK_PREFIX}203
+    controlPlane: true
+    installDiskSelector: *disk_selector
+    schematic: *plugins
+    nodeLabels:
+      rack: placard-1
+      type: baremetal
+      zone: fr-home-1
+      arch: ARM64
+    disableSearchDomain: true
+    nameservers: ["${NETWORK_PREFIX}254"]
+    networkInterfaces: *network
+
+patches:
+  - &kubeletExtraArgs |-
+    - op: add
+      path: /machine/kubelet/extraArgs
+      value:
+        feature-gates: GracefulNodeShutdown=true,ServerSideApply=true
+
+  - &machinePatch |-
+    machine:
+      install:
+        bootloader: true
+
+      network:
+        extraHostEntries:
+          - ip: ${NETWORK_PREFIX}200
+            aliases: ["k.${DNS_LOCAL}"]
+          - ip: ${NETWORK_PREFIX}201
+            aliases: ["fifi.${DNS_LOCAL}"]
+          - ip: ${NETWORK_PREFIX}202
+            aliases: ["riri.${DNS_LOCAL}"]
+          - ip: ${NETWORK_PREFIX}203
+            aliases: ["loulou.${DNS_LOCAL}"]
+
+      time:
+        disabled: false
+        servers: ["${NETWORK_PREFIX}254"]
+        bootTimeout: 2m0s
+
+  - &clusterPatch |-
+    cluster:
+      discovery:
+        enabled: true
+        registries:
+          kubernetes:
+            disabled: false
+          service:
+            disabled: true
+
+      proxy:
+        disabled: true
+
+  - &kubePrism |-
+    machine:
+      features:
+        kubePrism:
+          enabled: true
+          port: 7445
+
+  - &kubeletSubnet |-
+    machine:
+      kubelet:
+        nodeIP:
+          validSubnets:
+            - ${NETWORK_PREFIX}0/24
+
+  - &kubeletConfig |-
+    machine:
+      kubelet:
+        extraConfig:
+          maxPods: 1000
+
+  # patch containerd for spegel (discard)
+  - |-
+    machine:
+      files:
+        - op: create
+          path: /etc/cri/conf.d/20-customization.part
+          permissions: 0o644
+          content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+            [plugins."io.containerd.grpc.v1.cri".containerd]
+              discard_unpacked_layers = false
+
+controlPlane:
+  patches:
+    - &apiServerExtraArgs |-
+      - op: add
+        path: /cluster/apiServer/extraArgs
+        value:
+          feature-gates: GracefulNodeShutdown=true,ServerSideApply=true
+
+    - &apiServerResources |-
+      cluster:
+        apiServer:
+          resources:
+            requests:
+              cpu: 200m
+              memory: 1Gi
+            limits:
+              memory: 4Gi
+
+    - &etcdSubnet |-
+      cluster:
+        etcd:
+          advertisedSubnets:
+            - ${NETWORK_PREFIX}0/24
+
+    # https://www.talos.dev/v1.5/advanced/etcd-maintenance/#space-quota
+    # maximum recommended is 8GiB, will resize to 4GiB for now so etcd won't shoot its load all at once
+    - &etcdQuota |-
+      cluster:
+        etcd:
+          extraArgs:
+            quota-backend-bytes: 4294967296 # 4 GiB
+
+    - &metrics |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
