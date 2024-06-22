@@ -20,8 +20,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: 0-steropes-config
+  name: steropes-config
   namespace: flux-system
+  labels:
+    kustomization.flux.home.arpa/name: "flux"
 spec:
   interval: 5m0s
   path: ./kube/flux
@@ -42,3 +44,57 @@ spec:
       - kind: Secret
         name: steropes-secrets
         optional: true
+  commonMetadata:
+    labels:
+      cluster.home.arpa/name: "steropes"
+      cluster.home.arpa/environnement: "main"
+  patches:
+    # Enable sops decryption for matching flux Kustomization child of this one
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          decryption:
+            provider: sops
+            secretRef:
+              name: steropes-secrets-decrypt-sops-age
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/sops in (true)
+
+    # Enable substitution for matching flux Kustomization child of this one
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          postBuild:
+            substituteFrom:
+              - kind: ConfigMap
+                name: steropes-vars
+                optional: false
+              - kind: Secret
+                name: steropes-secrets
+                optional: false
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/substitution in (true)
+
+    # Make this Kustomization a dependency of all child
+    - patch: |
+        - op: add
+          path: /spec/dependsOn/-
+          value:
+            name: steropes-config
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/name notin (flux)

@@ -7,3 +7,4 @@ resources:
   - ../configs/
   - ./flux-install.yaml
   - ./flux-repo.yaml
+  - ./ks.yaml
