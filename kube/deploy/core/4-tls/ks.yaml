@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: 0-deploy-core-4-tls
+  namespace: &ns flux-system
+  labels:
+    kustomization.flux.home.arpa/name: &tns tls
+    kustomization.flux.home.arpa/sops: "true"
+spec:
+  path: ./kube/deploy/core/4-tls/cert-manager/
+  interval: 1h
+  timeout: 10m0s
+  prune: false
+  wait: true
+  sourceRef: # ref ../../../flux/flux-repo.yaml
+    kind: GitRepository
+    name: *ns
+  dependsOn: []
+  targetNamespace: *tns

@@ -1,0 +1,45 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n cert-manager
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: *n
+      version: v1.15.0
+      sourceRef:
+        name: *n
+        kind: HelmRepository
+  values:
+    podLabels:
+      egress.home.arpa/internet-https: allow
+
+    crds:
+      enabled: true
+      keep: true
+
+    extraArgs:
+      - --dns01-recursive-nameservers="https://cloudflare-dns.com/dns-query","https://one.one.one.one/dns-query","https://1.1.1.1:443/dns-query","https://1.0.0.1:443/dns-query","https://security.cloudflare-dns.com/dns-query","https://1.1.1.2:443/dns-query","https://1.0.0.2:443/dns-query","https://family.cloudflare-dns.com/dns-query","https://1.1.1.3:443/dns-query","https://1.0.0.3:443/dns-query"
+      - --dns01-recursive-nameservers-only
+
+    featureGates: "AdditionalCertificateOutputFormats=true"
+
+    webhook:
+      extraArgs:
+        - --feature-gates=AdditionalCertificateOutputFormats=true
+
+    prometheus:
+      enabled: true
+      servicemonitor:
+        enabled: true
+
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: cert-manager
+            app.kubernetes.io/component: controller

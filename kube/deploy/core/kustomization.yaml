@@ -6,3 +6,4 @@ resources:
   - ./1-kube-system/
   - ./2-kyverno/
   - ./3-csi/
+  - ./4-tls/
