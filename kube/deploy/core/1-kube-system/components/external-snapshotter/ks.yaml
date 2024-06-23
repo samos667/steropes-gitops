@@ -1,0 +1,60 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n external-snapshotter-crds
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: external-snapshotter-crds
+  commonMetadata:
+    labels: *l
+  targetNamespace: kube-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n external-snapshotter-controller
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  interval: 1h
+  prune: false
+  wait: true
+  commonMetadata:
+    labels: *l
+  targetNamespace: kube-system
+  sourceRef:
+    kind: GitRepository
+    name: external-snapshotter-controller
+  dependsOn:
+    - name: external-snapshotter-crds
+  patches:
+    - patch: | # democratic-csi local-hostpath snapshots
+        - op: add
+          path: /spec/template/spec/containers/0/args/-
+          value: "--enable-distributed-snapshotting"
+      target:
+        group: apps
+        version: v1
+        kind: Deployment
+        name: snapshot-controller
+    - patch: | # democratic-csi local-hostpath snapshots
+        - op: add
+          path: /rules/-
+          value:
+            apiGroups: [""]
+            resources: ["nodes"]
+            verbs: ["get", "list", "watch"]
+      target:
+        group: rbac.authorization.k8s.io
+        version: v1
+        kind: ClusterRole
+        name: snapshot-controller-runner

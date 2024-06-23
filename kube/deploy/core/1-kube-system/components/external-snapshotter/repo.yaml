@@ -1,0 +1,32 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: external-snapshotter-crds
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  url: https://github.com/kubernetes-csi/external-snapshotter.git
+  ref:
+    tag: v7.0.2
+  ignore: |
+    # exclude all to whitelist
+    /*
+    # include CR
+    !/client/config/crd
+
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: external-snapshotter-controller
+spec:
+  interval: 10m0s
+  url: https://github.com/kubernetes-csi/external-snapshotter.git
+  ref:
+    tag: v7.0.2
+  ignore: |
+    # exclude all to whitelist
+    /*
+    # include controller
+    !/deploy/kubernetes/snapshot-controller
