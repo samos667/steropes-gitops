@@ -36,18 +36,6 @@ spec:
     provider: sops
     secretRef:
       name: steropes-secrets-decrypt-sops-age
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: steropes-vars
-        optional: true
-      - kind: Secret
-        name: steropes-secrets
-        optional: true
-  commonMetadata:
-    labels:
-      cluster.home.arpa/name: "steropes"
-      cluster.home.arpa/environnement: "main"
   patches:
     # Enable sops decryption for matching flux Kustomization child of this one
     - patch: |-
@@ -65,27 +53,7 @@ spec:
         version: v1
         kind: Kustomization
         labelSelector: kustomization.flux.home.arpa/sops in (true)
-
-    # Enable substitution for matching flux Kustomization child of this one
-    - patch: |-
-        apiVersion: kustomize.toolkit.fluxcd.io/v1
-        kind: Kustomization
-        metadata:
-          name: not-used
-        spec:
-          postBuild:
-            substituteFrom:
-              - kind: ConfigMap
-                name: steropes-vars
-                optional: false
-              - kind: Secret
-                name: steropes-secrets
-                optional: false
-      target:
-        group: kustomize.toolkit.fluxcd.io
-        version: v1
-        kind: Kustomization
-        labelSelector: kustomization.flux.home.arpa/substitution in (true)
+        namespace: flux-system
 
     # Make this Kustomization a dependency of all child
     - patch: |

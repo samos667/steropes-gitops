@@ -1,0 +1,115 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+  annotations:
+    meta.helm.sh/release-name: cilium
+    meta.helm.sh/release-namespace: kube-system
+  labels:
+    app.kubernetes.io/managed-by: Helm
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: cilium
+      version: 1.15.6
+      sourceRef:
+        kind: HelmRepository
+        name: cilium-charts
+  values:
+    k8sServiceHost: localhost
+    k8sServicePort: 7445
+
+    bpf:
+      masquerade: true
+
+    ipam:
+      mode: cluster-pool
+      operator:
+        clusterPoolIPv4PodCIDRList: ${POD_NETWORK}/16
+        clusterPoolIPv4MaskSize: 22
+
+    bgpControlPlane:
+      enabled: true
+
+    envoy:
+      enabled: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+
+    encryption:
+      enabled: true
+      type: wireguard
+      nodeEncryption: true
+
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+    kubeProxyReplacement: true
+    localRedirectPolicy: true
+
+    hubble:
+      relay:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      ui:
+        enabled: true
+        rollOutPods: true
+      metrics:
+        enableOpenMetrics: true
+        enabled:
+          - dns:query
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+
+    operator:
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      replicas: 1
+
+    resources: # for agent
+      limits:
+        memory: "1Gi"
+
+    socketLB:
+      # -- Disable socket lb for non-root ns. This is used to enable Istio routing rules.
+      hostNamespaceOnly: true
+
+    cni:
+      exclusive: false
+
+    ### required for Talos ###
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
+    cgroup:
+      autoMount:
+        enabled: false
+      hostRoot: "/sys/fs/cgroup"

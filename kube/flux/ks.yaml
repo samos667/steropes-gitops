@@ -6,7 +6,6 @@ metadata:
   namespace: flux-system
   labels:
     kustomization.flux.home.arpa/core: "true"
-    kustomization.flux.home.arpa/substitution: "true"
     kustomization.flux.home.arpa/sops: "true"
 spec:
   path: ./kube/deploy/core/
@@ -50,3 +49,26 @@ spec:
         version: v1
         kind: Kustomization
         labelSelector: kustomization.flux.home.arpa/sops in (true)
+        namespace: flux-system
+
+    # Enable substitution for matching flux Kustomization child of this one
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          postBuild:
+            substituteFrom:
+              - kind: ConfigMap
+                name: steropes-vars
+                optional: false
+              - kind: Secret
+                name: steropes-secrets
+                optional: false
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/substitution in (true)
+        namespace: flux-system
