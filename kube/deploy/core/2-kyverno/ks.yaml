@@ -17,3 +17,24 @@ spec:
     name: *ns
   dependsOn: []
   targetNamespace: *tns
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: 0-deploy-core-2-kyverno-policy
+  namespace: &ns flux-system
+  labels:
+    kustomization.flux.home.arpa/name: &tns kyverno
+spec:
+  path: ./kube/deploy/core/2-kyverno/policy/
+  interval: 1h
+  timeout: 10m0s
+  prune: false
+  wait: true
+  sourceRef: # ref ../../../flux/flux-repo.yaml
+    kind: GitRepository
+    name: *ns
+  dependsOn:
+    - name: 0-deploy-core-2-kyverno
+  targetNamespace: *tns

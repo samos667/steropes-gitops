@@ -46,6 +46,19 @@ spec:
         kind: Kustomization
         labelSelector: kustomization.flux.home.arpa/name notin (deps, kube-system)
 
+    # Make kyverno Kustomization a dependency of all child
+    - patch: |
+        - op: add
+          path: /spec/dependsOn/-
+          value:
+            name: 0-deploy-core-2-kyverno-policy
+            namespace: flux-system
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/name notin (deps, kube-system, kyverno)
+
     # Enable sops decryption for matching flux Kustomization child of this one
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
