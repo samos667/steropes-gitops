@@ -8,3 +8,4 @@ resources:
   - ./3-csi/
   - ./4-tls/
   - ./5-ingress/
+  - ./6-operators/

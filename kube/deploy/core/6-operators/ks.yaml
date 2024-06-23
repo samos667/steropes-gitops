@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: 0-deploy-core-6-operators-victoria-metrics
+  namespace: &ns flux-system
+  labels:
+    kustomization.flux.home.arpa/name: &tns victoria-metrics-operator
+    kustomization.flux.home.arpa/sops: "true"
+    kustomization.flux.home.arpa/substitution: "true"
+spec:
+  path: ./kube/deploy/core/6-operators/victoria-metrics/
+  interval: 1h
+  timeout: 10m0s
+  prune: false
+  wait: true
+  sourceRef: # ref ../../../flux/flux-repo.yaml
+    kind: GitRepository
+    name: *ns
+  dependsOn: []
+  targetNamespace: *tns
