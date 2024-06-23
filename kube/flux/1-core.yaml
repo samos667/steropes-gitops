@@ -12,7 +12,7 @@ spec:
   interval: 5m0s
   timeout: 10m0s
   prune: false
-  wait: false
+  wait: true
   sourceRef: # ref ./flux-repo.yaml
     kind: GitRepository
     name: flux-system
@@ -51,7 +51,7 @@ spec:
         - op: add
           path: /spec/dependsOn/-
           value:
-            name: 0-deploy-core-2-kyverno-policy
+            name: 0-deploy-core-2-policy-kyverno
             namespace: flux-system
       target:
         group: kustomize.toolkit.fluxcd.io

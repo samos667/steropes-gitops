@@ -6,7 +6,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: &tns tls
 spec:
-  path: ./kube/deploy/core/4-tls/cert-manager/helm/
+  path: ./kube/deploy/core/4-tls/cert-manager/app/
   interval: 1h
   prune: false
   wait: true

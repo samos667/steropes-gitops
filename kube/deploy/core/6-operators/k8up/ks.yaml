@@ -22,7 +22,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/6-operators/k8up/helm/
+  path: ./kube/deploy/core/6-operators/k8up/app/
   interval: 1h
   prune: false
   wait: true

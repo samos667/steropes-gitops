@@ -2,79 +2,61 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n traefik-certificates
+  name: &n kyverno-crds
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/5-ingress/traefik/certificates/
   interval: 1h
   prune: false
   wait: true
   dependsOn: []
   sourceRef:
     kind: GitRepository
-    name: &fns flux-system
-    namespace: *fns
+    name: *n
   commonMetadata:
     labels: *l
-  targetNamespace: ingress
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: traefik-secrets
-        optional: false
-      - kind: Secret
-        name: traefik-secrets
-        optional: false
+  targetNamespace: kyverno
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n traefik
+  name: &n kyverno-controller
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/5-ingress/traefik/app/
+  path: ./kube/deploy/core/2-policy/kyverno/app/
   interval: 1h
   prune: false
   wait: true
   dependsOn:
-    - name: traefik-certificates
+    - name: kyverno-crds
   sourceRef:
     kind: GitRepository
     name: &fns flux-system
     namespace: *fns
   commonMetadata:
     labels: *l
-  targetNamespace: ingress
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: traefik-secrets
-        optional: false
-      - kind: Secret
-        name: traefik-secrets
-        optional: false
+  targetNamespace: kyverno
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n traefik-middlewares
+  name: &n kyverno-policy
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/5-ingress/traefik/middlewares/
+  path: ./kube/deploy/core/2-policy/kyverno/policy/
   interval: 1h
   prune: false
   wait: true
   dependsOn:
-    - name: traefik
+    - name: kyverno-crds
   sourceRef:
     kind: GitRepository
     name: &fns flux-system
     namespace: *fns
   commonMetadata:
     labels: *l
-  targetNamespace: ingress
+  targetNamespace: kyverno

@@ -6,7 +6,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/1-kube-system/components/metrics-server/helm/
+  path: ./kube/deploy/core/1-kube-system/metrics-server/app/
   interval: 1h
   prune: false
   wait: true

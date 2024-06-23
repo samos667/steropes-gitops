@@ -6,7 +6,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/6-operators/victoria-metrics/helm/
+  path: ./kube/deploy/core/6-operators/victoria-metrics/app/
   interval: 1h
   prune: false
   wait: true

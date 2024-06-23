@@ -9,7 +9,7 @@ metadata:
     kustomization.flux.home.arpa/sops: "true"
     kustomization.flux.home.arpa/substitution: "true"
 spec:
-  path: ./kube/deploy/core/1-kube-system/components/cilium
+  path: ./kube/deploy/core/1-kube-system/cilium
   interval: 1h
   timeout: 10m0s
   prune: false
@@ -29,7 +29,7 @@ metadata:
   labels:
     kustomization.flux.home.arpa/name: metrics-server
 spec:
-  path: ./kube/deploy/core/1-kube-system/components/metrics-server
+  path: ./kube/deploy/core/1-kube-system/metrics-server
   interval: 1h
   timeout: 10m0s
   prune: false

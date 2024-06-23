@@ -6,7 +6,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/6-operators/cnpg/helm/
+  path: ./kube/deploy/core/6-operators/cnpg/app/
   interval: 1h
   prune: false
   wait: true

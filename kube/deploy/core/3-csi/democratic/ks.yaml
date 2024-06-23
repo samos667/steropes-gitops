@@ -2,39 +2,46 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n kyverno-crds
+  name: &n democratic-csi-deps
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
+  path: ./kube/deploy/core/3-csi/democratic/deps/
   interval: 1h
   prune: false
   wait: true
   dependsOn: []
   sourceRef:
     kind: GitRepository
-    name: *n
+    name: &fns flux-system
+    namespace: *fns
   commonMetadata:
     labels: *l
-  targetNamespace: kyverno
+  targetNamespace: kube-system
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n kyverno-controller
+  name: &n democratic-csi
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/2-kyverno/components/helm/
+  path: ./kube/deploy/core/3-csi/democratic/app/
   interval: 1h
   prune: false
   wait: true
   dependsOn:
-    - name: kyverno-crds
+    - name: democratic-csi-deps
   sourceRef:
     kind: GitRepository
     name: &fns flux-system
     namespace: *fns
   commonMetadata:
     labels: *l
-  targetNamespace: kyverno
+  targetNamespace: csi
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: democratic-csi-secrets
+        optional: false

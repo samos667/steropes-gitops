@@ -6,7 +6,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/1-kube-system/components/cilium/helm
+  path: ./kube/deploy/core/1-kube-system/cilium/app
   interval: 1h
   prune: false
   wait: true
@@ -35,7 +35,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/1-kube-system/components/cilium/configs
+  path: ./kube/deploy/core/1-kube-system/cilium/configs
   interval: 1h
   prune: false
   wait: true
@@ -65,7 +65,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/1-kube-system/components/cilium/netpols
+  path: ./kube/deploy/core/1-kube-system/cilium/netpols
   interval: 1h
   prune: false
   wait: true

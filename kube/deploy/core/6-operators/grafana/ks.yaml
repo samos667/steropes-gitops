@@ -6,7 +6,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/core/6-operators/grafana/helm/
+  path: ./kube/deploy/core/6-operators/grafana/app/
   interval: 1h
   prune: false
   wait: true
