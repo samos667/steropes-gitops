@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./0-deps/ # Deploy prometheus CRDs, needed for cilium deployment. May be used for others things in future
   - ./1-kube-system/
+  - ./2-kyverno/

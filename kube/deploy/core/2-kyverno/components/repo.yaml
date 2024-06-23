@@ -1,0 +1,15 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kyverno-crds
+spec:
+  interval: 1h
+  url: https://github.com/kyverno/kyverno.git
+  ref:
+    tag: "v1.12.4"
+  ignore: |
+    # exclude all
+    /*
+    # include crd directory
+    !/config/crds
