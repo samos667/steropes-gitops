@@ -16,7 +16,7 @@ spec:
     namespace: csi
     csiDriver:
       # should be globally unique for a given cluster
-      name: "iscsi"
+      name: iscsi
 
     # add note here about volume expansion requirements
     storageClasses:
@@ -52,7 +52,7 @@ spec:
           detachedSnapshotsDatasetParentName: big-bang-7/steropes_data/snapshots
           zvolEnableReservation: false
         iscsi:
-          targetPortal: "${TRUENAS_IP}"
+          targetPortal: ${TRUENAS_IP}
           targetPortals: []
           interface:
           namePrefix: csi-

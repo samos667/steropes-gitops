@@ -3,7 +3,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: &app kyverno
+  name: &n kyverno
 # TODO: move this into label-based system
 spec:
   endpointSelector: {}
@@ -11,7 +11,7 @@ spec:
     # same namespace
     - fromEndpoints:
         - matchLabels:
-            io.kubernetes.pod.namespace: *app
+            io.kubernetes.pod.namespace: *n
     # allow ingress
     - fromEntities:
         - host
@@ -20,7 +20,7 @@ spec:
   egress:
     - toEndpoints:
         - matchLabels:
-            io.kubernetes.pod.namespace: *app
+            io.kubernetes.pod.namespace: *n
     - toEntities:
         - host
         - remote-node

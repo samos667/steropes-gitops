@@ -11,6 +11,7 @@ spec:
   egress:
     - toEntities:
         - kube-apiserver
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumnetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -29,6 +30,6 @@ spec:
             - port: "3260"
               protocol: TCP
             - port: "80"
-              protocol: "TCP"
+              protocol: TCP
             - port: "443"
-              protocol: "TCP"
+              protocol: TCP

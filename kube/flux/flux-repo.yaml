@@ -23,7 +23,7 @@ metadata:
   name: steropes-config
   namespace: flux-system
   labels:
-    kustomization.flux.home.arpa/name: "flux"
+    kustomization.flux.home.arpa/name: flux
 spec:
   interval: 5m0s
   path: ./kube/flux

@@ -3,7 +3,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: &name "netpols-allow-within-ns"
+  name: &name netpols-allow-within-ns
 spec:
   background: true
   generateExisting: true

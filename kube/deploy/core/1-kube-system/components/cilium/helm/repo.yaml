@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: cilium-charts
+  name: cilium
 spec:
   interval: 1h
   timeout: 5m0s

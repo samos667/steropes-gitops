@@ -5,7 +5,7 @@ metadata:
   name: 0-deploy-core-0-deps
   namespace: &ns flux-system
   labels: &l
-    kustomization.flux.home.arpa/name: "deps"
+    kustomization.flux.home.arpa/name: deps
 spec:
   path: ./kube/deploy/core/0-deps/crds/
   interval: 1h

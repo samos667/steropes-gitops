@@ -19,7 +19,7 @@ metadata:
   # I don't wanna see it on the top lol
   namespace: flux-system
   labels:
-    kustomization.flux.home.arpa/name: "flux"
+    kustomization.flux.home.arpa/name: flux
 spec:
   interval: 10m
   path: ./

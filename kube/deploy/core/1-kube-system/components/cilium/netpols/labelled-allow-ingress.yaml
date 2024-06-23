@@ -7,7 +7,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      ingress.home.arpa/world: "allow"
+      ingress.home.arpa/world: allow
   ingress:
     - fromEntities:
         - "world"
@@ -21,7 +21,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      ingress.home.arpa/cluster: "allow"
+      ingress.home.arpa/cluster: allow
   ingress:
     - fromEntities:
         - "cluster"
@@ -35,14 +35,14 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      ingress.home.arpa/internet: "allow"
+      ingress.home.arpa/internet: allow
   ingress:
     - fromCIDRSet:
-        - cidr: "0.0.0.0/0"
+        - cidr: 0.0.0.0/0
           except:
-            - "10.0.0.0/8"
-            - "${LAN_NETWORK}/16"
-            - "${ISP_NETWORK}/24"
+            - 10.0.0.0/8
+            - ${LAN_NETWORK}/16
+            - ${ISP_NETWORK}/24
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
@@ -53,10 +53,10 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      ingress.home.arpa/host: "allow"
+      ingress.home.arpa/host: allow
   ingress:
     - fromEntities:
-        - "host"
+        - host
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
@@ -67,10 +67,10 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      ingress.home.arpa/apiserver: "allow"
+      ingress.home.arpa/apiserver: allow
   ingress:
     - fromEntities:
-        - "kube-apiserver"
+        - kube-apiserver
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
@@ -81,7 +81,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      ingress.home.arpa/remote-node: "allow"
+      ingress.home.arpa/remote-node: allow
   ingress:
     - fromEntities:
         - remote-node

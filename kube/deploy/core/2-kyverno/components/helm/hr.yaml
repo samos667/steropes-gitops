@@ -2,15 +2,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app kyverno
+  name: &n kyverno
 spec:
   interval: 1h
   chart:
     spec:
-      chart: *app
+      chart: *n
       version: 3.2.5
       sourceRef:
-        name: *app
+        name: *n
         kind: HelmRepository
   values:
     crds:
@@ -47,5 +47,5 @@ spec:
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
-              app.kubernetes.io/instance: kyverno
-              app.kubernetes.io/component: kyverno
+              app.kubernetes.io/instance: *n
+              app.kubernetes.io/component: *n
