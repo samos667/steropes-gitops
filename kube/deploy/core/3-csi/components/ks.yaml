@@ -58,3 +58,30 @@ spec:
         version: v1
         kind: ClusterRole
         name: snapshot-controller-runner
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n democratic-csi
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/core/3-csi/components/helm/
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn:
+    - name: external-snapshotter-controller
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  commonMetadata:
+    labels: *l
+  targetNamespace: csi
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: democratic-csi-secrets
+        optional: false

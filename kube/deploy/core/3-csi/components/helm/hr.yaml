@@ -1,0 +1,110 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: truenas-iscsi
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: democratic-csi
+      version: 0.14.6
+      sourceRef:
+        name: democratic-csi
+        kind: HelmRepository
+  values:
+    namespace: csi
+    csiDriver:
+      # should be globally unique for a given cluster
+      name: "iscsi"
+
+    # add note here about volume expansion requirements
+    storageClasses:
+      - name: iscsi
+        defaultClass: true
+        reclaimPolicy: Delete
+        volumeBindingMode: Immediate
+        allowVolumeExpansion: true
+        parameters:
+          # for block-based storage can be ext3, ext4, xfs
+          fsType: ext4
+          detachedVolumesFromSnapshots: "false"
+
+    volumeSnapshotClasses:
+      - name: iscsi
+        parameters:
+          detachedSnapshots: "true"
+
+    driver:
+      config:
+        instance_id:
+        driver: freenas-api-iscsi
+        httpConnection:
+          protocol: https
+          host: ${TRUENAS_IP}
+          port: 443
+          apiKey: ${TRUENAS_API_KEY}
+          # username: admin
+          # password: ${FREENAS_PWD}
+          allowInsecure: true
+        zfs:
+          datasetParentName: big-bang-7/steropes_data/PVC
+          detachedSnapshotsDatasetParentName: big-bang-7/steropes_data/snapshots
+          zvolEnableReservation: false
+        iscsi:
+          targetPortal: "${TRUENAS_IP}"
+          targetPortals: []
+          interface:
+          namePrefix: csi-
+          nameTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+          targetGroups:
+            - targetGroupPortalGroup: 2
+              targetGroupInitiatorGroup: 2
+              targetGroupAuthType: None
+              targetGroupAuthGroup:
+          extentInsecureTpc: true
+          extentXenCompat: false
+          extentDisablePhysicalBlocksize: true
+          extentBlocksize: 512
+          extentRpm: "SSD"
+          extentAvailThreshold: 0
+
+    controller:
+      externalAttacher:
+        args:
+          - --v=5
+          - --leader-election
+          - --leader-election-namespace={{ .Values.namespace }}
+          - --timeout=90s
+          - --worker-threads=10
+          - --csi-address={{ .csiSocketAddress }}
+
+      externalProvisioner:
+        args:
+          - --v=5
+          - --leader-election
+          - --leader-election-namespace={{ .Values.namespace }}
+          - --timeout=90s
+          - --worker-threads=10
+          - --extra-create-metadata
+          - --csi-address={{ .csiSocketAddress }}
+
+      externalResizer:
+        args:
+          - --v=5
+          - --leader-election
+          - --leader-election-namespace={{ .Values.namespace }}
+          - --timeout=90s
+          - --workers=10
+          - --csi-address={{ .csiSocketAddress }}
+
+    node:
+      hostPID: true
+      driver:
+        extraEnv:
+          - name: ISCSIADM_HOST_STRATEGY
+            value: nsenter
+          - name: ISCSIADM_HOST_PATH
+            value: /usr/local/sbin/iscsiadm
+        iscsiDirHostPath: /usr/local/etc/iscsi
+        iscsiDirHostPathType: ""

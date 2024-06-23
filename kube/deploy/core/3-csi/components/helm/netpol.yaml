@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: democratic-csi-to-kube-api
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: truenas-iscsi
+  egress:
+    - toEntities:
+        - kube-apiserver
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: democratic-csi-to-truenas
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: truenas-iscsi
+  egress:
+    - toCIDRSet:
+        - cidr: ${TRUENAS_IP}/32
+      toPorts:
+        - ports:
+            - port: "3260"
+              protocol: TCP
+            - port: "80"
+              protocol: "TCP"
+            - port: "443"
+              protocol: "TCP"
