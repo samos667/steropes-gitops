@@ -27,7 +27,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: &tns tls
 spec:
-  path: ./kube/deploy/core/4-tls/cert-manager/issuers
+  path: ./kube/deploy/core/4-tls/cert-manager/issuers/
   interval: 1h
   prune: false
   wait: true
@@ -42,6 +42,33 @@ spec:
   targetNamespace: *tns
   postBuild:
     substituteFrom:
-      - kind: Secret
+      - kind: ConfigMap
+        name: cert-manager-secrets
+        optional: false
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: cert-manager-certificates
+  labels: &l
+    kustomization.flux.home.arpa/name: &tns tls
+spec:
+  path: ./kube/deploy/core/4-tls/cert-manager/certificates/
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn:
+    - name: cert-manager-issuers
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  commonMetadata:
+    labels: *l
+  targetNamespace: *tns
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
         name: cert-manager-secrets
         optional: false

@@ -7,6 +7,7 @@ metadata:
   labels:
     kustomization.flux.home.arpa/name: &tns tls
     kustomization.flux.home.arpa/sops: "true"
+    kustomization.flux.home.arpa/substitution: "true"
 spec:
   path: ./kube/deploy/core/4-tls/cert-manager/
   interval: 1h
