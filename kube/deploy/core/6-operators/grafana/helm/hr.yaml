@@ -1,0 +1,18 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app grafana-operator
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: *app
+      version: v5.9.2
+      sourceRef:
+        kind: HelmRepository
+        name: *app
+  values:
+    additionalLabels:
+      egress.home.arpa/apiserver: allow
+      egress.home.arpa/internet-https: allow
