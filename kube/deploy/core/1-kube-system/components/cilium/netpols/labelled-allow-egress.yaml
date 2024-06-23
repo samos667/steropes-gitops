@@ -250,7 +250,7 @@ spec:
       egress.home.arpa/pve: allow
   egress:
     - toCIDRSet:
-        - cidr: ${PVE_IP}/32
+        - cidr: ${HOMELAB_PVE_IP}/32
       toPorts:
         - ports:
             - port: "8006"
@@ -268,7 +268,7 @@ spec:
       egress.truenas.home.arpa/https: allow
   egress:
     - toCIDRSet:
-        - cidr: ${TRUENAS_IP}/32
+        - cidr: ${HOMELAB_TRUENAS_IP}/32
       toPorts:
         - ports:
             - port: "443"
@@ -286,7 +286,7 @@ spec:
       egress.truenas.home.arpa/ssh: allow
   egress:
     - toCIDRSet:
-        - cidr: ${TRUENAS_IP}/32
+        - cidr: ${HOMELAB_TRUENAS_IP}/32
       toPorts:
         - ports:
             - port: "22"
@@ -303,7 +303,7 @@ spec:
       egress.truenas.home.arpa/iscsi: allow
   egress:
     - toCIDRSet:
-        - cidr: ${TRUENAS_IP}/32
+        - cidr: ${HOMELAB_TRUENAS_IP}/32
       toPorts:
         - ports:
             - port: "3260"
@@ -321,7 +321,7 @@ spec:
       egress.home.arpa/ntp: allow
   egress:
     - toCIDRSet:
-        - cidr: ${GATEWAY_IP}/32
+        - cidr: ${HOMELAB_GW_IP}/32
       toPorts:
         - ports:
             - port: "123"

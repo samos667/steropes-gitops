@@ -20,6 +20,9 @@ spec:
   targetNamespace: kube-system
   postBuild:
     substituteFrom:
+      - kind: ConfigMap
+        name: cilium-secrets
+        optional: false
       - kind: Secret
         name: cilium-secrets
         optional: false
@@ -47,6 +50,9 @@ spec:
   targetNamespace: kube-system
   postBuild:
     substituteFrom:
+      - kind: ConfigMap
+        name: cilium-secrets
+        optional: false
       - kind: Secret
         name: cilium-secrets
         optional: false
@@ -73,6 +79,9 @@ spec:
     labels: *l
   postBuild:
     substituteFrom:
+      - kind: ConfigMap
+        name: cilium-secrets
+        optional: false
       - kind: Secret
         name: cilium-secrets
         optional: false

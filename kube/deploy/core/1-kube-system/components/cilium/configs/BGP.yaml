@@ -11,7 +11,7 @@ spec:
         matchExpressions:
           - { key: somekey, operator: NotIn, values: ["never-used-value"] }
       neighbors:
-        - peerAddress: "${GATEWAY_IP}/24"
+        - peerAddress: "${HOMELAB_GW_IP}/24"
           peerASN: 64512
           eBGPMultihopTTL: 10
           connectRetryTimeSeconds: 120
