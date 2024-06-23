@@ -7,3 +7,4 @@ resources:
   - ./2-kyverno/
   - ./3-csi/
   - ./4-tls/
+  - ./5-ingress/

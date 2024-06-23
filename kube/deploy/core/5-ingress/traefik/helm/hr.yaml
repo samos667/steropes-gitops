@@ -1,0 +1,93 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n traefik
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: *n
+      version: 28.3.0
+      sourceRef:
+        name: *n
+        kind: HelmRepository
+  values:
+    deployment:
+      enabled: true
+      kind: Deployment
+      replicas: 2
+      podLabels:
+        egress.home.arpa/apiserver: allow
+        ingress.home.arpa/world: allow
+
+    ingressClass:
+      enabled: false
+
+    ingressRoute:
+      dashboard:
+        enabled: false
+
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
+        # -- Allows to reference ExternalName services in IngressRoute #TODO
+        allowExternalNameServices: false
+
+      kubernetesIngress:
+        enabled: false
+
+    metrics:
+      addInternals:
+      prometheus:
+        entryPoint: metrics
+
+    ports:
+      traefik:
+        port: 9000
+        expose:
+          default: false
+        exposedPort: 9000
+        protocol: TCP
+
+      web:
+        port: 8000
+        expose:
+          default: true
+        exposedPort: 80
+        protocol: TCP
+        redirectTo:
+          port: websecure
+
+      websecure:
+        asDefault: true
+        port: 8443
+        expose:
+          default: true
+        exposedPort: 443
+        protocol: TCP
+        tls:
+          enabled: false
+        middlewares: []
+
+      metrics:
+        port: 9100
+        expose:
+          default: false
+        exposedPort: 9100
+        protocol: TCP
+
+    service:
+      enabled: true
+      single: true
+      type: LoadBalancer
+      spec:
+        loadBalancerIP: ${TRAEFIK_LB_IP}
+
+      requests:
+        cpu: 1m
+        memory: 1Mi
+      limits:
+        cpu: 500m
+        memory: 300Mi

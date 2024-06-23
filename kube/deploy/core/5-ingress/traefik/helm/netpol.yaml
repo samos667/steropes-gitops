@@ -1,0 +1,27 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+metadata:
+  name: allow-egress-trafik-to-svc
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            traefik.home.arpa/ingress: allow
+
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+metadata:
+  name: allow-ingress-trafik-to-svc
+spec:
+  endpointSelector:
+    matchLabels:
+      traefik.home.arpa/ingress: allow
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: traefik
