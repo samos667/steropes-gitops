@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-egress-apiserver
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: k8up
+  egress:
+    - toEntities:
+        - kube-apiserver
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+metadata:
+  name: allow-egress-to-backblaze-for-backup-job
+spec:
+  endpointSelector:
+    matchLabels:
+      k8upjob: "true"
+  egress:
+    - toFQDNs:
+        - matchPattern: "s3.us-west-000.backblazeb2.com"
+    - toEntities:
+        - kube-apiserver

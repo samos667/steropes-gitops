@@ -1,0 +1,16 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+metadata:
+  name: k8up-crds
+  namespace:
+spec:
+  interval: 12h
+  url: https://github.com/k8up-io/k8up.git
+  ref:
+    tag: k8up-4.7.0
+  ignore: |
+    # exclude all
+    /*
+    # include crd directory
+    !/config/crd/
