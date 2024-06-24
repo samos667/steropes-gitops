@@ -1,0 +1,163 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: 1-deploy-infra
+  namespace: flux-system
+  labels:
+    kustomization.flux.home.arpa/infra: "true"
+    kustomization.flux.home.arpa/sops: "true"
+spec:
+  path: ./kube/deploy/infra/
+  interval: 5m0s
+  timeout: 10m0s
+  prune: false
+  wait: true
+  sourceRef: # ref ./flux-repo.yaml
+    kind: GitRepository
+    name: flux-system
+  dependsOn: []
+  commonMetadata:
+    labels:
+      kustomization.flux.home.arpa/infra: "true"
+  patches:
+    ### Patch all child kustomization if as corresponding label
+    ## Decryption
+    # SOPS
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          decryption:
+            provider: sops
+            secretRef:
+              name: steropes-secrets-decrypt-sops-age
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/sops in (true)
+        namespace: flux-system
+
+    ## Variable substitution
+    # Global
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          postBuild:
+            substituteFrom:
+              - kind: ConfigMap
+                name: steropes-vars
+                optional: false
+              - kind: Secret
+                name: steropes-secrets
+                optional: false
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/substitution in (true)
+        namespace: flux-system
+
+    ### Patch all kustomization child of this kustomization
+    ## Dependency
+    # Core
+    - patch: |
+        - op: add
+          path: /spec/dependsOn/-
+          value:
+            name: 0-deploy-core
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        namespace: flux-system
+        labelSelector: kustomization.flux.home.arpa/name notin (deps)
+
+    ## HelmRelease patches
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+          namespace: flux-system
+        spec:
+          patches:
+
+            # To patch all these kustomization child too
+            - patch: |-
+                apiVersion: kustomize.toolkit.fluxcd.io/v1
+                kind: Kustomization
+                metadata:
+                  name: not-used
+                spec:
+                  patches:
+
+                    ### To patch all these HelmRelease child by default
+                    - patch: |-
+                        apiVersion: helm.toolkit.fluxcd.io/v2
+                        kind: HelmRelease
+                        metadata:
+                          name: not-used
+                        spec:
+                          interval: 15m
+                          timeout: 15m
+                          maxHistory: 10
+                          install:
+                            remediation:
+                              retries: 5
+                          upgrade:
+                            cleanupOnFail: true
+                            remediation:
+                              retries: 5
+                              strategy: rollback
+                          rollback:
+                            recreate: true
+                            cleanupOnFail: false
+                          driftDetection:
+                            mode: enabled
+                            ignore:
+                              - paths: ["/spec/replicas"] # helpful for scaling things down during debugging/troubleshooting without Helm interfering
+                      target:
+                        group: helm.toolkit.fluxcd.io
+                        version: v2
+                        kind: HelmRelease
+                        labelSelector: helm.flux.home.arpa/default notin (false)
+
+                    ### To patch HelmRelease if as corresponding label
+                    ## app-template patch
+                    - patch: |-
+                        apiVersion: helm.toolkit.fluxcd.io/v2beta1
+                        kind: HelmRelease
+                        metadata:
+                          name: not-used
+                        spec:
+                          chart:
+                            spec:
+                              chart: app-template
+                              version: 3.1.0
+                              sourceRef:
+                                name: bjw-s
+                                kind: HelmRepository
+                                namespace: flux-system
+                      target:
+                        group: helm.toolkit.fluxcd.io
+                        version: v2
+                        kind: HelmRelease
+                        labelSelector: helm.flux.home.arpa/app-template=true
+
+              target:
+                group: kustomize.toolkit.fluxcd.io
+                version: v1
+                kind: Kustomization
+                labelSelector: kustomization.flux.home.arpa/helmpatches notin (false)
+
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization

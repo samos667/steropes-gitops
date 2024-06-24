@@ -9,3 +9,4 @@ resources:
   - ./flux-install.yaml
   - ./flux-repo.yaml
   - ./1-core.yaml
+  - ./2-infra.yaml
