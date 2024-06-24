@@ -1,0 +1,52 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n lldap-db
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/infra/authentification/lldap/db/
+  interval: 1h
+  prune: false
+  wait: false
+  healthChecks:
+    - apiVersion: v1
+      kind: Pod
+      name: lldap-db-1
+      namespace: &tns authelia
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  commonMetadata:
+    labels: *l
+  targetNamespace: *tns
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: barman-secrets
+        optional: false
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n lldap-app
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/infra/authentification/lldap/app/
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn:
+    - name: lldap-db
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  commonMetadata:
+    labels: *l
+  targetNamespace: authelia

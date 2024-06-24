@@ -1,0 +1,22 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authelia-redis
+spec:
+  chart:
+    spec:
+      chart: redis
+      version:
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  values:
+    architecture: standalone
+
+    auth:
+      enabled: true
+      sentinel: true
+      existingSecret: authelia-local-secrets
+      existingSecretPasswordKey: AUTHELIA_REDIS_PASSWORD
