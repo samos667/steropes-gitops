@@ -1,0 +1,35 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: cilium-agent
+spec:
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://raw.githubusercontent.com/cilium/cilium/v1.15.4/install/kubernetes/cilium/files/cilium-agent/dashboards/cilium-dashboard.json"
+#
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDashboard
+# metadata:
+#   name: cilium-operator
+# spec:
+#   resyncPeriod: 30s
+#   instanceSelector:
+#     matchLabels:
+#       instance: "grafana-main"
+#   url: "https://raw.githubusercontent.com/cilium/cilium/v1.15.4/install/kubernetes/cilium/files/cilium-operator/dashboards/cilium-operator-dashboard.json"
+#
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDashboard
+# metadata:
+#   name: cilium-hubble
+# spec:
+#   resyncPeriod: 30s
+#   instanceSelector:
+#     matchLabels:
+#       instance: "grafana-main"
+#   url: "https://raw.githubusercontent.com/cilium/cilium/v1.15.4/install/kubernetes/cilium/files/hubble/dashboards/hubble-dashboard.json"

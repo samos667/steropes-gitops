@@ -1,0 +1,16 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: victoriametrics
+  namespace: monitoring
+spec:
+  instanceSelector:
+    matchLabels:
+      instance: grafana-main
+  datasource:
+    name: VMSingle-main
+    type: prometheus
+    access: proxy
+    url: http://vmsingle-main:8429
+    isDefault: true

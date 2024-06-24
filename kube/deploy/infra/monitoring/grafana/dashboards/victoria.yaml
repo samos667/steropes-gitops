@@ -1,0 +1,23 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: victoriametrics-single
+spec:
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/10229/revisions/35/download"
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: victoriametrics-vmagent
+spec:
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/12683/revisions/17/download"

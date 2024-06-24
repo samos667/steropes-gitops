@@ -1,0 +1,104 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: kubernetes-system
+spec:
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  permissions: |
+    {
+      "items": [
+        {
+          "role": "Admin",
+          "permission": 4
+        },
+        {
+          "role": "Editor",
+          "permission": 2
+        },
+        {
+          "role": "Viewer",
+          "permission": 1
+        }
+      ]
+    }
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-global
+spec:
+  folder: "kubernetes-system"
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/15757/revisions/37/download"
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-namespaces
+spec:
+  folder: "kubernetes-system"
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/15758/revisions/34/download"
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-coredns
+spec:
+  folder: "kubernetes-system"
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/15762/revisions/18/download"
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-api-server
+spec:
+  folder: "kubernetes-system"
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/15761/revisions/16/download"
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-pods
+spec:
+  folder: "kubernetes-system"
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/15760/revisions/28/download"
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-node
+spec:
+  folder: "kubernetes-system"
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      instance: "grafana-main"
+  url: "https://grafana.com/api/dashboards/15759/revisions/29/download"
