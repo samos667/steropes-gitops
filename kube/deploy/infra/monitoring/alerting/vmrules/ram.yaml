@@ -1,0 +1,38 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: ram
+  namespace: monitoring
+spec:
+  groups:
+    - name: node-usage
+      rules:
+        - alert: Node RAM usage > 85%
+          expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+          for: 10s
+          labels:
+            severity: warning
+            node: "{{ $labels.instance }}"
+          annotations:
+            value: "{{ $value }}"
+            description: "RAM of {{ $labels.instance }} node is used at {{ $value }}%"
+
+        - alert: Node RAM usage > 90%
+          expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+          for: 10s
+          labels:
+            severity: major
+            node: "{{ $labels.instance }}"
+          annotations:
+            value: "{{ $value }}"
+            description: "RAM of {{ $labels.instance }} node is used at {{ $value }}%"
+
+        - alert: Node RAM usage > 95%
+          expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 95
+          for: 10s
+          labels:
+            severity: critical
+            node: "{{ $labels.instance }}"
+          annotations:
+            value: "{{ $value }}"
+            description: "RAM of {{ $labels.instance }} node is used at {{ $value }}%"

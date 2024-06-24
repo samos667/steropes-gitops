@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: alertmanager
+spec:
+  routes:
+    - match: Host(`alert.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: vmalertmanager-main
+          port: 9093
+      middlewares:
+        - name: authelia-authz
+          namespace: traefik
+  tls:
+    domains:
+      - main: "alert.${DOMAIN_PUBLIC}"

@@ -1,0 +1,13 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlertmanager
+metadata:
+  name: main
+spec:
+  replicaCount: 2
+  disableNamespaceMatcher: true
+  configSelector: {}
+  configNamespaceSelector: {}
+  podMetadata:
+    labels:
+      egress.home.arpa/discord: allow
+      traefik.home.arpa/ingress: allow
