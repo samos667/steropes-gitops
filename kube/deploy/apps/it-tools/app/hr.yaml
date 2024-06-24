@@ -1,0 +1,43 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n it-tools
+  labels:
+    helm.flux.home.arpa/app-template: true
+
+spec:
+  values:
+    controllers:
+      it-tools:
+        type: deployment
+        strategy: RollingUpdate
+        replicas: 1
+
+        pod:
+          labels:
+            traefik.home.arpa/ingress: allow
+
+        containers:
+          application:
+            image:
+              repository: docker.io/corentinth/it-tools
+              tag: 2024.5.13-a0bc346@sha256:c191615f23eb6a18b8faca4dba15fc11caefea250ce3a8e29d249757544092eb
+
+            resources: # TODO refine
+              limits:
+                cpu: 100m
+                memory: 50Mi
+              requests:
+                cpu: 1m
+                memory: 1Mi
+
+            env:
+              TZ: Europe/Paris
+
+    service:
+      http:
+        controller: *n
+        ports:
+          http:
+            port: 80

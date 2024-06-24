@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &n it-tools
+  namespace: *n
+spec:
+  routes:
+    - match: Host(`tools.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: *n
+          port: 80
+      middlewares:
+        - name: compress
+          namespace: ingress
+  tls:
+    domains:
+      - main: "tools.${DOMAIN_PUBLIC}"

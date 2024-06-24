@@ -10,3 +10,4 @@ resources:
   - ./flux-repo.yaml
   - ./0-core.yaml
   - ./1-infra.yaml
+  - ./2-apps.yaml
