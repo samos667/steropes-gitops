@@ -1,0 +1,7 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: reflector-operator
+spec:
+  url: https://emberstack.github.io/helm-charts

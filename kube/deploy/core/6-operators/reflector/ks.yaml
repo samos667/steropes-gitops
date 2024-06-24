@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: reflector-operator-app
+  labels: &l
+    kustomization.flux.home.arpa/name: &n reflector-operator
+spec:
+  path: ./kube/deploy/core/6-operators/reflector/app/
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  commonMetadata:
+    labels: *l
+  targetNamespace: *n

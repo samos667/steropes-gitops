@@ -85,3 +85,25 @@ spec:
     name: *ns
   dependsOn: []
   targetNamespace: *tns
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: 0-deploy-core-6-operators-reflector
+  namespace: &ns flux-system
+  labels:
+    kustomization.flux.home.arpa/name: &tns reflector-operator
+    kustomization.flux.home.arpa/sops: "true"
+    kustomization.flux.home.arpa/substitution: "true"
+spec:
+  path: ./kube/deploy/core/6-operators/reflector/
+  interval: 1h
+  timeout: 10m0s
+  prune: false
+  wait: true
+  sourceRef: # ref ../../../flux/flux-repo.yaml
+    kind: GitRepository
+    name: *ns
+  dependsOn: []
+  targetNamespace: *tns
