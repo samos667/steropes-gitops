@@ -4,7 +4,6 @@ kind: HelmRelease
 metadata:
   name: &n k8up-operator
 spec:
-  interval: 1h
   chart:
     spec:
       chart: k8up

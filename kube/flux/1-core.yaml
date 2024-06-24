@@ -21,45 +21,9 @@ spec:
     labels:
       kustomization.flux.home.arpa/core: "true"
   patches:
-    # Make crds Kustomization a dependency of all child
-    - patch: |
-        - op: add
-          path: /spec/dependsOn/-
-          value:
-            name: 0-deploy-core-0-deps
-      target:
-        group: kustomize.toolkit.fluxcd.io
-        version: v1
-        kind: Kustomization
-        labelSelector: kustomization.flux.home.arpa/name notin (deps)
-
-    # Make cilium Kustomization a dependency of all child
-    - patch: |
-        - op: add
-          path: /spec/dependsOn/-
-          value:
-            name: 0-deploy-core-1-kube-system-cilium
-            namespace: flux-system
-      target:
-        group: kustomize.toolkit.fluxcd.io
-        version: v1
-        kind: Kustomization
-        labelSelector: kustomization.flux.home.arpa/name notin (deps, cilium)
-
-    # Make kyverno Kustomization a dependency of all child
-    - patch: |
-        - op: add
-          path: /spec/dependsOn/-
-          value:
-            name: 0-deploy-core-2-policy-kyverno
-            namespace: flux-system
-      target:
-        group: kustomize.toolkit.fluxcd.io
-        version: v1
-        kind: Kustomization
-        labelSelector: kustomization.flux.home.arpa/name notin (deps, cilium, metrics-server, kyverno)
-
-    # Enable sops decryption for matching flux Kustomization child of this one
+    ### Patch all child kustomization if as corresponding label
+    ## Decryption
+    # SOPS
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
@@ -77,7 +41,8 @@ spec:
         labelSelector: kustomization.flux.home.arpa/sops in (true)
         namespace: flux-system
 
-    # Enable substitution for matching flux Kustomization child of this one
+    ## Variable substitution
+    # Global
     - patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
@@ -98,3 +63,140 @@ spec:
         kind: Kustomization
         labelSelector: kustomization.flux.home.arpa/substitution in (true)
         namespace: flux-system
+
+    ### Patch all kustomization child of this kustomization
+    ## Dependency
+    # Deps
+    - patch: |
+        - op: add
+          path: /spec/dependsOn/-
+          value:
+            name: 0-deploy-core-0-deps
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/name notin (deps)
+
+    # Cilium
+    - patch: |
+        - op: add
+          path: /spec/dependsOn/-
+          value:
+            name: 0-deploy-core-1-kube-system-cilium
+            namespace: flux-system
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/name notin (deps, cilium)
+
+    # Kyverno policy
+    - patch: |
+        - op: add
+          path: /spec/dependsOn/-
+          value:
+            name: 0-deploy-core-2-policy-kyverno
+            namespace: flux-system
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: kustomization.flux.home.arpa/name notin (deps, cilium, metrics-server, kyverno)
+
+    ## HelmRelease patches
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+          namespace: flux-system
+        spec:
+          patches:
+
+            # To patch all these kustomization child too
+            - patch: |-
+                apiVersion: kustomize.toolkit.fluxcd.io/v1
+                kind: Kustomization
+                metadata:
+                  name: not-used
+                spec:
+                  patches:
+
+                    ### To patch all these HelmRelease child by default
+                    - patch: |-
+                        apiVersion: helm.toolkit.fluxcd.io/v2
+                        kind: HelmRelease
+                        metadata:
+                          name: not-used
+                        spec:
+                          interval: 15m
+                          timeout: 15m
+                          maxHistory: 10
+                          install:
+                            remediation:
+                              retries: 5
+                          upgrade:
+                            cleanupOnFail: true
+                            remediation:
+                              retries: 5
+                              strategy: rollback
+                          rollback:
+                            recreate: true
+                            cleanupOnFail: false
+                          driftDetection:
+                            mode: enabled
+                            ignore:
+                              - paths: ["/spec/replicas"] # helpful for scaling things down during debugging/troubleshooting without Helm interfering
+                      target:
+                        group: helm.toolkit.fluxcd.io
+                        version: v2
+                        kind: HelmRelease
+                        labelSelector: helm.flux.home.arpa/default notin (false)
+
+                    ### To patch HelmRelease if as corresponding label
+                    ## crds lifecycle patch
+                    # CreateReplace
+                    - patch: |-
+                        apiVersion: helm.toolkit.fluxcd.io/v2beta1
+                        kind: HelmRelease
+                        metadata:
+                          name: not-used
+                        spec:
+                          install:
+                            crds: CreateReplace
+                          upgrade:
+                            crds: CreateReplace
+                      target:
+                        group: helm.toolkit.fluxcd.io
+                        version: v2
+                        kind: HelmRelease
+                        labelSelector: helm.flux.home.arpa/crds-lifecycle=CreateReplace
+
+                    # CreateOnly
+                    - patch: |-
+                        apiVersion: helm.toolkit.fluxcd.io/v2beta1
+                        kind: HelmRelease
+                        metadata:
+                          name: not-used
+                        spec:
+                          install:
+                            crds: Create
+                          upgrade:
+                            crds: Create
+                      target:
+                        group: helm.toolkit.fluxcd.io
+                        version: v2
+                        kind: HelmRelease
+                        labelSelector: helm.flux.home.arpa/crds-lifecycle=CreateOnly
+
+              target:
+                group: kustomize.toolkit.fluxcd.io
+                version: v1
+                kind: Kustomization
+                labelSelector: kustomization.flux.home.arpa/helmpatches notin (false)
+
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization

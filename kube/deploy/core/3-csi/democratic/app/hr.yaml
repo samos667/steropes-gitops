@@ -4,7 +4,6 @@ kind: HelmRelease
 metadata:
   name: truenas-iscsi
 spec:
-  interval: 1h
   chart:
     spec:
       chart: democratic-csi

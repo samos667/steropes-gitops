@@ -4,7 +4,6 @@ kind: HelmRelease
 metadata:
   name: &n kyverno
 spec:
-  interval: 1h
   chart:
     spec:
       chart: *n

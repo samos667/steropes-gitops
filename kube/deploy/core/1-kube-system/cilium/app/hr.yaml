@@ -7,9 +7,9 @@ metadata:
     meta.helm.sh/release-name: *n
     meta.helm.sh/release-namespace: kube-system
   labels:
+    helm.flux.home.arpa/crds-lifecycle: CreateReplace
     app.kubernetes.io/managed-by: Helm
 spec:
-  interval: 1h
   chart:
     spec:
       chart: *n

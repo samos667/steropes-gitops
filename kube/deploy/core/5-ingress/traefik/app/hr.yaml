@@ -3,8 +3,9 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &n traefik
+  labels:
+    helm.flux.home.arpa/crds-lifecycle: CreateReplace
 spec:
-  interval: 1h
   chart:
     spec:
       chart: *n
