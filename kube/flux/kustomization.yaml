@@ -5,6 +5,7 @@ resources:
   - ./secrets-age.sops.yaml
   - ./secrets-ssh.sops.yaml
   - ../configs/
+  - ./repos/
   - ./flux-install.yaml
   - ./flux-repo.yaml
   - ./1-core.yaml

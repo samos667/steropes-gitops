@@ -1,0 +1,31 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: zzz-flux-repos-helm
+  namespace: flux-system
+  labels:
+    kustomization.flux.home.arpa/name: flux
+spec:
+  targetNamespace: flux-system
+  interval: 5m0s
+  path: ./kube/flux/repos/helm
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  patches:
+    - patch: |-
+        apiVersion: source.toolkit.fluxcd.io/v1beta2
+        kind: HelmRepository
+        metadata:
+          name: not-used
+        spec:
+          interval: 1h
+          timeout: 3m0s
+      target:
+        group: source.toolkit.fluxcd.io
+        version: v1
+        kind: HelmRepository
+        labelSelector: repo.flux.home.arpa/default notin (true)
