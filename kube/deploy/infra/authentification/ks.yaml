@@ -36,7 +36,7 @@ spec:
   prune: false
   wait: true
   dependsOn:
-    - name: 1-deploy-infra-authentification-authelia
+    - name: 1-deploy-infra-authentification-lldap
   sourceRef:
     kind: GitRepository
     name: *fns

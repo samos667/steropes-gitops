@@ -2,9 +2,9 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n victoria-metrics-operator
+  name: victoria-metrics-operator-app
   labels: &l
-    kustomization.flux.home.arpa/name: *n
+    kustomization.flux.home.arpa/name: &n victoria-metrics-operator
 spec:
   path: ./kube/deploy/core/6-operators/victoria-metrics/app/
   interval: 1h

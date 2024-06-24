@@ -31,7 +31,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n traefik
+  name: &n traefik-app
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
@@ -70,7 +70,7 @@ spec:
   prune: false
   wait: true
   dependsOn:
-    - name: traefik
+    - name: traefik-app
   sourceRef:
     kind: GitRepository
     name: &fns flux-system

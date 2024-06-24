@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n k8up-crds
+  name: &n k8up-operator-crds
   labels:
     kustomization.flux.home.arpa/name: *n
 spec:
@@ -18,16 +18,16 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n k8up-operator
+  name: k8up-operator-app
   labels: &l
-    kustomization.flux.home.arpa/name: *n
+    kustomization.flux.home.arpa/name: &n k8up-operator
 spec:
   path: ./kube/deploy/core/6-operators/k8up/app/
   interval: 1h
   prune: false
   wait: true
   dependsOn:
-    - name: k8up-crds
+    - name: k8up-operator-crds
   sourceRef:
     kind: GitRepository
     name: &fns flux-system

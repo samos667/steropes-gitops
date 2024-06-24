@@ -8,5 +8,5 @@ resources:
   - ./repos/
   - ./flux-install.yaml
   - ./flux-repo.yaml
-  - ./1-core.yaml
-  - ./2-infra.yaml
+  - ./0-core.yaml
+  - ./1-infra.yaml

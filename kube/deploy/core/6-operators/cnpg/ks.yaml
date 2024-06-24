@@ -2,9 +2,9 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n cnpg-operator
+  name: cnpg-operator-app
   labels: &l
-    kustomization.flux.home.arpa/name: *n
+    kustomization.flux.home.arpa/name: &n cnpg-operator
 spec:
   path: ./kube/deploy/core/6-operators/cnpg/app/
   interval: 1h
