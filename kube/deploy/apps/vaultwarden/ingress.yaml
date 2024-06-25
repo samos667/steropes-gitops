@@ -1,0 +1,21 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &n vaultwarden
+  namespace: *n
+spec:
+  routes:
+    - match: Host(`vw.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: *n
+          port: 80
+      middlewares:
+        - name: compress
+          namespace: ingress
+        - name: authelia-authz
+          namespace: authelia
+  tls:
+    domains:
+      - main: "vw.${DOMAIN_PUBLIC}"

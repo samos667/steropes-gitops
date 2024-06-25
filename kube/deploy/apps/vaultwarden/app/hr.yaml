@@ -1,0 +1,93 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n vaultwarden
+  labels:
+    helm.flux.home.arpa/app-template: true
+spec:
+  values:
+    global:
+      annotations:
+        k8up.io/backup: "true"
+
+    controllers:
+      vaultwarden:
+        type: deployment
+        strategy: Recreate
+        replicas: 1
+
+        pod:
+          labels:
+            traefik.home.arpa/ingress: allow
+            egress.home.arpa/internet: allow
+
+        containers:
+          application:
+            image:
+              repository: "docker.io/vaultwarden/server"
+              tag: "1.30.5-alpine@sha256:6f6ec220ed300e1a11475a91d270985915083512f9fb60c1c25783faaa66eef5"
+
+            resources: # TODO refine
+              limits:
+                cpu: 1
+                memory: 50Mi
+              requests:
+                cpu: 1m
+                memory: 1Mi
+
+            # -- environment variables.
+            # See [image docs](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template) for more details.
+            env:
+              TZ: Europe/Paris
+              ### General settings ###
+              DOMAIN: "https://vw.${DOMAIN_PUBLIC}"
+              SIGNUPS_ALLOWED: true
+              ORG_EVENTS_ENABLED: true
+
+              ### Database settings ###
+              DATABASE_URL: postgresql://vaultwarden:${password}@vaultwarden-db-rw:5432/vaultwarden
+
+              ### Data folders ###
+              DATA_FOLDER: /data
+              # Individual folders, these override %DATA_FOLDER%
+              RSA_KEY_FILENAME: /data/rsa_key
+              SENDS_FOLDER: /data/sends
+              ICON_CACHE_FOLDER: /data/icon_cache
+              ATTACHMENTS_FOLDER: /data/attachments
+              TMP_FOLDER: /tmp
+
+              ### Schedule jobs ###
+              EVENTS_DAYS_RETAIN: 180
+              TRASH_AUTO_DELETE_DAYS: 180
+
+              ### SMTP settings ###
+              SMTP_HOST: smtp.google.com
+              SMTP_FROM: ${SMTP_MAIL}
+              SMTP_FROM_NAME: Vaultwarden
+              SMTP_USERNAME: ${SMTP_MAIL}
+              SMTP_PASSWORD: ${SMTP_PASSWORD}
+              SMTP_SECURITY: starttls
+              SMTP_PORT: 587
+
+              ### Advanced settings ###
+              ADMIN_TOKEN:
+                secretKeyRef:
+                  name: vaultwarden-local-secrets
+                  key: VAULTWARDEN_ADMIN_TOKEN_HASH
+
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        retain: true
+        globalMounts:
+          - path: /data
+
+    service:
+      http:
+        controller: *n
+        ports:
+          http:
+            port: 80

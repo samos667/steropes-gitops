@@ -1,0 +1,66 @@
+---
+apiVersion: k8up.io/v1 # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/b528b20f6e245df01d03c4f35ad603f5/raw/01f66b6caa5704448f31a4326ee29a38c95cac9d/schedule.json
+kind: Schedule
+metadata:
+  name: vaultwarden
+spec:
+  backup:
+    schedule: "30 0 * * *"
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 2
+    # TODO
+    #promURL: https://prometheus-io-instance:8443
+
+  check:
+    schedule: "0 1 * * 1"
+    # TODO
+    #promURL: https://prometheus-io-instance:8443
+
+  prune:
+    schedule: "0 1 * * 0"
+    retention:
+      keepLast: 10
+      keepDaily: 7
+      keepWeekly: 4
+      keepMonthly: 12
+      keepYearly: 2
+
+  backend:
+    s3:
+      endpoint: https://s3.us-west-000.backblazeb2.com
+      bucket: ${K8UP_B2_BUCKET_NAME}/vaultwarden
+      accessKeyIDSecretRef:
+        name: vaultwarden-secrets
+        key: K8UP_B2_ACCESS_KEY_ID
+      secretAccessKeySecretRef:
+        name: vaultwarden-secrets
+        key: K8UP_B2_ACCESS_KEY_SECRET
+    repoPasswordSecretRef:
+      name: vaultwarden-secrets
+      key: K8UP_RESTIC_KEY
+# ---
+# apiVersion: k8up.io/v1
+# kind: Restore
+# metadata:
+#   name: restore-vaultwarden
+#   namespace: vaultwarden
+# spec:
+#   podSecurityContext:
+#     fsGroup: 65532
+#     fsGroupChangePolicy: OnRootMismatch
+#   restoreMethod:
+#     folder:
+#       claimName: vaultwarden-data
+#   backend:
+#     s3:
+#       endpoint: https://s3.us-west-000.backblazeb2.com
+#       bucket: ${K8UP_S3_BUCKET_NAME}
+#       accessKeyIDSecretRef:
+#         name: vaultwarden-secrets
+#         key: K8UP_S3_ACCESS_KEY
+#       secretAccessKeySecretRef:
+#         name: vaultwarden-secrets
+#         key: K8UP_S3_ACCESS_KEY_SECRET
+#     repoPasswordSecretRef:
+#       name: vaultwarden-secrets
+#       key: K8UP_RESTIC_KEY
