@@ -46,7 +46,10 @@ spec:
               ORG_EVENTS_ENABLED: true
 
               ### Database settings ###
-              DATABASE_URL: postgresql://vaultwarden:${password}@vaultwarden-db-rw:5432/vaultwarden
+              DATABASE_URL:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: VAULTWARDEN_DATABASE_URL
 
               ### Data folders ###
               DATA_FOLDER: /data
@@ -63,17 +66,26 @@ spec:
 
               ### SMTP settings ###
               SMTP_HOST: smtp.google.com
-              SMTP_FROM: ${SMTP_MAIL}
               SMTP_FROM_NAME: Vaultwarden
-              SMTP_USERNAME: ${SMTP_MAIL}
-              SMTP_PASSWORD: ${SMTP_PASSWORD}
               SMTP_SECURITY: starttls
               SMTP_PORT: 587
+              SMTP_FROM:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: SMTP_MAIL
+              SMTP_USERNAME:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: SMTP_MAIL
+              SMTP_PASSWORD:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: SMTP_PASSWORD
 
               ### Advanced settings ###
               ADMIN_TOKEN:
                 secretKeyRef:
-                  name: vaultwarden-local-secrets
+                  name: vaultwarden-secrets
                   key: VAULTWARDEN_ADMIN_TOKEN_HASH
 
     persistence:

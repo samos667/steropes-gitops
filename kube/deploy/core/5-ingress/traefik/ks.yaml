@@ -20,9 +20,6 @@ spec:
   targetNamespace: ingress
   postBuild:
     substituteFrom:
-      - kind: ConfigMap
-        name: traefik-secrets
-        optional: false
       - kind: Secret
         name: traefik-secrets
         optional: false
@@ -50,9 +47,6 @@ spec:
   targetNamespace: ingress
   postBuild:
     substituteFrom:
-      - kind: ConfigMap
-        name: traefik-secrets
-        optional: false
       - kind: Secret
         name: traefik-secrets
         optional: false

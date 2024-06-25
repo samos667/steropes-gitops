@@ -18,5 +18,5 @@ spec:
     auth:
       enabled: true
       sentinel: true
-      existingSecret: authelia-local-secrets
+      existingSecret: authelia-secrets
       existingSecretPasswordKey: AUTHELIA_REDIS_PASSWORD

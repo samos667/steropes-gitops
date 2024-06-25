@@ -63,8 +63,5 @@ spec:
         name: lldap-secrets
         optional: false
       - kind: Secret
-        name: authelia-local-secrets
-        optional: false
-      - kind: Secret
         name: authelia-oidc-secrets
         optional: false

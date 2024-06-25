@@ -42,6 +42,6 @@ spec:
   targetNamespace: *tns
   postBuild:
     substituteFrom:
-      - kind: ConfigMap
+      - kind: Secret
         name: cert-manager-secrets
         optional: false
