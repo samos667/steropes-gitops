@@ -423,6 +423,21 @@ spec:
                 - groups
                 - email
 
+            ### Minio ###
+            - client_id: ${MINIO_OICD_CLIENT_ID}
+              client_secret: ${MINIO_OICD_CLIENT_SECRET_HASH}
+              client_name: Minio
+              public: false
+              authorization_policy: two_factor
+              userinfo_signed_response_alg: none
+              redirect_uris:
+                - https://minio.${DOMAIN_PUBLIC}/oauth_callback
+              scopes:
+                - openid
+                - profile
+                - email
+                - groups
+
     secret:
       disabled: false
       mountPath: /secrets
