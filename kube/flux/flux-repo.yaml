@@ -28,7 +28,7 @@ metadata:
 spec:
   interval: 5m0s
   path: ./kube/flux
-  prune: false
+  prune: true
   wait: false
   sourceRef:
     kind: GitRepository
