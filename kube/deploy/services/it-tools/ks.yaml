@@ -7,7 +7,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/apps/it-tools/app
+  path: ./kube/deploy/services/it-tools/app
   interval: 1h
   prune: false
   dependsOn: []

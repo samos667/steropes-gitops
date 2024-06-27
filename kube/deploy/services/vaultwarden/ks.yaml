@@ -7,7 +7,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/apps/vaultwarden/db
+  path: ./kube/deploy/services/vaultwarden/db
   interval: 1h
   prune: false
   healthChecks:
@@ -38,7 +38,7 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/apps/vaultwarden/app
+  path: ./kube/deploy/services/vaultwarden/app
   interval: 1h
   prune: false
   dependsOn:
@@ -52,9 +52,6 @@ spec:
     labels: *l
   postBuild:
     substituteFrom:
-      - kind: Secret
-        name: vaultwarden-db-app-credentials
-        optional: false
       - kind: Secret
         name: vaultwarden-secrets
         optional: false

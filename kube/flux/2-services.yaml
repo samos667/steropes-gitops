@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: 2-deploy-apps
+  name: 2-deploy-services
   namespace: flux-system
   labels:
-    kustomization.flux.home.arpa/apps: "true"
+    kustomization.flux.home.arpa/services: "true"
     kustomization.flux.home.arpa/sops: "true"
 spec:
-  path: ./kube/deploy/apps/
+  path: ./kube/deploy/services/
   interval: 5m0s
   timeout: 10m0s
   prune: false
@@ -19,7 +19,7 @@ spec:
   dependsOn: []
   commonMetadata:
     labels:
-      kustomization.flux.home.arpa/infra: "true"
+      kustomization.flux.home.arpa/services: "true"
   postBuild:
     substituteFrom:
       - kind: ConfigMap
