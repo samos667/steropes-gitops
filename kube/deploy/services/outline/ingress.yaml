@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &n outline
+  namespace: *n
+spec:
+  routes:
+    - match: Host(`wiki.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: *n
+          port: 3000
+      middlewares:
+        - name: compress
+          namespace: ingress
+  tls:
+    domains:
+      - main: "wiki.${DOMAIN_PUBLIC}"

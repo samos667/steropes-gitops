@@ -438,6 +438,22 @@ spec:
                 - email
                 - groups
 
+            ### Outline ###
+            - client_id: ${OUTLINE_OICD_CLIENT_ID}
+              client_secret: ${OUTLINE_OICD_CLIENT_SECRET_HASH}
+              client_name: Outline
+              public: false
+              authorization_policy: one_factor
+              userinfo_signed_response_alg: none
+              token_endpoint_auth_method: client_secret_post
+              redirect_uris:
+                - https://wiki.${DOMAIN_PUBLIC}/auth/oidc.callback
+              scopes:
+                - offline_access
+                - openid
+                - profile
+                - email
+
     secret:
       disabled: false
       mountPath: /secrets
