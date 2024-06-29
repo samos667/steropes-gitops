@@ -1,0 +1,59 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n s-pdf
+  labels:
+    helm.flux.home.arpa/app-template: true
+
+spec:
+  values:
+    controllers:
+      s-pdf:
+        type: deployment
+        strategy: Recreate
+        replicas: 1
+
+        pod:
+          labels:
+            traefik.home.arpa/ingress: allow
+            egress.home.arpa/internet-https: allow
+
+        containers:
+          application:
+            image:
+              repository: docker.io/frooodle/s-pdf
+              tag: "0.26.1-fat@sha256:2b2af9209386a181285c1d51ba90485e5da900ee48375d667ecc187ae03119d5"
+
+            resources: # TODO refine
+              limits:
+                cpu: 1
+                memory: 1Gi
+              requests:
+                cpu: 1m
+                memory: 1Mi
+
+            env:
+              TZ: Europe/Paris
+              LANGS: fr_FR
+              SYSTEM_DEFAULTLOCALE: fr_FR
+              UI_APPNAME: Stirling-PDF
+              UI_HOMEDESCRIPTION: Stirling-PDF self hosted
+              UI_APPNAMENAVBAR: Stirling-PDF
+              INSTALL_BOOK_AND_ADVANCED_HTML_OPS: true
+
+    persistence:
+      configs:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        retain: true
+        globalMounts:
+          - path: /configs
+
+    service:
+      http:
+        controller: *n
+        ports:
+          http:
+            port: 8080

@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &n s-pdf
+  namespace: *n
+spec:
+  routes:
+    - match: Host(`pdf.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: *n
+          port: 8080
+      middlewares:
+        - name: compress
+          namespace: ingress
+  tls:
+    domains:
+      - main: "pdf.${DOMAIN_PUBLIC}"
