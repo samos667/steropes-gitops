@@ -1,0 +1,63 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n vikunja-db
+  namespace: &ns vikunja
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/services/vikunja/db
+  interval: 1h
+  prune: false
+  healthChecks:
+    - apiVersion: v1
+      kind: Pod
+      name: vikunja-db-1
+      namespace: *ns
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  targetNamespace: *ns
+  commonMetadata:
+    labels: *l
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: barman-secrets
+        optional: false
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n vikunja-app
+  namespace: &ns vikunja
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/services/vikunja/app
+  interval: 1h
+  prune: false
+  dependsOn:
+    - name: vikunja-db
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  targetNamespace: *ns
+  commonMetadata:
+    labels: *l
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: vikunja-db-app-credentials
+        optional: false
+      - kind: Secret
+        name: vikunja-secrets
+        optional: false
+      - kind: Secret
+        name: vikunja-oidc-secrets
+        optional: false

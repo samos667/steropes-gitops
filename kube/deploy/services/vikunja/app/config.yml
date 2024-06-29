@@ -1,0 +1,23 @@
+database:
+  type: postgres
+  host: vikunja-db-rw.vikunja.svc.cluster.local
+  database: &n vikunja
+  user: *n
+  password: ${password}
+
+service:
+  publicurl: https://do.${DOMAIN_PUBLIC}
+  JWTSecret: ${VIKUNJA_SERVICE_JWTSECRET}
+
+auth:
+  local:
+    enabled: false
+  openid:
+    enabled: true
+    redirecturl: https://do.${DOMAIN_PUBLIC}/auth/openid/
+    providers:
+      - name: Authelia
+        authurl: https://sso.${DOMAIN_PUBLIC}
+        clientid: ${VIKUNJA_OICD_CLIENT_ID}
+        clientsecret: ${VIKUNJA_OICD_CLIENT_SECRET}
+        scope: openid profile email

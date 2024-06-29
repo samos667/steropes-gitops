@@ -454,6 +454,21 @@ spec:
                 - profile
                 - email
 
+            ### Vikunja ###
+            - client_id: ${VIKUNJA_OICD_CLIENT_ID}
+              client_secret: ${VIKUNJA_OICD_CLIENT_SECRET_HASH}
+              client_name: Vikunja
+              public: false
+              authorization_policy: one_factor
+              userinfo_signed_response_alg: none
+              token_endpoint_auth_method: client_secret_basic
+              redirect_uris:
+                - https://do.${DOMAIN_PUBLIC}/auth/openid/authelia
+              scopes:
+                - openid
+                - profile
+                - email
+
     secret:
       disabled: false
       mountPath: /secrets

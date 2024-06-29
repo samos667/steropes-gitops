@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &n vikunja
+  namespace: *n
+spec:
+  routes:
+    - match: Host(`do.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: *n
+          port: 3456
+      middlewares:
+        - name: compress
+          namespace: ingress
+  tls:
+    domains:
+      - main: "do.${DOMAIN_PUBLIC}"
