@@ -469,6 +469,23 @@ spec:
                 - profile
                 - email
 
+            ### Memos ###
+            - client_id: ${MEMOS_OICD_CLIENT_ID}
+              client_secret: ${MEMOS_OICD_CLIENT_SECRET_HASH}
+              client_name: Memos
+              public: false
+              authorization_policy: one_factor
+              userinfo_signed_response_alg: none
+              token_endpoint_auth_method: client_secret_post
+              redirect_uris:
+                - https://memo.${DOMAIN_PUBLIC}/auth/callback
+              grant_types:
+                - authorization_code
+              scopes:
+                - openid
+                - profile
+                - email
+
     secret:
       disabled: false
       mountPath: /secrets
