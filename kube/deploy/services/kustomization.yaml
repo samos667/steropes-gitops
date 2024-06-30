@@ -7,3 +7,4 @@ resources:
   - ./outline/
   - ./s-pdf/
   - ./vikunja/
+  - ./viewtube/
