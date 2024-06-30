@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &n memos
+  namespace: *n
+spec:
+  routes:
+    - match: Host(`memo.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: *n
+          port: 5230
+      middlewares:
+        - name: compress
+          namespace: ingress
+  tls:
+    domains:
+      - main: "memo.${DOMAIN_PUBLIC}"

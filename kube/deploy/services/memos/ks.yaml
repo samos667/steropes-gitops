@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: memos-app
+  namespace: &n memos
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/services/memos/app
+  interval: 1h
+  prune: false
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  targetNamespace: *n
+  commonMetadata:
+    labels: *l
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: memos-secrets
+        optional: false
