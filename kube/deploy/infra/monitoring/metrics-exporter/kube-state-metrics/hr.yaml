@@ -1,0 +1,56 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n kube-state-metrics
+spec:
+  chart:
+    spec:
+      chart: *n
+      version: 5.21.0
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  values:
+    customLabels:
+      egress.home.arpa/apiserver: allow
+
+    prometheus:
+      monitor:
+        enabled: true
+        additionalLabels:
+          instance: vmsingle
+        http:
+          honorLabels: true
+          metricRelabelings: []
+          relabelings: []
+
+      collectors:
+        - certificatesigningrequests
+        - configmaps
+        - cronjobs
+        - daemonsets
+        - deployments
+        - endpoints
+        - horizontalpodautoscalers
+        - ingresses
+        - jobs
+        - leases
+        - limitranges
+        - mutatingwebhookconfigurations
+        - namespaces
+        - networkpolicies
+        - nodes
+        - persistentvolumeclaims
+        - persistentvolumes
+        - poddisruptionbudgets
+        - pods
+        - replicasets
+        - replicationcontrollers
+        - resourcequotas
+        - secrets
+        - services
+        - statefulsets
+        - storageclasses
+        - validatingwebhookconfigurations
+        - volumeattachments

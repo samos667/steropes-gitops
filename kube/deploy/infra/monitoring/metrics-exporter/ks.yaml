@@ -2,37 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n metrics-db
+  name: &n kube-state-metrics
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/infra/monitoring/metrics/db/
-  interval: 1h
-  prune: false
-  wait: false
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: vmsingle-main
-      namespace: &tns monitoring
-  dependsOn: []
-  sourceRef:
-    kind: GitRepository
-    name: &fns flux-system
-    namespace: *fns
-  commonMetadata:
-    labels: *l
-  targetNamespace: *tns
-
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-kind: Kustomization
-metadata:
-  name: &n metrics-exporters
-  labels: &l
-    kustomization.flux.home.arpa/name: *n
-spec:
-  path: ./kube/deploy/infra/monitoring/metrics/exporters/
+  path: ./kube/deploy/infra/monitoring/metrics-exporter/kube-state-metrics/
   interval: 1h
   prune: false
   wait: true
@@ -49,16 +23,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n metrics-scrapes
+  name: &n node-exporte
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/infra/monitoring/metrics/scrapes/
+  path: ./kube/deploy/infra/monitoring/metrics-exporter/node-exporter/
   interval: 1h
   prune: false
   wait: true
-  dependsOn:
-    - name: metrics-db
+  dependsOn: []
   sourceRef:
     kind: GitRepository
     name: &fns flux-system

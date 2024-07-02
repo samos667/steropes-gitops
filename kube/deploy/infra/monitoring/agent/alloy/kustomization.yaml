@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./netpol.yaml
+  - ./repo.yaml
+  - ./hr.yaml
+  - ./serviceMonitor.yaml
+configMapGenerator:
+  - name: grafana-alloy-config
+    files:
+      - config.alloy
+generatorOptions:
+  disableNameSuffixHash: true

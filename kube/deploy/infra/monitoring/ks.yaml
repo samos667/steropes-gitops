@@ -2,14 +2,58 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: 1-deploy-infra-monitoring-metrics
+  name: 1-deploy-infra-monitoring-agent
   namespace: &fns flux-system
   labels:
-    kustomization.flux.home.arpa/name: metrics
+    kustomization.flux.home.arpa/name: monitoring-agent
     kustomization.flux.home.arpa/sops: "true"
     kustomization.flux.home.arpa/substitution: "true"
 spec:
-  path: ./kube/deploy/infra/monitoring/metrics
+  path: ./kube/deploy/infra/monitoring/agent
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: *fns
+    namespace: *fns
+  targetNamespace: monitoring
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: 1-deploy-infra-monitoring-metrics-exporter
+  namespace: &fns flux-system
+  labels:
+    kustomization.flux.home.arpa/name: monitoring-metrics-exporter
+    kustomization.flux.home.arpa/sops: "true"
+    kustomization.flux.home.arpa/substitution: "true"
+spec:
+  path: ./kube/deploy/infra/monitoring/metrics-exporter
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: *fns
+    namespace: *fns
+  targetNamespace: monitoring
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: 1-deploy-infra-monitoring-db
+  namespace: &fns flux-system
+  labels:
+    kustomization.flux.home.arpa/name: monitoring-db
+    kustomization.flux.home.arpa/sops: "true"
+    kustomization.flux.home.arpa/substitution: "true"
+spec:
+  path: ./kube/deploy/infra/monitoring/db
   interval: 1h
   prune: false
   wait: true
@@ -27,7 +71,7 @@ metadata:
   name: 1-deploy-infra-monitoring-alerting
   namespace: &fns flux-system
   labels:
-    kustomization.flux.home.arpa/name: alerting
+    kustomization.flux.home.arpa/name: monitoring-alerting
     kustomization.flux.home.arpa/sops: "true"
     kustomization.flux.home.arpa/substitution: "true"
 spec:
@@ -36,7 +80,7 @@ spec:
   prune: false
   wait: true
   dependsOn:
-    - name: 1-deploy-infra-monitoring-metrics
+    - name: 1-deploy-infra-monitoring-db
   sourceRef:
     kind: GitRepository
     name: *fns
@@ -50,7 +94,7 @@ metadata:
   name: 1-deploy-infra-monitoring-grafana
   namespace: &fns flux-system
   labels:
-    kustomization.flux.home.arpa/name: grafana
+    kustomization.flux.home.arpa/name: monitoring-grafana
     kustomization.flux.home.arpa/sops: "true"
     kustomization.flux.home.arpa/substitution: "true"
 spec:
@@ -59,11 +103,10 @@ spec:
   prune: false
   wait: true
   dependsOn:
-    - name: 1-deploy-infra-monitoring-metrics
+    - name: 1-deploy-infra-monitoring-db
     - name: 1-deploy-infra-authentification-authelia
   sourceRef:
     kind: GitRepository
     name: *fns
     namespace: *fns
   targetNamespace: monitoring
-#TODO Setup logging

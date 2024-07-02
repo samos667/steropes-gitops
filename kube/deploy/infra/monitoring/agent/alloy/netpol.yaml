@@ -2,11 +2,11 @@
 apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
-  name: allow-egress-vmagent-all
+  name: allow-egress-alloy-all
 spec:
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/name: vmagent
+      app.kubernetes.io/instance: alloy
   egress:
     - toEndpoints:
         - {}
@@ -17,10 +17,10 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
-  name: allow-ingress-vmagent-all
+  name: allow-ingress-alloy-all
 spec:
   endpointSelector: {}
   ingress:
     - fromEndpoints:
         - matchLabels:
-            app.kubernetes.io/name: vmagent
+            app.kubernetes.io/instance: alloy

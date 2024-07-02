@@ -1,0 +1,107 @@
+// Prometheus operator
+
+prometheus.operator.podmonitors "vmsingle" {
+    forward_to = [prometheus.remote_write.vmsingle.receiver]
+    selector {
+        match_labels = {instance = "vmsingle"}
+    }
+    scrape {
+        default_scrape_interval = "1m"
+    }
+}
+
+prometheus.operator.servicemonitors "vmsingle" {
+    forward_to = [prometheus.remote_write.vmsingle.receiver]
+    selector {
+        match_labels = {instance = "vmsingle"}
+    }
+
+    scrape {
+        default_scrape_interval = "1m"
+    }
+}
+
+
+// Prometheus scrape
+
+prometheus.scrape "kubelet" {
+  targets = discovery.kubernetes.nodes.targets
+  scheme = "https"
+  tls_config {
+      server_name = "kubernetes"
+      ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+      insecure_skip_verify = true
+  }
+  bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  metrics_path = "/metrics"
+  forward_to = [prometheus.remote_write.vmsingle.receiver]
+}
+
+prometheus.scrape "probes" {
+  targets = discovery.kubernetes.nodes.targets
+  scheme = "https"
+  tls_config {
+      server_name = "kubernetes"
+      ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+      insecure_skip_verify = true
+  }
+  bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  metrics_path = "/metrics/probes"
+  forward_to = [prometheus.remote_write.vmsingle.receiver]
+}
+
+prometheus.scrape "cadvisor" {
+  targets = discovery.kubernetes.nodes.targets
+  scheme = "https"
+  tls_config {
+      server_name = "kubernetes"
+      ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+      insecure_skip_verify = true
+  }
+  bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  metrics_path = "/metrics/cadvisor"
+  forward_to = [prometheus.remote_write.vmsingle.receiver]
+}
+
+// Prometheus database
+
+prometheus.remote_write "vmsingle" {
+   endpoint {
+      name = "hosted-prometheus"
+      url  = "http://vmsingle-main:8429/api/v1/write"
+   }
+}
+
+// Targets discovery
+
+discovery.kubernetes "nodes" {
+  role = "node"
+}
+
+discovery.kubernetes "services" {
+  role = "service"
+}
+
+discovery.kubernetes "endpoints" {
+  role = "endpoints"
+}
+
+discovery.kubernetes "endpointslices" {
+  role = "endpointslice"
+}
+
+discovery.kubernetes "ingresses" {
+  role = "ingress"
+}
+
+discovery.kubernetes "pods" {
+  role = "pod"
+}
+
+
+// alloy general config
+
+logging {
+  level  = "info"
+  format = "logfmt"
+}

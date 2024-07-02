@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    instance: vmsingle
+  name: vmsingle
+spec:
+  endpoints:
+    - port: http
+      scheme: http
+      scrapeTimeout: 10s
+  jobLabel: app.kubernetes.io/instance
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vmsingle
+      managed-by: vm-operator
