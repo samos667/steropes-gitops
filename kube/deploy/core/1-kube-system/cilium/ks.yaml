@@ -18,11 +18,6 @@ spec:
   commonMetadata:
     labels: *l
   targetNamespace: kube-system
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cilium-secrets
-        optional: false
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json

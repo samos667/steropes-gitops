@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./repo.yaml
   - ./hr.yaml
+  - ./serviceMonitor.yaml

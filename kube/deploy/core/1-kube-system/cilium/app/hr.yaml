@@ -13,11 +13,19 @@ spec:
   chart:
     spec:
       chart: *n
-      version: 1.15.6
+      version: 1.16.0-rc.1
+
       sourceRef:
         kind: HelmRepository
         name: *n
   values:
+    prometheus: &prome
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        labels:
+          instance: vmsingle
+
     k8sServiceHost: localhost
     k8sServicePort: 7445
 
@@ -27,7 +35,7 @@ spec:
     ipam:
       mode: cluster-pool
       operator:
-        clusterPoolIPv4PodCIDRList: ${POD_NETWORK}/16
+        clusterPoolIPv4PodCIDRList: 10.66.0.0/16
         clusterPoolIPv4MaskSize: 22
 
     bgpControlPlane:
@@ -35,32 +43,29 @@ spec:
 
     envoy:
       enabled: true
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
+      prometheus: *prome
 
     encryption:
       enabled: true
       type: wireguard
       nodeEncryption: true
 
-    prometheus:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-
     kubeProxyReplacement: true
     localRedirectPolicy: true
+
+    operator:
+      prometheus: *prome
+      replicas: 2
 
     hubble:
       relay:
         enabled: true
-        serviceMonitor:
-          enabled: true
+        prometheus: *prome
+
       ui:
         enabled: true
         rollOutPods: true
+
       metrics:
         enableOpenMetrics: true
         enabled:
@@ -71,13 +76,6 @@ spec:
           - port-distribution
           - icmp
           - http
-
-    operator:
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
-      replicas: 1
 
     resources: # for agent
       limits:
@@ -113,3 +111,6 @@ spec:
       autoMount:
         enabled: false
       hostRoot: /sys/fs/cgroup
+
+    logOptions:
+      format: json
