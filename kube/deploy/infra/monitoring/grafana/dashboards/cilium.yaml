@@ -4,7 +4,6 @@ kind: GrafanaDashboard
 metadata:
   name: cilium-agent
 spec:
-  resyncPeriod: 30s
   instanceSelector:
     matchLabels:
       instance: "grafana-main"
@@ -16,7 +15,6 @@ spec:
 # metadata:
 #   name: cilium-operator
 # spec:
-#   resyncPeriod: 30s
 #   instanceSelector:
 #     matchLabels:
 #       instance: "grafana-main"
@@ -28,7 +26,6 @@ spec:
 # metadata:
 #   name: cilium-hubble
 # spec:
-#   resyncPeriod: 30s
 #   instanceSelector:
 #     matchLabels:
 #       instance: "grafana-main"

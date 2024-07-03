@@ -1,0 +1,39 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: logs
+spec:
+  instanceSelector:
+    matchLabels:
+      instance: grafana-main
+  permissions: |
+    {
+      "items": [
+        {
+          "role": "Admin",
+          "permission": 4
+        },
+        {
+          "role": "Editor",
+          "permission": 2
+        },
+        {
+          "role": "Viewer",
+          "permission": 1
+        }
+      ]
+    }
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: vmlogs
+spec:
+  folder: logs
+  instanceSelector:
+    matchLabels:
+      instance: grafana-main
+  gzipJson: |-
+    H4sIAAAAAAAAA+1XbWvbMBD+nl9hxBgbJKVOUsr2LbRjFFo2aNcxShkX++yIypInyU3TLP99smzLcuqOlq0M1n6Jo7vzvTx3j/CtB0FAgHOhQVPBFXkfrI3ICBlV2pwu7CmopVYzLyjTR9wow2ErjUGDEoWM0PmoNXqVlzKSSkiAAxn6yoLGpW40Cj5W6mA0Is5g4wVADnNWOtKyQE++oHGPlEaCHwgmZOldpnN4szsMxmFofvb2hkH41kuDcMhshrMWiOB1MGMotfLtmkpiUIu5ABk3mW7s83JQZ0wwprrONgGmbGIkoSoC9g1BnmqQ+kRwvTAGu1ZpwMkXZ0IwTXMntNiEU/ufUX5Vtufi0h5z4MiUa1ADOIkEY5ArjP3QVpNKGn8WqtMdstjq4tKcx1NPcNMkU59X5bmp2vm2iY7dsU3u0sk01RYPcizSFlQHqRTLCszaqSvonrlyL17TSAtJgRm3I8/Yy7mesVfrVr0hd2q4H5/JYwEK+wFyQBORd9lWVYpxkZ9qCRrT0gvhRTZH2ZnAigQGwkPUQC3GnS6X4EvUmiYrY3SCSkHaww61EMsDkWWCH8O8alWPhdNthyiVZzTrcyyk/iRjtLQ7RBUhjylP/RKWZtLv5HYHsJwVKeXnpnwDVOks3N2Z7ky8wQGZom4Z4A9NBed9F9Kjhsea/26AOmlXPbrJbfkopbl+OqofBcrVWTPywNNuKCIxObKhZt4dWP/rodKHMkLAuoQyblUOErneao+r2r7w/5Bt2s+26ZOwbWveX8hWo/mvybYEybu1/326fa1iPHfCjff7Cbf3QrhnRLjv2kBkmp4FPwPKE/GkzDsyAf6IdoPaLVHRAjNokZ+8s2INqfdxrTHLmdkDTGsfsA/VC4hPE8ojVsQ4Y6xnvrLCfOT3yJstpJ/mLafaj+oG6AfeFNb2HFhhw/ga0w6JansZkJjizbapuqL5F8lOVzzqqaHdkFwCzfDbZ7si6YphNbqJFJm9E8RyNJ4u6oBEi1pIOu/lNLqyJFy3slvBbeS52SQUVt9d7QCdn7i1o5n3SRjDJByrGJLxZHobV8prNxn79rxEvLLrmsVhsBn8AvsMkmQyDwAA

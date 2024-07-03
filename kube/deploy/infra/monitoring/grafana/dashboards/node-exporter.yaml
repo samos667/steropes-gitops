@@ -7,5 +7,5 @@ spec:
   resyncPeriod: 30s
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://grafana.com/api/dashboards/1860/revisions/36/download"
+      instance: grafana-main
+  url: https://grafana.com/api/dashboards/1860/revisions/36/download

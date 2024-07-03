@@ -1,23 +1,37 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: victoria-metrics
+spec:
+  instanceSelector:
+    matchLabels:
+      instance: grafana-main
+  permissions: |
+    {
+      "items": [
+        {
+          "role": "Admin",
+          "permission": 4
+        },
+        {
+          "role": "Editor",
+          "permission": 2
+        },
+        {
+          "role": "Viewer",
+          "permission": 1
+        }
+      ]
+    }
+
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   name: victoriametrics-single
 spec:
-  resyncPeriod: 30s
+  folder: victoria-metrics
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://grafana.com/api/dashboards/10229/revisions/35/download"
-
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDashboard
-metadata:
-  name: victoriametrics-vmagent
-spec:
-  resyncPeriod: 30s
-  instanceSelector:
-    matchLabels:
-      instance: "grafana-main"
-  url: "https://grafana.com/api/dashboards/12683/revisions/17/download"
+      instance: grafana-main
+  url: https://grafana.com/api/dashboards/10229/revisions/35/download

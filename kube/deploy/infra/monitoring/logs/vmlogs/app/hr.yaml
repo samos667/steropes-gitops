@@ -1,0 +1,84 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n vmlogs
+spec:
+  chart:
+    spec:
+      chart: victoria-logs-single
+      version: 0.5.2
+      sourceRef:
+        kind: HelmRepository
+        name: victoria-metrics
+  values:
+    global:
+      victoriaLogs:
+        server:
+          fullnameOverride: *n
+    server:
+      podLabels:
+        traefik.home.arpa/ingress: allow
+
+      persistentVolume:
+        enabled: true
+
+      serviceMonitor:
+        enabled: true
+        extraLabels:
+          instance: vmsingle
+
+    fluent-bit:
+      enabled: true
+
+      daemonSetVolumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
+
+      daemonSetVolumeMounts:
+        - name: varlog
+          mountPath: /var/log
+
+      config:
+        outputs: |
+          [OUTPUT]
+              Name http
+              Match kube.*
+              Host {{ include "victoria-logs.server.fullname" . }}
+              port 9428
+              compress gzip
+              uri /insert/jsonline?_stream_fields=stream,kubernetes_pod_name,kubernetes_container_name,kubernetes_namespace_name&_msg_field=log&_time_field=date
+              format json_lines
+              json_date_format iso8601
+              header AccountID 0
+              header ProjectID 0
+        filters: |
+          [FILTER]
+              Name kubernetes
+              Match kube.*
+              Merge_Log On
+              Keep_Log On
+              K8S-Logging.Parser On
+              K8S-Logging.Exclude On
+          [FILTER]
+              Name                nest
+              Match               *
+              Wildcard            pod_name
+              Operation lift
+              Nested_under kubernetes
+              Add_prefix   kubernetes_
+
+    extraObjects:
+      - apiVersion: cilium.io/v2
+        kind: CiliumNetworkPolicy
+        metadata:
+          name: fluent-bit
+          namespace: monitoring
+        spec:
+          endpointSelector:
+            matchLabels:
+              app.kubernetes.io/name: fluent-bit
+          egress:
+            - toEntities:
+                - kube-apiserver
