@@ -25,8 +25,6 @@ spec:
 
       serviceMonitor:
         enabled: true
-        extraLabels:
-          instance: vmsingle
 
     fluent-bit:
       enabled: true

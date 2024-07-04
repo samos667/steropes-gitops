@@ -23,8 +23,6 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-        labels:
-          instance: vmsingle
 
     k8sServiceHost: localhost
     k8sServicePort: 7445

@@ -15,5 +15,3 @@ spec:
     prometheus:
       monitor:
         enabled: true
-        additionalLabels:
-          instance: vmsingle

@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n alloy
+  name: &n vmagent
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/infra/monitoring/agent/alloy/
+  path: ./kube/deploy/infra/monitoring/agent/vmagent/
   interval: 1h
   prune: false
   wait: true
