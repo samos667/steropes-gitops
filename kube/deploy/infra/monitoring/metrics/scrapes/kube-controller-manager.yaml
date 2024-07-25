@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: &n kube-controller-manager
+  namespace: kube-system
+  labels: &l
+    tier: control-plane
+    k8s-app: *n
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector: *l
+
+  ports:
+    - name: http-metrics
+      protocol: TCP
+      port: &p 10257
+      targetPort: *p
+
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: &n kube-controller-manager
+  namespace: kube-system
+spec:
+  jobLabel: jobLabel
+
+  selector:
+    matchLabels:
+      tier: control-plane
+      k8s-app: *n
+
+  endpoints:
+    - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      port: http-metrics
+      scheme: https
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        serverName: kubernetes

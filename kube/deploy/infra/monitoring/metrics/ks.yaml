@@ -6,9 +6,9 @@ metadata:
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/infra/monitoring/metrics-exporter/kube-state-metrics/
+  path: ./kube/deploy/infra/monitoring/metrics/kube-state-metrics/
   interval: 1h
-  prune: false
+  prune: true
   wait: true
   dependsOn: []
   sourceRef:
@@ -23,13 +23,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
-  name: &n node-exporte
+  name: &n node-exporter
   labels: &l
     kustomization.flux.home.arpa/name: *n
 spec:
-  path: ./kube/deploy/infra/monitoring/metrics-exporter/node-exporter/
+  path: ./kube/deploy/infra/monitoring/metrics/node-exporter/
   interval: 1h
-  prune: false
+  prune: true
   wait: true
   dependsOn: []
   sourceRef:
@@ -39,3 +39,23 @@ spec:
   commonMetadata:
     labels: *l
   targetNamespace: monitoring
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n scrapes
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/infra/monitoring/metrics/scrapes/
+  interval: 1h
+  prune: true
+  wait: true
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  commonMetadata:
+    labels: *l
