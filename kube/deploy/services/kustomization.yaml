@@ -7,5 +7,6 @@ resources:
   - ./outline/
   - ./s-pdf/
   - ./vikunja/
-  - ./viewtube/
   - ./memos/
+  # - ./viewtube/
+  - ./invidious/

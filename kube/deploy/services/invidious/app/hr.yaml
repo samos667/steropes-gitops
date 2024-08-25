@@ -1,0 +1,54 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n invidious
+  labels:
+    helm.flux.home.arpa/app-template: true
+spec:
+  values:
+    controllers:
+      invidious:
+        type: deployment
+        replicas: 1
+        strategy: Recreate
+        pod:
+          labels:
+            traefik.home.arpa/ingress: allow
+            egress.home.arpa/internet-https: allow
+        containers:
+          application:
+            image:
+              repository: quay.io/invidious/invidious
+              tag: 2024.08.24-ccecc6d@sha256:e7f2e892bd1896436ff987e21750ec2942bdd7f79c631c16ada4ced3f5d7ed61  # https://quay.io/repository/invidious/invidious
+            resources:  # TODO refine
+              limits:
+                cpu: 2
+                memory: 2Gi
+              requests:
+                cpu: 1m
+                memory: 1Mi
+            env:
+              TZ: Europe/Paris
+              INVIDIOUS_CONFIG_FILE: &configDir /opt/invidious/config.yaml
+            probes:  # TODO patches
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+    service:
+      http:
+        controller: *n
+        ports:
+          http:
+            port: 8080
+    persistence:
+      config:
+        type: configMap
+        name: invidious-configuration
+        globalMounts:
+          - path: *configDir
+            subPath: config.yaml
+            readOnly: true

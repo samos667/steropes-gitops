@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &n invidious
+  namespace: *n
+spec:
+  routes:
+    - match: Host(`yt.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: *n
+          port: 8080
+      middlewares:
+        - name: compress
+          namespace: ingress
+  tls:
+    domains:
+      - main: yt.${DOMAIN_PUBLIC}

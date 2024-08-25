@@ -1,0 +1,24 @@
+---
+# https://github.com/iv-org/invidious/blob/master/config/config.example.yml
+check_tables: true
+db:
+  user: ${INVIDIOUS_DB_USER}
+  password: ${INVIDIOUS_DB_PASSWORD}
+  host: invidious-db-rw.invidious.svc.cluster.local
+  port: 5432
+  dbname: invidious
+external_port: 443
+https_only: true
+domain: yt.${DOMAIN_PUBLIC}
+statistics_enabled: true
+hmac_key: ${INVIDIOUS_HMAC_KEY}
+port: 8080
+captcha_enabled: false
+# po_token: ${INVIDIOUS_PO_TOKEN}
+# visitor_data: ${INVIDIOUS_VISITOR_DATA}
+admins: ['${INVIDIOUS_ADMIN}']
+default_user_preferences:
+  region: FR
+  locale: fr-FR
+  captions: [French, English, English (auto-generated)]
+  default_home: Trending

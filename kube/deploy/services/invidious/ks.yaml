@@ -1,0 +1,47 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n invidious-db
+  namespace: &ns invidious
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/services/invidious/db
+  interval: 1h
+  prune: false
+  wait: true
+  dependsOn: []
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  targetNamespace: *ns
+  commonMetadata:
+    labels: *l
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization
+metadata:
+  name: &n invidious-app
+  namespace: &ns invidious
+  labels: &l
+    kustomization.flux.home.arpa/name: *n
+spec:
+  path: ./kube/deploy/services/invidious/app
+  interval: 1h
+  prune: false
+  dependsOn:
+    - name: invidious-db
+  sourceRef:
+    kind: GitRepository
+    name: &fns flux-system
+    namespace: *fns
+  targetNamespace: *ns
+  commonMetadata:
+    labels: *l
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: invidious-secrets
+        optional: false
