@@ -7,8 +7,8 @@ spec:
   interval: 1h
   url: https://github.com/kyverno/kyverno.git
   ref:
-    tag: "v1.12.4"
-  ignore: |
+    tag: v1.12.4
+  ignore: |-
     # exclude all
     /*
     # include crd directory

@@ -1,3 +1,4 @@
+---
 context: ENC[AES256_GCM,data:G1vHxBaaR+c=,iv:hNsdi0mo5FkT0NxC+nDIteVlzn42gAtHpvbqR7RfoBo=,tag:nAhg2Mx6vm4eW62gIGGViw==,type:str]
 contexts:
   steropes:
@@ -27,7 +28,7 @@ sops:
         TjF6VTVYV0FuZmtjZjh1cVFBNVZSQzAKxX+0RvnMh1OdaABp/DGgxBh0qrkWMq07
         rXo8TS4nQ65l30Oj4Rv26dujwSa1cbUfoAA7X10PnD+/9NC/3aT1Lg==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2024-06-22T15:20:50Z"
+  lastmodified: '2024-06-22T15:20:50Z'
   mac: ENC[AES256_GCM,data:0Zn+FIiuG9+FtYv1xMBhkDpiZw+9utk9Amo+n354nVI5bGRLWgEcPbnMoUNrTjUnS2aoAe8kIGUHT+2pHDFtN7iljA2hU00dY/hOt+6GtLmzp9PWjMUeIPzCPCP+UfiPJ0pIQvnOxm51HlJXFJ+qT9mkXIXeDx7/elKtB9t1Tpo=,iv:tNUykHclAv2nBmD/xfs86ujyAlLsgkbNEcxw6/b7Aj4=,tag:zNO7665HHtzCT8fSTb49vA==,type:str]
   pgp: []
   unencrypted_suffix: _unencrypted

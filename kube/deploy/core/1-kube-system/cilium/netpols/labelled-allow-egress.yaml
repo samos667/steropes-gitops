@@ -9,14 +9,11 @@ spec:
     matchLabels:
       egress.home.arpa/apiserver: allow
   egress:
-    - toEntities:
-        - kube-apiserver
-    - toEntities:
-        - host
+    - toEntities: [kube-apiserver]
+    - toEntities: [host]
       toPorts:
         - ports:
-            - port: "6443"
-
+            - port: '6443'
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -28,9 +25,7 @@ spec:
     matchLabels:
       egress.home.arpa/host: allow
   egress:
-    - toEntities:
-        - host
-
+    - toEntities: [host]
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -42,9 +37,7 @@ spec:
     matchLabels:
       egress.home.arpa/world: allow
   egress:
-    - toEntities:
-        - world
-
+    - toEntities: [world]
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -58,11 +51,7 @@ spec:
   egress:
     - toCIDRSet:
         - cidr: 0.0.0.0/0
-          except:
-            - 10.0.0.0/8
-            - ${LAN_NETWORK}/16
-            - ${ISP_NETWORK}/24
-
+          except: [10.0.0.0/8, '${LAN_NETWORK}/16', '${ISP_NETWORK}/24']
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -76,15 +65,11 @@ spec:
   egress:
     - toCIDRSet:
         - cidr: 0.0.0.0/0
-          except:
-            - 10.0.0.0/8
-            - ${LAN_NETWORK}/16
-            - ${ISP_NETWORK}/24
+          except: [10.0.0.0/8, '${LAN_NETWORK}/16', '${ISP_NETWORK}/24']
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: ANY
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -96,15 +81,13 @@ spec:
     matchLabels:
       egress.home.arpa/world-https: allow
   egress:
-    - toEntities:
-        - world
+    - toEntities: [world]
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: TCP
-            - port: "443"
+            - port: '443'
               protocol: UDP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -116,13 +99,11 @@ spec:
     matchLabels:
       egress.home.arpa/dlna: allow
   egress:
-    - toCIDR:
-        - 239.255.255.250/32
+    - toCIDR: [239.255.255.250/32]
       toPorts:
         - ports:
-            - port: "1900"
+            - port: '1900'
               protocol: UDP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -135,19 +116,18 @@ spec:
       egress.home.arpa/github: allow
   egress:
     - toFQDNs:
-        - matchPattern: "github.com"
-        - matchPattern: "*.github.com"
-        - matchPattern: "*.github.dev"
-        - matchPattern: "*.github.io"
-        - matchPattern: "*.ghcr.io"
-        - matchPattern: "*.githubusercontent.com"
+        - matchPattern: github.com
+        - matchPattern: '*.github.com'
+        - matchPattern: '*.github.dev'
+        - matchPattern: '*.github.io'
+        - matchPattern: '*.ghcr.io'
+        - matchPattern: '*.githubusercontent.com'
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: TCP
-            - port: "443"
+            - port: '443'
               protocol: UDP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -160,20 +140,19 @@ spec:
       egress.home.arpa/discord: allow
   egress:
     - toFQDNs:
-        - matchPattern: "discord.com"
-        - matchPattern: "*.discord.com"
-        - matchPattern: "discordapp.com"
-        - matchPattern: "*.discordapp.com"
-        - matchPattern: "discord.gg"
-        - matchPattern: "*.discord.gg"
-        - matchPattern: "gateway.discord.gg"
+        - matchPattern: discord.com
+        - matchPattern: '*.discord.com'
+        - matchPattern: discordapp.com
+        - matchPattern: '*.discordapp.com'
+        - matchPattern: discord.gg
+        - matchPattern: '*.discord.gg'
+        - matchPattern: gateway.discord.gg
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: TCP
-            - port: "443"
+            - port: '443'
               protocol: UDP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -186,22 +165,21 @@ spec:
       egress.home.arpa/youtube: allow
   egress:
     - toFQDNs:
-        - matchPattern: "ytimg.com"
-        - matchPattern: "*.ytimg.com"
-        - matchPattern: "googlevideo.com"
-        - matchPattern: "*.googlevideo.com"
-        - matchPattern: "youtube.com"
-        - matchPattern: "*.youtube.com"
-        - matchPattern: "ggpht.com"
-        - matchPattern: "*.ggpht.com"
-        - matchPattern: "returnyoutubedislikeapi.com"
+        - matchPattern: ytimg.com
+        - matchPattern: '*.ytimg.com'
+        - matchPattern: googlevideo.com
+        - matchPattern: '*.googlevideo.com'
+        - matchPattern: youtube.com
+        - matchPattern: '*.youtube.com'
+        - matchPattern: ggpht.com
+        - matchPattern: '*.ggpht.com'
+        - matchPattern: returnyoutubedislikeapi.com
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: TCP
-            - port: "443"
+            - port: '443'
               protocol: UDP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -214,12 +192,11 @@ spec:
       egress.home.arpa/gravatar: allow
   egress:
     - toFQDNs:
-        - matchPattern: "www.gravatar.com"
+        - matchPattern: www.gravatar.com
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: TCP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -235,9 +212,8 @@ spec:
         - cidr: ${ISP_ROUTER_IP}/32
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: TCP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -253,9 +229,8 @@ spec:
         - cidr: ${HOMELAB_PVE_IP}/32
       toPorts:
         - ports:
-            - port: "8006"
+            - port: '8006'
               protocol: TCP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -271,9 +246,8 @@ spec:
         - cidr: ${HOMELAB_TRUENAS_IP}/32
       toPorts:
         - ports:
-            - port: "443"
+            - port: '443'
               protocol: TCP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -289,7 +263,7 @@ spec:
         - cidr: ${HOMELAB_TRUENAS_IP}/32
       toPorts:
         - ports:
-            - port: "22"
+            - port: '22'
               protocol: TCP
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
@@ -306,9 +280,8 @@ spec:
         - cidr: ${HOMELAB_TRUENAS_IP}/32
       toPorts:
         - ports:
-            - port: "3260"
+            - port: '3260'
               protocol: TCP
-
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 apiVersion: cilium.io/v2
@@ -324,7 +297,7 @@ spec:
         - cidr: ${HOMELAB_GW_IP}/32
       toPorts:
         - ports:
-            - port: "123"
+            - port: '123'
               protocol: UDP
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
@@ -341,5 +314,5 @@ spec:
         - matchName: smtp.google.com
       toPorts:
         - ports:
-            - port: "587"
+            - port: '587'
               protocol: TCP

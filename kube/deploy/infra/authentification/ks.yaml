@@ -1,13 +1,13 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-authentification-lldap
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns authelia
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/authentification/lldap
   interval: 1h
@@ -19,17 +19,16 @@ spec:
     name: *fns
     namespace: *fns
   targetNamespace: *tns
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-authentification-authelia
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns authelia
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/authentification/authelia
   interval: 1h

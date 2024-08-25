@@ -14,7 +14,6 @@ spec:
     spec:
       chart: *n
       version: 1.16.0-rc.1
-
       sourceRef:
         kind: HelmRepository
         name: *n
@@ -23,47 +22,36 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-
     k8sServiceHost: localhost
     k8sServicePort: 7445
-
     bpf:
       masquerade: true
-
     ipam:
       mode: cluster-pool
       operator:
         clusterPoolIPv4PodCIDRList: 10.66.0.0/16
         clusterPoolIPv4MaskSize: 22
-
     bgpControlPlane:
       enabled: true
-
     envoy:
       enabled: true
       prometheus: *prome
-
     encryption:
       enabled: true
       type: wireguard
       nodeEncryption: true
-
     kubeProxyReplacement: true
     localRedirectPolicy: true
-
     operator:
       prometheus: *prome
       replicas: 2
-
     hubble:
       relay:
         enabled: true
         prometheus: *prome
-
       ui:
         enabled: true
         rollOutPods: true
-
       metrics:
         enableOpenMetrics: true
         enabled:
@@ -74,19 +62,16 @@ spec:
           - port-distribution
           - icmp
           - http
-
-    resources: # for agent
+    resources:  # for agent
       limits:
         memory: 1Gi
-
     socketLB:
       # -- Disable socket lb for non-root ns. This is used to enable Istio routing rules.
       hostNamespaceOnly: true
-
     cni:
       exclusive: false
 
-    ### required for Talos ###
+    ### required for Talos  ###
     securityContext:
       capabilities:
         ciliumAgent:
@@ -101,14 +86,10 @@ spec:
           - FOWNER
           - SETGID
           - SETUID
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE
+        cleanCiliumState: [NET_ADMIN, SYS_ADMIN, SYS_RESOURCE]
     cgroup:
       autoMount:
         enabled: false
       hostRoot: /sys/fs/cgroup
-
     logOptions:
       format: json

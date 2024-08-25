@@ -6,15 +6,12 @@ metadata:
   namespace: kube-system
 spec:
   jobLabel: component
-
   namespaceSelector:
-    matchNames:
-      - default
+    matchNames: [default]
   selector:
     matchLabels:
       component: apiserver
       provider: kubernetes
-
   endpoints:
     - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
       port: https

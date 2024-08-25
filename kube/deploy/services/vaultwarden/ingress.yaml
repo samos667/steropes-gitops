@@ -18,4 +18,4 @@ spec:
           namespace: authelia
   tls:
     domains:
-      - main: "vw.${DOMAIN_PUBLIC}"
+      - main: vw.${DOMAIN_PUBLIC}

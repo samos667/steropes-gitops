@@ -1,5 +1,5 @@
 ---
-apiVersion: grafana.integreatly.org/v1beta1 # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/705118c9a8ad70cc26a0e9d7f2a7ac0a/raw/ee840abc5f38e141092b3d8b2d4b06c448d13f1a/grafana.json
+apiVersion: grafana.integreatly.org/v1beta1  # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/705118c9a8ad70cc26a0e9d7f2a7ac0a/raw/ee840abc5f38e141092b3d8b2d4b06c448d13f1a/grafana.json
 kind: Grafana
 metadata:
   name: grafana-main
@@ -16,16 +16,16 @@ spec:
                 limits:
                   memory: 4Gi
           initContainers:
-            - name: "load-vm-ds-plugin"
-              image: "curlimages/curl:8.8.0"
-              command: ["/bin/sh"]
-              workingDir: "/var/lib/grafana"
+            - name: load-vm-ds-plugin
+              image: curlimages/curl:8.8.0
+              command: [/bin/sh]
+              workingDir: /var/lib/grafana
               securityContext:
                 runAsUser: 10001
                 runAsNonRoot: true
                 runAsGroup: 10001
               args:
-                - "-c"
+                - -c
                 - |
                   set -ex
                   mkdir -p /var/lib/grafana/plugins/
@@ -36,39 +36,35 @@ spec:
               volumeMounts:
                 - name: grafana-data
                   mountPath: /var/lib/grafana
-
         metadata:
           labels:
             egress.home.arpa/internet: allow
             traefik.home.arpa/ingress: allow
             managedBy: grafana-operator
-
   service:
     metadata:
       labels:
         managed-by: grafana-operator
-
   config:
     plugins:
       allow_loading_unsigned_plugins: victorialogs-datasource
-
     server:
       root_url: https://graf.${DOMAIN_PUBLIC}
-
     auth.generic_oauth:
-      enabled: "true"
-      name: "Authelia SSO"
+      enabled: 'true'
+      name: Authelia SSO
       icon: signin
-      allow_sign_up: "true"
+      allow_sign_up: 'true'
       client_id: ${GRAFANA_OICD_CLIENT_ID}
       client_secret: ${GRAFANA_OICD_CLIENT_SECRET}
-      scopes: "openid profile email groups"
-      empty_scopes: "false"
+      scopes: openid profile email groups
+      empty_scopes: 'false'
       login_attribute_path: preferred_username
       name_attribute_path: name
       groups_attribute_path: groups
       auth_url: https://sso.${DOMAIN_PUBLIC}/api/oidc/authorization
       token_url: https://sso.${DOMAIN_PUBLIC}/api/oidc/token
       api_url: https://sso.${DOMAIN_PUBLIC}/api/oidc/userinfo
-      role_attribute_path: "contains(groups, 'admins') && 'Admin' || contains(groups, 'devs') && 'Viewer'"
-      use_pkce: "true"
+      role_attribute_path: contains(groups, 'admins') && 'Admin' || contains(groups,
+        'devs') && 'Viewer'
+      use_pkce: 'true'

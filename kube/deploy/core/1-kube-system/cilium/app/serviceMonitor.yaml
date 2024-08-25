@@ -12,14 +12,11 @@ spec:
       relabelings:
         - action: replace
           replacement: ${1}
-          sourceLabels:
-            - __meta_kubernetes_pod_node_name
+          sourceLabels: [__meta_kubernetes_pod_node_name]
           targetLabel: node
   namespaceSelector:
-    matchNames:
-      - kube-system
+    matchNames: [kube-system]
   selector:
     matchLabels:
       k8s-app: hubble
-  targetLabels:
-    - k8s-app
+  targetLabels: [k8s-app]

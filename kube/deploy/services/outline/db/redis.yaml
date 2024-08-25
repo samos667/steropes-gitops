@@ -14,6 +14,5 @@ spec:
         namespace: flux-system
   values:
     architecture: standalone
-
     auth:
       enabled: false

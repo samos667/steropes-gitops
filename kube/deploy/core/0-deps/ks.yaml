@@ -12,7 +12,7 @@ spec:
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []

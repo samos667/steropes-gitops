@@ -1,3 +1,4 @@
+---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:
@@ -8,34 +9,38 @@ spec:
     - name: usage
       rules:
         - alert: PVC usage > 75%
-          expr: sum(kubelet_volume_stats_used_bytes) by (persistentvolumeclaim, namespace) / sum(kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim, namespace) * 100 > 75
+          expr: sum(kubelet_volume_stats_used_bytes) by (persistentvolumeclaim, namespace)
+            / sum(kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim,
+            namespace) * 100 > 75
           for: 10s
           labels:
             severity: warning
-            pvc: "{{ $labels.persistentvolumeclaim }}"
-            namespace: "{{ $labels.namespace }}"
+            pvc: '{{ $labels.persistentvolumeclaim }}'
+            namespace: '{{ $labels.namespace }}'
           annotations:
-            value: "{{ $value }}"
-            description: "PVC {{ $labels.persistentvolumeclaim }} is used at {{ $value }}%"
-
+            value: '{{ $value }}'
+            description: PVC {{ $labels.persistentvolumeclaim }} is used at {{ $value }}%
         - alert: PVC usage > 85%
-          expr: sum(kubelet_volume_stats_used_bytes) by (persistentvolumeclaim, namespace) / sum(kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim, namespace) * 100 > 85
+          expr: sum(kubelet_volume_stats_used_bytes) by (persistentvolumeclaim, namespace)
+            / sum(kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim,
+            namespace) * 100 > 85
           for: 10s
           labels:
             severity: major
-            pvc: "{{ $labels.persistentvolumeclaim }}"
-            namespace: "{{ $labels.namespace }}"
+            pvc: '{{ $labels.persistentvolumeclaim }}'
+            namespace: '{{ $labels.namespace }}'
           annotations:
-            value: "{{ $value }}"
-            description: "PVC {{ $labels.persistentvolumeclaim }} is used at {{ $value }}%"
-
+            value: '{{ $value }}'
+            description: PVC {{ $labels.persistentvolumeclaim }} is used at {{ $value }}%
         - alert: PVC usage > 95%
-          expr: sum(kubelet_volume_stats_used_bytes) by (persistentvolumeclaim, namespace) / sum(kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim, namespace) * 100 > 95
+          expr: sum(kubelet_volume_stats_used_bytes) by (persistentvolumeclaim, namespace)
+            / sum(kubelet_volume_stats_capacity_bytes) by (persistentvolumeclaim,
+            namespace) * 100 > 95
           for: 10s
           labels:
             severity: critical
-            pvc: "{{ $labels.persistentvolumeclaim }}"
-            namespace: "{{ $labels.namespace }}"
+            pvc: '{{ $labels.persistentvolumeclaim }}'
+            namespace: '{{ $labels.namespace }}'
           annotations:
-            value: "{{ $value }}"
-            description: "PVC {{ $labels.persistentvolumeclaim }} is used at {{ $value }}%"
+            value: '{{ $value }}'
+            description: PVC {{ $labels.persistentvolumeclaim }} is used at {{ $value }}%

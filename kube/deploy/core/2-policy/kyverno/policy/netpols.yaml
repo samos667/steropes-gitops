@@ -12,12 +12,12 @@ spec:
       match:
         any:
           - resources:
-              kinds: ["Namespace"]
+              kinds: [Namespace]
       generate:
-        apiVersion: "cilium.io/v2"
-        kind: "CiliumNetworkPolicy"
-        name: "{{ request.object.metadata.name }}-allow-within-ns"
-        namespace: &app "{{ request.object.metadata.name }}"
+        apiVersion: cilium.io/v2
+        kind: CiliumNetworkPolicy
+        name: '{{ request.object.metadata.name }}-allow-within-ns'
+        namespace: &app '{{ request.object.metadata.name }}'
         synchronize: true
         data:
           spec:

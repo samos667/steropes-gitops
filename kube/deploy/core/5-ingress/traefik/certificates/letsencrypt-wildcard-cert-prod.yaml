@@ -10,6 +10,4 @@ spec:
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
-  dnsNames:
-    - "${DOMAIN_PUBLIC}"
-    - "*.${DOMAIN_PUBLIC}"
+  dnsNames: ['${DOMAIN_PUBLIC}', '*.${DOMAIN_PUBLIC}']

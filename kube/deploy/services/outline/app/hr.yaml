@@ -9,36 +9,31 @@ spec:
   values:
     global:
       annotations:
-        k8up.io/backup: "true"
-
+        k8up.io/backup: 'true'
     controllers:
       outline:
         type: deployment
         replicas: 1
         strategy: Recreate
-
         pod:
           labels:
             traefik.home.arpa/ingress: allow
             sso.home.arpa/egress: allow
             egress.home.arpa/internet: allow
-
         containers:
           application:
             image:
-              repository: "outlinewiki/outline"
-              tag: "latest"
-
-            resources: # TODO refine
+              repository: outlinewiki/outline
+              tag: latest
+            resources:  # TODO refine
               limits:
                 cpu: 1
                 memory: 1Gi
               requests:
                 cpu: 1m
                 memory: 1Mi
-
             env:
-              ### General settings ###
+              ### General settings  ###
               TZ: Europe/Paris
               DEFAULT_LANGUAGE: fr_FR
               URL: https://wiki.${DOMAIN_PUBLIC}
@@ -53,12 +48,12 @@ spec:
                   name: outline-secrets
                   key: OUTLINE_UTILS_SECRET
 
-              ### Storage settings ###
+              ### Storage settings  ###
               FILE_STORAGE: s3
-              FILE_STORAGE_UPLOAD_MAX_SIZE: "26214400"
+              FILE_STORAGE_UPLOAD_MAX_SIZE: '26214400'
 
-              ## S3 settings ##
-              AWS_S3_UPLOAD_MAX_SIZE: "26214400"
+              ## S3 settings  ##
+              AWS_S3_UPLOAD_MAX_SIZE: '26214400'
               AWS_REGION: us-east-1
               AWS_S3_UPLOAD_BUCKET_URL: https://s3.${DOMAIN_PUBLIC}
               AWS_S3_UPLOAD_BUCKET_NAME: steropes-outline
@@ -71,20 +66,20 @@ spec:
                   name: outline-secrets
                   key: OUTLINE_S3_SECRET_KEY
 
-              ## Databases settings ##
+              ## Databases settings  ##
               REDIS_URL: redis://outline-redis-master.outline.svc.cluster.local:6379
               DATABASE_URL:
                 secretKeyRef:
                   name: outline-secrets
                   key: OUTLINE_DATABASE_URL
 
-              ### OIDC settings ###
+              ### OIDC settings  ###
               OIDC_AUTH_URI: https://sso.${DOMAIN_PUBLIC}/api/oidc/authorization
               OIDC_TOKEN_URI: https://sso.${DOMAIN_PUBLIC}/api/oidc/token
               OIDC_USERINFO_URI: https://sso.${DOMAIN_PUBLIC}/api/oidc/userinfo
               OIDC_USERNAME_CLAIM: preferred_username
               OIDC_DISPLAY_NAME: Authelia
-              OIDC_SCOPES: "openid offline_access profile email"
+              OIDC_SCOPES: openid offline_access profile email
               OIDC_CLIENT_ID:
                 secretKeyRef:
                   name: outline-oidc-secrets
@@ -94,7 +89,7 @@ spec:
                   name: outline-oidc-secrets
                   key: OUTLINE_OICD_CLIENT_SECRET
 
-              ### SMTP settings ###
+              ### SMTP settings  ###
               SMTP_HOST: smtp.gmail.com
               SMTP_PORT: 587
               SMTP_SECURE: true
@@ -109,7 +104,6 @@ spec:
                   key: SMTP_PASSWORD
               SMTP_FROM_EMAIL: *m
               SMTP_REPLY_EMAIL: *m
-
     persistence:
       data:
         type: persistentVolumeClaim
@@ -118,7 +112,6 @@ spec:
         retain: true
         globalMounts:
           - path: /var/lib/outline/data
-
     service:
       http:
         controller: *n

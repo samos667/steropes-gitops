@@ -11,8 +11,7 @@ spec:
       name: letsencrypt-private-key
     solvers:
       - selector:
-          dnsZones:
-            - ${DOMAIN_PUBLIC}
+          dnsZones: ['${DOMAIN_PUBLIC}']
         dns01:
           cloudflare:
             email: ${ADMIN_EMAIL}

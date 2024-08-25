@@ -8,13 +8,10 @@ spec:
   endpointSelector:
     matchLabels:
       app.kubernetes.io/instance: *n
-
   ingress:
-    - fromEntities:
-        - cluster
+    - fromEntities: [cluster]
       toPorts:
         - ports:
-            - port: "10250"
+            - port: '10250'
   egress:
-    - toEntities:
-        - kube-apiserver
+    - toEntities: [kube-apiserver]

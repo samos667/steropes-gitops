@@ -21,29 +21,23 @@ spec:
       podLabels:
         egress.home.arpa/apiserver: allow
         ingress.home.arpa/world: allow
-
     ingressClass:
       enabled: false
-
     ingressRoute:
       dashboard:
         enabled: false
-
     providers:
       kubernetesCRD:
         enabled: true
         allowCrossNamespace: true
-        # -- Allows to reference ExternalName services in IngressRoute #TODO
+        #  -- Allows to reference ExternalName services in IngressRoute  # TODO
         allowExternalNameServices: false
-
       kubernetesIngress:
         enabled: false
-
     metrics:
       addInternals:
       prometheus:
         entryPoint: metrics
-
     ports:
       traefik:
         port: 9000
@@ -51,7 +45,6 @@ spec:
           default: false
         exposedPort: 9000
         protocol: TCP
-
       web:
         port: 8000
         expose:
@@ -60,7 +53,6 @@ spec:
         protocol: TCP
         redirectTo:
           port: websecure
-
       websecure:
         asDefault: true
         port: 8443
@@ -71,21 +63,18 @@ spec:
         tls:
           enabled: false
         middlewares: []
-
       metrics:
         port: 9100
         expose:
           default: false
         exposedPort: 9100
         protocol: TCP
-
     service:
       enabled: true
       single: true
       type: LoadBalancer
       spec:
         loadBalancerIP: ${TRAEFIK_LB_IP}
-
       requests:
         cpu: 1m
         memory: 1Mi

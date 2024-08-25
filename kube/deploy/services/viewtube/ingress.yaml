@@ -18,4 +18,4 @@ spec:
           namespace: authelia
   tls:
     domains:
-      - main: "yt.${DOMAIN_PUBLIC}"
+      - main: yt.${DOMAIN_PUBLIC}

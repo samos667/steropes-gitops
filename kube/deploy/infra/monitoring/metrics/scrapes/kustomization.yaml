@@ -5,5 +5,5 @@ resources:
   - ./coredns.yaml
   - ./kube-apiserver.yaml
   - ./kubelet.yaml
-  # - ./kube-controller-manager.yaml # It is mandatory for the kube-controller-manager to listen on 0.0.0.0
-  # - ./kube-scheduler.yaml # Idem for kube-scheduler...
+  # - ./kube-controller-manager.yaml  # It is mandatory for the kube-controller-manager to listen on 0.0.0.0
+  # - ./kube-scheduler.yaml  # Idem for kube-scheduler...

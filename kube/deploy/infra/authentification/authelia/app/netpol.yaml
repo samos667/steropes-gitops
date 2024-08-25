@@ -1,8 +1,8 @@
 ---
-apiVersion: "cilium.io/v2"
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
-  name: "allow-egress-to-sso"
+  name: allow-egress-to-sso
 spec:
   endpointSelector:
     matchLabels:

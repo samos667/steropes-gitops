@@ -1,6 +1,7 @@
---- # Declare the source for my personnal repo + the kustomization
+---
+    # Declare the source for my personnal repo + the kustomization
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+kind: GitRepository  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
 metadata:
   name: flux-system
   namespace: flux-system
@@ -16,9 +17,8 @@ spec:
     /*
     # include Kubernetes
     !/kube
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: steropes-config

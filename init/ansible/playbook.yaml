@@ -1,13 +1,13 @@
+---
 - name: Deploy steropes
   hosts: localhost
-  vars_files:
-    - ./secret.yaml
+  vars_files: [./secret.yaml]
   tasks:
     - name: Create VM
       community.general.terraform:
-        project_path: './terraform/'
+        project_path: ./terraform/
         state: present
         complex_vars: true
         variables:
-          proxmox_password: "{{ proxmox_password }}"
-          proxmox_endpoint: "{{ proxmox_endpoint }}"
+          proxmox_password: '{{ proxmox_password }}'
+          proxmox_endpoint: '{{ proxmox_endpoint }}'

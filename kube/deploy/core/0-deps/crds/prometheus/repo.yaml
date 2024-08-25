@@ -1,6 +1,6 @@
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+kind: GitRepository  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
 metadata:
   name: prometheus-crds
   namespace: monitoring
@@ -10,7 +10,7 @@ spec:
   ref:
     # renovate: registryUrl=https://prometheus-community.github.io/helm-charts chart=kube-prometheus-stack
     tag: kube-prometheus-stack-60.3.0
-  ignore: |
+  ignore: |-
     # exclude all
     /*
     # include crd directory

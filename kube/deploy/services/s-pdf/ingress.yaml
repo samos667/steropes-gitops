@@ -16,4 +16,4 @@ spec:
           namespace: ingress
   tls:
     domains:
-      - main: "pdf.${DOMAIN_PUBLIC}"
+      - main: pdf.${DOMAIN_PUBLIC}

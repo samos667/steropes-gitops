@@ -1,7 +1,7 @@
 ---
 # downloads and installs Flux manifests to cluster
 apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: OCIRepository # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1beta2.json
+kind: OCIRepository  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1beta2.json
 metadata:
   name: flux-manifests
   namespace: flux-system
@@ -10,10 +10,9 @@ spec:
   url: oci://ghcr.io/fluxcd/flux-manifests
   ref:
     tag: v2.3.0
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+kind: Kustomization  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 metadata:
   name: zzz-flux
   # I don't wanna see it on the top lol
@@ -50,8 +49,7 @@ spec:
             medium: Memory
       target:
         kind: Deployment
-        name: "(kustomize-controller|helm-controller|source-controller)"
-
+        name: (kustomize-controller|helm-controller|source-controller)
     - patch: |
         apiVersion: apps/v1
         kind: Deployment
@@ -68,7 +66,7 @@ spec:
                       memory: 2Gi
       target:
         kind: Deployment
-        name: "(kustomize-controller|helm-controller|source-controller)"
+        name: (kustomize-controller|helm-controller|source-controller)
 
     # Enable Helm near OOM detection
     # Enable drift detection for HelmReleases and set the log level to debug

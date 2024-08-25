@@ -4,13 +4,12 @@ kind: VMSingle
 metadata:
   name: main
 spec:
-  retentionPeriod: "12"
+  retentionPeriod: '12'
   extraArgs:
     dedup.minScrapeInterval: 60s
   removePvcAfterDelete: false
   storage:
-    accessModes:
-      - ReadWriteOnce
+    accessModes: [ReadWriteOnce]
     resources:
       requests:
         storage: 100Gi

@@ -6,15 +6,12 @@ metadata:
   namespace: kube-system
 spec:
   jobLabel: jobLabel
-
   namespaceSelector:
-    matchNames:
-      - "kube-system"
+    matchNames: [kube-system]
   selector:
     matchLabels:
       k8s-app: kube-dns
       app.kubernetes.io/name: CoreDNS
-
   endpoints:
     - port: http-metrics
       bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token

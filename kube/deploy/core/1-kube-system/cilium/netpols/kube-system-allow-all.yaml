@@ -8,16 +8,12 @@ metadata:
 spec:
   endpointSelector: {}
   ingress:
-    - fromEntities:
-        - cluster
+    - fromEntities: [cluster]
     - fromEndpoints:
         - {}
-    - fromEntities:
-        - world
+    - fromEntities: [world]
   egress:
-    - toEntities:
-        - world
+    - toEntities: [world]
     - toEndpoints:
         - {}
-    - toEntities:
-        - cluster
+    - toEntities: [cluster]

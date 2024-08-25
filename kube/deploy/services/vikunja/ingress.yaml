@@ -16,4 +16,4 @@ spec:
           namespace: ingress
   tls:
     domains:
-      - main: "do.${DOMAIN_PUBLIC}"
+      - main: do.${DOMAIN_PUBLIC}

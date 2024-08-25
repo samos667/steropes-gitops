@@ -1,17 +1,16 @@
 ---
-apiVersion: postgresql.cnpg.io/v1 # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/c6180cfc979a2fbe4b47934f114ddd81/raw/c091f03d5267ccacfe32f9c26d4eff1cf4a75962/pg-cluster.json
+apiVersion: postgresql.cnpg.io/v1  # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/c6180cfc979a2fbe4b47934f114ddd81/raw/c091f03d5267ccacfe32f9c26d4eff1cf4a75962/pg-cluster.json
 kind: Cluster
 metadata:
   name: &n lldap-db
   annotations:
-    cnpg.io/skipEmptyWalArchiveCheck: enabled # Needed for restore, TODO report the issue properly https://github.com/cloudnative-pg/cloudnative-pg/issues/2730 && https://github.com/cloudnative-pg/cloudnative-pg/issues/2678
+    cnpg.io/skipEmptyWalArchiveCheck: enabled  # Needed for restore, TODO report the issue properly https://github.com/cloudnative-pg/cloudnative-pg/issues/2730 && https://github.com/cloudnative-pg/cloudnative-pg/issues/2678
 spec:
   instances: 1
   superuserSecret:
     name: lldap-db-root-credentials
   storage:
     size: 10Gi
-
   externalClusters:
     - name: clusterBackup
       barmanObjectStore:
@@ -30,7 +29,6 @@ spec:
   bootstrap:
     recovery:
       source: clusterBackup
-
   backup:
     retentionPolicy: 4w
     barmanObjectStore:
@@ -49,20 +47,19 @@ spec:
       data:
         encryption: AES256
         compression: bzip2
-
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: lldap
 spec:
-  schedule: "0 5 0 * * *"
+  schedule: 0 5 0 * * *
   backupOwnerReference: cluster
   cluster:
     name: lldap-db
 #
-# --- # For bootstraping, instant swap to externalClusters after.
-# apiVersion: postgresql.cnpg.io/v1 # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/c6180cfc979a2fbe4b47934f114ddd81/raw/c091f03d5267ccacfe32f9c26d4eff1cf4a75962/pg-cluster.json
+# ---  # For bootstraping, instant swap to externalClusters after.
+# apiVersion: postgresql.cnpg.io/v1  # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/c6180cfc979a2fbe4b47934f114ddd81/raw/c091f03d5267ccacfe32f9c26d4eff1cf4a75962/pg-cluster.json
 # kind: Cluster
 # metadata:
 #   name: &n lldap-db

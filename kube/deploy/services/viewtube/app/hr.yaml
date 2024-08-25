@@ -12,33 +12,28 @@ spec:
         type: deployment
         replicas: 1
         strategy: Recreate
-
         pod:
           labels:
             traefik.home.arpa/ingress: allow
             egress.home.arpa/internet-https: allow
-
         containers:
           application:
             image:
-              repository: "mauriceo/viewtube"
-              tag: "nightly"
-
-            resources: # TODO refine
+              repository: mauriceo/viewtube
+              tag: nightly
+            resources:  # TODO refine
               limits:
                 cpu: 2
                 memory: 2Gi
               requests:
                 cpu: 1m
                 memory: 1Mi
-
             env:
               TZ: Europe/Paris
               VIEWTUBE_CORS_ORIGIN: yt.${DOMAIN_PUBLIC}
               VIEWTUBE_LOCATION: FR
               VIEWTUBE_CLUSTERED: true
               VIEWTUBE_SECURE: true
-
               VIEWTUBE_YOUTUBE_COOKIE:
                 secretKeyRef:
                   name: viewtube-secrets
@@ -47,7 +42,6 @@ spec:
                 secretKeyRef:
                   name: viewtube-secrets
                   key: VIEWTUBE_ADMIN_USER
-
               VIEWTUBE_REDIS_HOST: viewtube-redis-master
               VIEWTUBE_DATABASE_HOST: viewtube-db-mongodb
               VIEWTUBE_DATABASE_USER: viewtube
@@ -55,7 +49,6 @@ spec:
                 secretKeyRef:
                   name: viewtube-secrets
                   key: VIEWTUBE_DATABASE_PASSWORD
-
             probes:
               liveness:
                 enabled: true
@@ -63,7 +56,6 @@ spec:
                 enabled: true
               startup:
                 enabled: true
-
     service:
       http:
         controller: *n

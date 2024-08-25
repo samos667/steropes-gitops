@@ -1,6 +1,6 @@
 ---
-apiVersion: "cilium.io/v2alpha1"
-kind: CiliumBGPPeeringPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumbgppeeringpolicy_v2alpha1.json
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeeringPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumbgppeeringpolicy_v2alpha1.json
 metadata:
   name: bgp-peering-fw
 spec:
@@ -9,9 +9,9 @@ spec:
       exportPodCIDR: false
       serviceSelector:
         matchExpressions:
-          - { key: somekey, operator: NotIn, values: ["never-used-value"] }
+          - {key: somekey, operator: NotIn, values: [never-used-value]}
       neighbors:
-        - peerAddress: "${HOMELAB_GW_IP}/24"
+        - peerAddress: ${HOMELAB_GW_IP}/24
           peerASN: 64512
           eBGPMultihopTTL: 10
           connectRetryTimeSeconds: 120

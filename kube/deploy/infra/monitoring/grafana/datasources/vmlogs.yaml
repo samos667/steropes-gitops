@@ -7,12 +7,10 @@ spec:
   instanceSelector:
     matchLabels:
       instance: grafana-main
-
   datasource:
     name: VictoriaLogs
     type: victorialogs-datasource
     access: proxy
     url: http://vmlogs:9428
-
     jsonData:
-      maxLines: "10000"
+      maxLines: '10000'

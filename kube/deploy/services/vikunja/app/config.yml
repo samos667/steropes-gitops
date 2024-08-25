@@ -1,14 +1,13 @@
+---
 database:
   type: postgres
   host: vikunja-db-rw.vikunja.svc.cluster.local
   database: &n vikunja
   user: *n
   password: ${password}
-
 service:
   publicurl: https://do.${DOMAIN_PUBLIC}
   JWTSecret: ${VIKUNJA_SERVICE_JWTSECRET}
-
 auth:
   local:
     enabled: false

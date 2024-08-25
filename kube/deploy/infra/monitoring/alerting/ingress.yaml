@@ -15,4 +15,4 @@ spec:
           namespace: traefik
   tls:
     domains:
-      - main: "alert.${DOMAIN_PUBLIC}"
+      - main: alert.${DOMAIN_PUBLIC}

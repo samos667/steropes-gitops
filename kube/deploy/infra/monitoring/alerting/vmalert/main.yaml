@@ -1,3 +1,4 @@
+---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlert
 metadata:
@@ -5,8 +6,8 @@ metadata:
 spec:
   replicaCount: 1
   datasource:
-    url: "http://vmsingle-main.monitoring.svc:8429"
+    url: http://vmsingle-main.monitoring.svc:8429
   notifier:
-    url: "http://vmalertmanager-main.monitoring.svc:9093"
-  evaluationInterval: "30s"
+    url: http://vmalertmanager-main.monitoring.svc:9093
+  evaluationInterval: 30s
   selectAllByDefault: true

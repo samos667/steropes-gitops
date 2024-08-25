@@ -1,6 +1,6 @@
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: allow-cnpg-initdb-to-kube-api
 spec:
@@ -8,12 +8,10 @@ spec:
     matchLabels:
       cnpg.io/jobRole: initdb
   egress:
-    - toEntities:
-        - kube-apiserver
-
+    - toEntities: [kube-apiserver]
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: allow-cnpg-instance-to-kube-api
 spec:
@@ -21,12 +19,10 @@ spec:
     matchLabels:
       cnpg.io/podRole: instance
   egress:
-    - toEntities:
-        - kube-apiserver
-
+    - toEntities: [kube-apiserver]
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: allow-cnpg-recovery-to-kube-api
 spec:
@@ -34,12 +30,10 @@ spec:
     matchLabels:
       cnpg.io/jobRole: full-recovery
   egress:
-    - toEntities:
-        - kube-apiserver
-
+    - toEntities: [kube-apiserver]
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: allow-egress-cnpg-to-instances
 spec:
@@ -53,12 +47,11 @@ spec:
             cnpg.io/podRole: instance
       toPorts:
         - ports:
-            - port: "8000"
+            - port: '8000'
               protocol: ANY
-
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: allow-ingress-cnpg-to-instance
 spec:
@@ -72,12 +65,11 @@ spec:
             app.kubernetes.io/name: cloudnative-pg
       toPorts:
         - ports:
-            - port: "8000"
+            - port: '8000'
               protocol: ANY
-
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: allow-egress-cnpg-backup-to-b2
 spec:
@@ -87,10 +79,9 @@ spec:
   egress:
     - toFQDNs:
         - matchName: s3.us-west-000.backblazeb2.com
-
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: allow-egress-cnpg-restore-to-b2
 spec:

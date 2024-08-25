@@ -6,15 +6,15 @@ metadata:
   namespace: &ns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns tls
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/core/4-tls/cert-manager/
   interval: 1h
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []

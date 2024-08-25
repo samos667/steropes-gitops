@@ -1,13 +1,13 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-monitoring-agent
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: monitoring-agent
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/monitoring/agent
   interval: 1h
@@ -19,17 +19,16 @@ spec:
     name: *fns
     namespace: *fns
   targetNamespace: monitoring
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-monitoring-metrics
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: monitoring-metrics
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/monitoring/metrics
   interval: 1h
@@ -41,17 +40,16 @@ spec:
     name: *fns
     namespace: *fns
   targetNamespace: monitoring
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-monitoring-db
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: monitoring-db
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/monitoring/db
   interval: 1h
@@ -63,17 +61,16 @@ spec:
     name: *fns
     namespace: *fns
   targetNamespace: monitoring
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-monitoring-alerting
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: monitoring-alerting
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/monitoring/alerting
   interval: 1h
@@ -86,17 +83,16 @@ spec:
     name: *fns
     namespace: *fns
   targetNamespace: monitoring
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-monitoring-grafana
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: monitoring-grafana
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/monitoring/grafana
   interval: 1h
@@ -110,17 +106,16 @@ spec:
     name: *fns
     namespace: *fns
   targetNamespace: monitoring
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra-monitoring-vmlogs
   namespace: &fns flux-system
   labels:
     kustomization.flux.home.arpa/name: monitoring-logs
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/infra/monitoring/logs/vmlogs
   interval: 1h

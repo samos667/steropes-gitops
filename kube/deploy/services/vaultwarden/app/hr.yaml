@@ -9,26 +9,22 @@ spec:
   values:
     global:
       annotations:
-        k8up.io/backup: "true"
-
+        k8up.io/backup: 'true'
     controllers:
       vaultwarden:
         type: deployment
         strategy: Recreate
         replicas: 1
-
         pod:
           labels:
             traefik.home.arpa/ingress: allow
             egress.home.arpa/internet: allow
-
         containers:
           application:
             image:
-              repository: "docker.io/vaultwarden/server"
-              tag: "1.30.5-alpine@sha256:6f6ec220ed300e1a11475a91d270985915083512f9fb60c1c25783faaa66eef5"
-
-            resources: # TODO refine
+              repository: docker.io/vaultwarden/server
+              tag: 1.30.5-alpine@sha256:6f6ec220ed300e1a11475a91d270985915083512f9fb60c1c25783faaa66eef5
+            resources:  # TODO refine
               limits:
                 cpu: 1
                 memory: 50Mi
@@ -40,18 +36,18 @@ spec:
             # See [image docs](https://github.com/dani-garcia/vaultwarden/blob/main/.env.template) for more details.
             env:
               TZ: Europe/Paris
-              ### General settings ###
-              DOMAIN: "https://vw.${DOMAIN_PUBLIC}"
+              ### General settings  ###
+              DOMAIN: https://vw.${DOMAIN_PUBLIC}
               SIGNUPS_ALLOWED: true
               ORG_EVENTS_ENABLED: true
 
-              ### Database settings ###
+              ### Database settings  ###
               DATABASE_URL:
                 secretKeyRef:
                   name: vaultwarden-secrets
                   key: VAULTWARDEN_DATABASE_URL
 
-              ### Data folders ###
+              ### Data folders  ###
               DATA_FOLDER: /data
               # Individual folders, these override %DATA_FOLDER%
               RSA_KEY_FILENAME: /data/rsa_key
@@ -60,11 +56,11 @@ spec:
               ATTACHMENTS_FOLDER: /data/attachments
               TMP_FOLDER: /tmp
 
-              ### Schedule jobs ###
+              ### Schedule jobs  ###
               EVENTS_DAYS_RETAIN: 180
               TRASH_AUTO_DELETE_DAYS: 180
 
-              ### SMTP settings ###
+              ### SMTP settings  ###
               SMTP_HOST: smtp.google.com
               SMTP_FROM_NAME: Vaultwarden
               SMTP_SECURITY: starttls
@@ -82,12 +78,11 @@ spec:
                   name: vaultwarden-secrets
                   key: SMTP_PASSWORD
 
-              ### Advanced settings ###
+              ### Advanced settings  ###
               ADMIN_TOKEN:
                 secretKeyRef:
                   name: vaultwarden-secrets
                   key: VAULTWARDEN_ADMIN_TOKEN_HASH
-
     persistence:
       data:
         type: persistentVolumeClaim
@@ -96,7 +91,6 @@ spec:
         retain: true
         globalMounts:
           - path: /data
-
     service:
       http:
         controller: *n

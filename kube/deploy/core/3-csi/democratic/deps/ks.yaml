@@ -1,5 +1,5 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: &n external-snapshotter-crds
@@ -16,9 +16,8 @@ spec:
   commonMetadata:
     labels: *l
   targetNamespace: kube-system
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: &n external-snapshotter-controller
@@ -37,7 +36,7 @@ spec:
   dependsOn:
     - name: external-snapshotter-crds
   patches:
-    - patch: | # democratic-csi local-hostpath snapshots
+    - patch: |  # democratic-csi local-hostpath snapshots
         - op: add
           path: /spec/template/spec/containers/0/args/-
           value: "--enable-distributed-snapshotting"
@@ -46,7 +45,7 @@ spec:
         version: v1
         kind: Deployment
         name: snapshot-controller
-    - patch: | # democratic-csi local-hostpath snapshots
+    - patch: |  # democratic-csi local-hostpath snapshots
         - op: add
           path: /rules/-
           value:

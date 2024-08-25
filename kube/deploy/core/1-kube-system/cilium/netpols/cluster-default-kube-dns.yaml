@@ -1,11 +1,11 @@
-# These two policy make deny all non explicit authorized trafic to be dropped
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: cluster-default-kube-dns-ingress
 spec:
-  description: Policy for ingress allow to kube-dns from all Cilium managed endpoints in the cluster
+  description: Policy for ingress allow to kube-dns from all Cilium managed endpoints
+    in the cluster
   endpointSelector:
     matchLabels:
       k8s:io.kubernetes.pod.namespace: kube-system
@@ -15,16 +15,16 @@ spec:
         - {}
       toPorts:
         - ports:
-            - port: "53"
+            - port: '53'
               protocol: ANY
-
 ---
 apiVersion: cilium.io/v2
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
   name: cluster-default-kube-dns-egress
 spec:
-  description: Policy for egress allow to kube-dns from all Cilium managed endpoints in the cluster
+  description: Policy for egress allow to kube-dns from all Cilium managed endpoints
+    in the cluster
   endpointSelector: {}
   egress:
     - toEndpoints:
@@ -33,8 +33,8 @@ spec:
             k8s:k8s-app: kube-dns
       toPorts:
         - ports:
-            - port: "53"
+            - port: '53'
               protocol: ANY
           rules:
             dns:
-              - matchPattern: "*"
+              - matchPattern: '*'

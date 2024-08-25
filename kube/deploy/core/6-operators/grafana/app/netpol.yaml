@@ -1,26 +1,26 @@
 ---
-apiVersion: "cilium.io/v2"
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
-  name: "allow-egress-grafana-operator"
+  name: allow-egress-grafana-operator
 spec:
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: grafana-operator
-      "k8s:io.kubernetes.pod.namespace": grafana-operator
+      k8s:io.kubernetes.pod.namespace: grafana-operator
   egress:
     - toEndpoints:
         - matchLabels:
             managedBy: grafana-operator
       toPorts:
         - ports:
-            - port: "3000"
-              protocol: "ANY"
+            - port: '3000'
+              protocol: ANY
 ---
-apiVersion: "cilium.io/v2"
-kind: CiliumClusterwideNetworkPolicy # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy  # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/ciliumclusterwidenetworkpolicy_v2.json
 metadata:
-  name: "allow-ingress-grafana-operator"
+  name: allow-ingress-grafana-operator
 spec:
   endpointSelector:
     matchLabels:
@@ -29,8 +29,8 @@ spec:
     - fromEndpoints:
         - matchLabels:
             app.kubernetes.io/name: grafana-operator
-            "k8s:io.kubernetes.pod.namespace": grafana-operator
+            k8s:io.kubernetes.pod.namespace: grafana-operator
       toPorts:
         - ports:
-            - port: "3000"
-              protocol: "ANY"
+            - port: '3000'
+              protocol: ANY

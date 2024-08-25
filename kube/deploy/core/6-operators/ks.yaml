@@ -6,20 +6,19 @@ metadata:
   namespace: &ns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns victoria-metrics-operator
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/core/6-operators/victoria-metrics/
   interval: 1h
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []
   targetNamespace: *tns
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -28,20 +27,19 @@ metadata:
   namespace: &ns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns grafana-operator
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/core/6-operators/grafana/
   interval: 1h
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []
   targetNamespace: *tns
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -50,20 +48,19 @@ metadata:
   namespace: &ns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns k8up-operator
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/core/6-operators/k8up/
   interval: 1h
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []
   targetNamespace: *tns
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -72,20 +69,19 @@ metadata:
   namespace: &ns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns cnpg-operator
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/core/6-operators/cnpg/
   interval: 1h
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []
   targetNamespace: *tns
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -94,15 +90,15 @@ metadata:
   namespace: &ns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns reflector-operator
-    kustomization.flux.home.arpa/sops: "true"
-    kustomization.flux.home.arpa/substitution: "true"
+    kustomization.flux.home.arpa/sops: 'true'
+    kustomization.flux.home.arpa/substitution: 'true'
 spec:
   path: ./kube/deploy/core/6-operators/reflector/
   interval: 1h
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []

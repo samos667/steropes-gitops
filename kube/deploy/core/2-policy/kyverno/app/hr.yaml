@@ -23,23 +23,23 @@ spec:
       rbac:
         clusterRole:
           extraResources:
-            - apiGroups: [""]
-              resources: ["pods"]
-              verbs: ["create", "update", "patch", "delete", "get", "list"]
-            - apiGroups: ["*"]
-              resources: ["*"]
-              verbs: ["*"]
+            - apiGroups: ['']
+              resources: [pods]
+              verbs: [create, update, patch, delete, get, list]
+            - apiGroups: ['*']
+              resources: ['*']
+              verbs: ['*']
     admissionController:
       replicas: 1
       rbac:
         clusterRole:
           extraResources:
-            - apiGroups: [""]
-              resources: ["pods"]
-              verbs: ["create", "update", "delete"]
-            - apiGroups: ["*"]
-              resources: ["*"]
-              verbs: ["*"]
+            - apiGroups: ['']
+              resources: [pods]
+              verbs: [create, update, delete]
+            - apiGroups: ['*']
+              resources: ['*']
+              verbs: ['*']
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname

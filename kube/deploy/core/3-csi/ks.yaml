@@ -6,14 +6,14 @@ metadata:
   namespace: &ns flux-system
   labels:
     kustomization.flux.home.arpa/name: &tns csi
-    kustomization.flux.home.arpa/sops: "true"
+    kustomization.flux.home.arpa/sops: 'true'
 spec:
   path: ./kube/deploy/core/3-csi/democratic/
   interval: 1h
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ../../../flux/flux-repo.yaml
+  sourceRef:  # ref ../../../flux/flux-repo.yaml
     kind: GitRepository
     name: *ns
   dependsOn: []

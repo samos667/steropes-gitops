@@ -27,13 +27,11 @@ spec:
         parameters:
           # for block-based storage can be ext3, ext4, xfs
           fsType: ext4
-          detachedVolumesFromSnapshots: "false"
-
+          detachedVolumesFromSnapshots: 'false'
     volumeSnapshotClasses:
       - name: iscsi
         parameters:
-          detachedSnapshots: "true"
-
+          detachedSnapshots: 'true'
     driver:
       config:
         instance_id:
@@ -55,7 +53,8 @@ spec:
           targetPortals: []
           interface:
           namePrefix: csi-
-          nameTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+          nameTemplate: '{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name]
+            }}'
           targetGroups:
             - targetGroupPortalGroup: 2
               targetGroupInitiatorGroup: 2
@@ -65,9 +64,8 @@ spec:
           extentXenCompat: false
           extentDisablePhysicalBlocksize: true
           extentBlocksize: 512
-          extentRpm: "SSD"
+          extentRpm: SSD
           extentAvailThreshold: 0
-
     controller:
       externalAttacher:
         args:
@@ -77,7 +75,6 @@ spec:
           - --timeout=90s
           - --worker-threads=10
           - --csi-address={{ .csiSocketAddress }}
-
       externalProvisioner:
         args:
           - --v=5
@@ -87,7 +84,6 @@ spec:
           - --worker-threads=10
           - --extra-create-metadata
           - --csi-address={{ .csiSocketAddress }}
-
       externalResizer:
         args:
           - --v=5
@@ -96,7 +92,6 @@ spec:
           - --timeout=90s
           - --workers=10
           - --csi-address={{ .csiSocketAddress }}
-
     node:
       hostPID: true
       driver:
@@ -106,4 +101,4 @@ spec:
           - name: ISCSIADM_HOST_PATH
             value: /usr/local/sbin/iscsiadm
         iscsiDirHostPath: /usr/local/etc/iscsi
-        iscsiDirHostPathType: ""
+        iscsiDirHostPathType: ''

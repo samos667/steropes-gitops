@@ -12,4 +12,4 @@ spec:
           port: 17170
   tls:
     domains:
-      - main: "ldap.${DOMAIN_PUBLIC}"
+      - main: ldap.${DOMAIN_PUBLIC}

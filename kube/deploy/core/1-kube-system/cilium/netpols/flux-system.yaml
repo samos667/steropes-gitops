@@ -19,23 +19,20 @@ spec:
     - toEntities:
         - world
     # TODO: confirm if these are the only ports Flux uses, as well as what FQDNs Flux talks to (GitHub only? then why 443?)
-    - toEntities:
-        - world
+    - toEntities: [world]
       toPorts:
         - ports:
-            - port: "22"
+            - port: '22'
         - ports:
-            - port: "443"
+            - port: '443'
     # k8s apiserver
     - toEndpoints:
         - matchLabels:
             io.kubernetes.pod.namespace: default
             component: apiserver
             provider: kubernetes
-    - toEntities:
-        - kube-apiserver
-    - toEntities:
-        - host
+    - toEntities: [kube-apiserver]
+    - toEntities: [host]
       toPorts:
         - ports:
-            - port: "6443"
+            - port: '6443'

@@ -19,25 +19,19 @@ spec:
     server:
       podLabels:
         traefik.home.arpa/ingress: allow
-
       persistentVolume:
         enabled: true
-
       serviceMonitor:
         enabled: true
-
     fluent-bit:
       enabled: true
-
       daemonSetVolumes:
         - name: varlog
           hostPath:
             path: /var/log
-
       daemonSetVolumeMounts:
         - name: varlog
           mountPath: /var/log
-
       config:
         outputs: |
           [OUTPUT]
@@ -66,7 +60,6 @@ spec:
               Operation lift
               Nested_under kubernetes
               Add_prefix   kubernetes_
-
     extraObjects:
       - apiVersion: cilium.io/v2
         kind: CiliumNetworkPolicy
@@ -78,5 +71,4 @@ spec:
             matchLabels:
               app.kubernetes.io/name: fluent-bit
           egress:
-            - toEntities:
-                - kube-apiserver
+            - toEntities: [kube-apiserver]

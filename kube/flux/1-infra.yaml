@@ -1,25 +1,25 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization
 metadata:
   name: 1-deploy-infra
   namespace: flux-system
   labels:
-    kustomization.flux.home.arpa/infra: "true"
-    kustomization.flux.home.arpa/sops: "true"
+    kustomization.flux.home.arpa/infra: 'true'
+    kustomization.flux.home.arpa/sops: 'true'
 spec:
   path: ./kube/deploy/infra/
   interval: 5m0s
   timeout: 10m0s
   prune: false
   wait: true
-  sourceRef: # ref ./flux-repo.yaml
+  sourceRef:  # ref ./flux-repo.yaml
     kind: GitRepository
     name: flux-system
   dependsOn: []
   commonMetadata:
     labels:
-      kustomization.flux.home.arpa/infra: "true"
+      kustomization.flux.home.arpa/infra: 'true'
   patches:
     ### Patch all child kustomization if as corresponding label
     ## Decryption
@@ -122,7 +122,7 @@ spec:
                           driftDetection:
                             mode: enabled
                             ignore:
-                              - paths: ["/spec/replicas"] # helpful for scaling things down during debugging/troubleshooting without Helm interfering
+                              - paths: ["/spec/replicas"]  # helpful for scaling things down during debugging/troubleshooting without Helm interfering
                       target:
                         group: helm.toolkit.fluxcd.io
                         version: v2
@@ -150,13 +150,11 @@ spec:
                         version: v2
                         kind: HelmRelease
                         labelSelector: helm.flux.home.arpa/app-template=true
-
               target:
                 group: kustomize.toolkit.fluxcd.io
                 version: v1
                 kind: Kustomization
                 labelSelector: kustomization.flux.home.arpa/helmpatches notin (false)
-
       target:
         group: kustomize.toolkit.fluxcd.io
         version: v1

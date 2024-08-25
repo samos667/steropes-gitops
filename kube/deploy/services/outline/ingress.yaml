@@ -16,4 +16,4 @@ spec:
           namespace: ingress
   tls:
     domains:
-      - main: "wiki.${DOMAIN_PUBLIC}"
+      - main: wiki.${DOMAIN_PUBLIC}

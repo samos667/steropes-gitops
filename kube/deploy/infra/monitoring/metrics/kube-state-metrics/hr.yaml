@@ -14,7 +14,6 @@ spec:
   values:
     customLabels:
       egress.home.arpa/apiserver: allow
-
     prometheus:
       monitor:
         enabled: true
@@ -22,7 +21,6 @@ spec:
           honorLabels: true
           metricRelabelings: []
           relabelings: []
-
       collectors:
         - certificatesigningrequests
         - configmaps

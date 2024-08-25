@@ -12,7 +12,7 @@ spec:
           port: 9000
   tls:
     domains:
-      - main: "s3.${DOMAIN_PUBLIC}"
+      - main: s3.${DOMAIN_PUBLIC}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -27,4 +27,4 @@ spec:
           port: 9001
   tls:
     domains:
-      - main: "minio.${DOMAIN_PUBLIC}"
+      - main: minio.${DOMAIN_PUBLIC}

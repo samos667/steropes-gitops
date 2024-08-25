@@ -16,4 +16,4 @@ spec:
           namespace: ingress
   tls:
     domains:
-      - main: "memo.${DOMAIN_PUBLIC}"
+      - main: memo.${DOMAIN_PUBLIC}

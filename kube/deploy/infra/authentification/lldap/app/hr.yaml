@@ -15,46 +15,38 @@ spec:
         pod:
           labels:
             traefik.home.arpa/ingress: allow
-
         containers:
           application:
             image:
-              repository: "lldap/lldap"
-              tag: "2024-05-06-alpine@sha256:c6b5481fe67720e30c53b42d60f643039215d8ad9db42c628c410683220feee0"
-
-            resources: # TODO refine
+              repository: lldap/lldap
+              tag: 2024-05-06-alpine@sha256:c6b5481fe67720e30c53b42d60f643039215d8ad9db42c628c410683220feee0
+            resources:  # TODO refine
               limits:
                 cpu: 1
                 memory: 100Mi
               requests:
                 cpu: 1m
                 memory: 1Mi
-
             env:
               UID: 65534
               GID: 65534
               TZ: Europe/Paris
-
               LLDAP_DATABASE_URL:
                 secretKeyRef:
                   name: lldap-secrets
                   key: LLDAP_DATABASE_URL
-
               LLDAP_JWT_SECRET:
                 secretKeyRef:
                   name: lldap-secrets
                   key: LLDAP_JWT_SECRET
-
               LLDAP_KEY_SEED:
                 secretKeyRef:
                   name: lldap-secrets
                   key: LLDAP_KEY_SEED
-
               LLDAP_LDAP_BASE_DN:
                 secretKeyRef:
                   name: lldap-secrets
                   key: LLDAP_LDAP_BASE_DN
-
     service:
       http:
         controller: *n

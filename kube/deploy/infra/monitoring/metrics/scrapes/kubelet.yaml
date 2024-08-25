@@ -1,22 +1,20 @@
-
+---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMNodeScrape
 metadata:
   name: kubelet
   namespace: kube-system
 spec:
-  scheme: "https"
+  scheme: https
   honorLabels: true
-  interval: "60s"
-  scrapeTimeout: "5s"
-  honorTimestamps: false # ignore timestamps of cadvisor's metrics by default. More info here https://github.com/VictoriaMetrics/VictoriaMetrics/issues/4697#issuecomment-1656540535
-
-  bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  interval: 60s
+  scrapeTimeout: 5s
+  honorTimestamps: false  # ignore timestamps of cadvisor's metrics by default. More info here https://github.com/VictoriaMetrics/VictoriaMetrics/issues/4697#issuecomment-1656540535
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
   tlsConfig:
     insecureSkipVerify: true
-    caFile: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-  
-  metricRelabelConfigs: # drop high cardinality label and useless metrics for cadvisor and kubelet
+    caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  metricRelabelConfigs:  # drop high cardinality label and useless metrics for cadvisor and kubelet
     - action: labeldrop
       regex: (uid)
     - action: labeldrop
@@ -24,16 +22,13 @@ spec:
     - action: drop
       source_labels: [__name__]
       regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
-
   relabelConfigs:
     - action: labelmap
       regex: __meta_kubernetes_node_label_(.+)
     - sourceLabels: [__metrics_path__]
       targetLabel: metrics_path
-    - targetLabel: "job"
-      replacement: "kubelet"
-
-
+    - targetLabel: job
+      replacement: kubelet
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMNodeScrape
@@ -41,19 +36,17 @@ metadata:
   name: kubelet-cadvisor
   namespace: kube-system
 spec:
-  scheme: "https"
+  scheme: https
   honorLabels: true
-  interval: "60s"
-  scrapeTimeout: "5s"
-  honorTimestamps: false # ignore timestamps of cadvisor's metrics by default. More info here https://github.com/VictoriaMetrics/VictoriaMetrics/issues/4697#issuecomment-1656540535
-  path: "/metrics/cadvisor"
-
-  bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  interval: 60s
+  scrapeTimeout: 5s
+  honorTimestamps: false  # ignore timestamps of cadvisor's metrics by default. More info here https://github.com/VictoriaMetrics/VictoriaMetrics/issues/4697#issuecomment-1656540535
+  path: /metrics/cadvisor
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
   tlsConfig:
     insecureSkipVerify: true
-    caFile: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-
-  metricRelabelConfigs: # drop high cardinality label and useless metrics for cadvisor and kubelet
+    caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  metricRelabelConfigs:  # drop high cardinality label and useless metrics for cadvisor and kubelet
     - action: labeldrop
       regex: (uid)
     - action: labeldrop
@@ -61,15 +54,13 @@ spec:
     - action: drop
       source_labels: [__name__]
       regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
-
   relabelConfigs:
     - action: labelmap
       regex: __meta_kubernetes_node_label_(.+)
     - sourceLabels: [__metrics_path__]
       targetLabel: metrics_path
-    - targetLabel: "job"
-      replacement: "kubelet"
-
+    - targetLabel: job
+      replacement: kubelet
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMNodeScrape
@@ -77,19 +68,17 @@ metadata:
   name: kubelet-probes
   namespace: kube-system
 spec:
-  scheme: "https"
+  scheme: https
   honorLabels: true
-  interval: "60s"
-  scrapeTimeout: "5s"
-  honorTimestamps: false # ignore timestamps of cadvisor's metrics by default. More info here https://github.com/VictoriaMetrics/VictoriaMetrics/issues/4697#issuecomment-1656540535
-  path: "/metrics/cadvisor"
-
-  bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  interval: 60s
+  scrapeTimeout: 5s
+  honorTimestamps: false  # ignore timestamps of cadvisor's metrics by default. More info here https://github.com/VictoriaMetrics/VictoriaMetrics/issues/4697#issuecomment-1656540535
+  path: /metrics/cadvisor
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
   tlsConfig:
     insecureSkipVerify: true
-    caFile: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-
-  metricRelabelConfigs: # drop high cardinality label and useless metrics for cadvisor and kubelet
+    caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  metricRelabelConfigs:  # drop high cardinality label and useless metrics for cadvisor and kubelet
     - action: labeldrop
       regex: (uid)
     - action: labeldrop
@@ -97,11 +86,10 @@ spec:
     - action: drop
       source_labels: [__name__]
       regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
-
   relabelConfigs:
     - action: labelmap
       regex: __meta_kubernetes_node_label_(.+)
     - sourceLabels: [__metrics_path__]
       targetLabel: metrics_path
-    - targetLabel: "job"
-      replacement: "kubelet"
+    - targetLabel: job
+      replacement: kubelet

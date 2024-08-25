@@ -24,7 +24,6 @@ spec:
         }
       ]
     }
-
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -34,9 +33,8 @@ spec:
   folder: cilium
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/cilium-agent/dashboards/cilium-dashboard.json"
-
+      instance: grafana-main
+  url: https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/cilium-agent/dashboards/cilium-dashboard.json
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -46,9 +44,8 @@ spec:
   folder: cilium
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/cilium-operator/dashboards/cilium-operator-dashboard.json"
-
+      instance: grafana-main
+  url: https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/cilium-operator/dashboards/cilium-operator-dashboard.json
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -58,9 +55,8 @@ spec:
   folder: cilium
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-dashboard.json"
-
+      instance: grafana-main
+  url: https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-dashboard.json
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -70,9 +66,8 @@ spec:
   folder: cilium
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-dns-namespace.json"
-
+      instance: grafana-main
+  url: https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-dns-namespace.json
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -82,9 +77,8 @@ spec:
   folder: cilium
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-l7-http-metrics-by-workload.json"
-
+      instance: grafana-main
+  url: https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-l7-http-metrics-by-workload.json
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -94,5 +88,5 @@ spec:
   folder: cilium
   instanceSelector:
     matchLabels:
-      instance: "grafana-main"
-  url: "https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-network-overview-namespace.json"
+      instance: grafana-main
+  url: https://raw.githubusercontent.com/cilium/cilium/v1.16.0-rc.1/install/kubernetes/cilium/files/hubble/dashboards/hubble-network-overview-namespace.json

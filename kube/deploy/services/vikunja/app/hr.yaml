@@ -5,42 +5,35 @@ metadata:
   name: &n vikunja
   labels:
     helm.flux.home.arpa/app-template: true
-
 spec:
   values:
     global:
       annotations:
-        k8up.io/backup: "true"
-
+        k8up.io/backup: 'true'
     controllers:
       vikunja:
         type: deployment
         strategy: Recreate
         replicas: 1
-
         pod:
           labels:
             traefik.home.arpa/ingress: allow
             sso.home.arpa/egress: allow
             egress.home.arpa/gravatar: allow
-
         containers:
           application:
             image:
-              repository: "vikunja/vikunja"
-              tag: "0.23.0@sha256:c824f99b0b09b7f03a1d77ad6691fbce38edf8d737e73e3242d8b87dd96d21e0"
-
-            resources: # TODO refine
+              repository: vikunja/vikunja
+              tag: 0.23.0@sha256:c824f99b0b09b7f03a1d77ad6691fbce38edf8d737e73e3242d8b87dd96d21e0
+            resources:  # TODO refine
               limits:
                 cpu: 1
                 memory: 500Mi
               requests:
                 cpu: 1m
                 memory: 1Mi
-
             env:
               TZ: Europe/Paris
-
     persistence:
       data:
         type: persistentVolumeClaim
@@ -49,7 +42,6 @@ spec:
         retain: true
         globalMounts:
           - path: /app/vikunja/files
-
       config:
         type: configMap
         name: vikunja-configuration
@@ -57,7 +49,6 @@ spec:
           - path: /app/vikunja/config.yml
             subPath: config.yml
             readOnly: true
-
     service:
       http:
         controller: *n

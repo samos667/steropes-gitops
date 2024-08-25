@@ -6,7 +6,6 @@ resources:
   # - ./backup.yaml
 configMapGenerator:
   - name: vikunja-configuration
-    files:
-      - config.yml
+    files: [config.yml]
 generatorOptions:
   disableNameSuffixHash: true

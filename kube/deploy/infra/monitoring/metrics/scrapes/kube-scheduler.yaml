@@ -11,13 +11,11 @@ spec:
   type: ClusterIP
   clusterIP: None
   selector: *l
-
   ports:
     - name: http-metrics
       protocol: TCP
       port: &p 10259
       targetPort: *p
-
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
@@ -26,12 +24,10 @@ metadata:
   namespace: kube-system
 spec:
   jobLabel: jobLabel
-
   selector:
     matchLabels:
       tier: control-plane
       k8s-app: *n
-
   endpoints:
     - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
       port: http-metrics
