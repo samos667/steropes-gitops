@@ -9,3 +9,4 @@ resources:
   - ./vikunja/
   - ./memos/
   - ./invidious/
+  - ./matrix/

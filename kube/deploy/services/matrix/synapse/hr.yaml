@@ -1,0 +1,187 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n synapse
+spec:
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              version: v1
+              kind: Deployment
+              name: synapse-wellknown-lighttpd
+            # https://github.com/kubernetes-sigs/kustomize/issues/907# issuecomment-722913790
+            patch: |
+              - op: add
+                path: /spec/template/metadata/labels/traefik.home.arpa~1ingress
+                value: allow
+  chart:
+    spec:
+      chart: matrix-synapse
+      version: 3.9.10
+      sourceRef:
+        name: ananace
+        kind: HelmRepository
+        namespace: flux-system
+  values:
+    serverName: com.${DOMAIN_PUBLIC}
+    image:
+      repository: matrixdotorg/synapse
+      pullPolicy: IfNotPresent
+    signingkey:
+      job:
+        enabled: true
+    ## Ref: https://github.com/matrix-org/synapse/blob/develop/docs/sample_config.yaml
+    config:
+      turnUris: ['turn:call.${DOMAIN_PUBLIC}?transport=tcp']
+      turnSecret: ${SYNAPSE_TURN_SECRET}
+      publicBaseurl: https://com.${DOMAIN_PUBLIC}
+      reportStats: false
+      recaptcha:
+        publicKey: ${SYNAPSE_RECAPTCHA_KEY_PUB}
+        privateKey: ${SYNAPSE_RECAPTCHA_KEY_PRIV}
+      enableRegistration: true
+      macaroonSecretKey: ${SYNAPSE_MACAROON_SECRET}
+      trustedKeyServers:
+        - server_name: matrix.org
+      useStructuredLogging: true
+    synapse:
+      strategy:
+        type: Recreate
+      annotations: {}
+      labels:
+        traefik.home.arpa/ingress: allow
+        egress.home.arpa/internet-https: allow
+      podSecurityContext:
+        fsGroup: 666
+        runAsGroup: 666
+        runAsUser: 666
+      securityContext:
+        capabilities:
+          drop: [ALL]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 666
+      ##TODO refine
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 2500Mi
+        requests:
+          cpu: 1000m
+          memory: 2500Mi
+    workers:
+      default:
+        replicaCount: 1
+        strategy:
+          type: RollingUpdate
+        annotations: {}
+        labels: {}
+        podSecurityContext:
+          fsGroup: 666
+          runAsGroup: 666
+          runAsUser: 666
+        securityContext:
+          capabilities:
+            drop: [ALL]
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 666
+        resources:  # TODO Refine
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      pusher:
+        enabled: false
+      appservice:
+        enabled: false
+      federation_sender:
+        enabled: false
+      media_repository:
+        enabled: false
+      user_dir:
+        enabled: false
+      frontend_proxy:
+        enabled: false
+    wellknown:
+      enabled: true
+      replicaCount: 1
+      useIpv6: false
+      server:
+        m.server: com.${DOMAIN_PUBLIC}:443
+      client:
+        m.homeserver:
+          base_url: https://com.${DOMAIN_PUBLIC}.com
+      service:
+        type: ClusterIP
+        port: 80
+      extraData: {}
+      htdocsPath: /var/www/localhost/htdocs
+      image:
+        repository: ghcr.io/rtsp/docker-lighttpd
+        tag: latest
+        pullPolicy: Always
+      podSecurityContext:
+        fsGroup: 101
+        runAsGroup: 101
+        runAsUser: 100
+      securityContext:
+        capabilities:
+          drop: [ALL]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 100
+      resources:
+        limits:
+          cpu: 5m
+          memory: 15Mi
+        requests:
+          cpu: 5m
+          memory: 15Mi
+    postgresql:
+      enabled: false
+    externalPostgresql:
+      host: synapse-db-rw
+      port: 5432
+      username: synapse
+      existingSecret: synapse-db-app-credentials
+      existingSecretPasswordKey: password
+      database: synapse
+    redis:
+      enabled: true
+      auth:
+        enabled: true
+        password: ${SYNAPSE_REDIS_PASSWORD}
+      architecture: standalone
+      master:
+        kind: Deployment
+        persistence:
+          enabled: false
+        service:
+          port: 6379
+    persistence:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 10Gi
+    volumePermissions:
+      enabled: true
+      uid: 666
+      gid: 666
+      image:
+        repository: alpine
+        tag: latest
+        pullPolicy: Always
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 100m
+    service:
+      type: ClusterIP
+      port: 8008
+      targetPort: http
+    ingress:
+      enabled: false

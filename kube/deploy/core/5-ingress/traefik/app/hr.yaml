@@ -69,6 +69,34 @@ spec:
           default: false
         exposedPort: 9100
         protocol: TCP
+      matrix-tcp:
+        port: 3478
+        nodePort: 30478
+        expose:
+          default: true
+        exposedPort: 3478
+        protocol: TCP
+      matrix-tcp-tls:
+        port: 5349
+        nodePort: 30349
+        expose:
+          default: true
+        exposedPort: 5349
+        protocol: TCP
+      # matrix-udp:
+      #   port: 3478
+      #   nodePort: 30478
+      #   expose:
+      #     default: true
+      #   exposedPort: 3478
+      #   protocol: UDP
+      # matrix-udp-tls:
+      #   port: 5349
+      #   nodePort: 30349
+      #   expose:
+      #     default: true
+      #   exposedPort: 5349
+      #   protocol: UDP
     service:
       enabled: true
       single: true

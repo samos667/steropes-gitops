@@ -1,0 +1,21 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: synapse
+  namespace: matrix
+spec:
+  routes:
+    - match: Host(`com.${DOMAIN_PUBLIC}`)  && PathPrefix(`/_matrix`)
+      kind: Rule
+      services:
+        - name: synapse-matrix-synapse
+          port: 8008
+    - match: Host(`com.${DOMAIN_PUBLIC}`)  && PathPrefix(`/.well-known/matrix/`)
+      kind: Rule
+      services:
+        - name: synapse-wellknown-lighttpd
+          port: 80
+  tls:
+    domains:
+      - main: com.${DOMAIN_PUBLIC}
