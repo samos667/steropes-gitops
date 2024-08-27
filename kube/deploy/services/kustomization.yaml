@@ -8,5 +8,4 @@ resources:
   - ./s-pdf/
   - ./vikunja/
   - ./memos/
-  # - ./viewtube/
   - ./invidious/
