@@ -16,6 +16,15 @@ spec:
               - op: add
                 path: /spec/template/metadata/labels/traefik.home.arpa~1ingress
                 value: allow
+          - target:
+              version: v1
+              kind: PersistentVolumeClaim
+              name: synapse-matrix-synapse
+            # https://github.com/kubernetes-sigs/kustomize/issues/907# issuecomment-722913790
+            patch: |
+              - op: add
+                path: /metadata/annotations/k8up.io~1backup
+                value: true
   chart:
     spec:
       chart: matrix-synapse
