@@ -6,20 +6,21 @@ metadata:
   namespace: matrix
 spec:
   routes:
-    - match: Host(`com.${DOMAIN_PUBLIC}`)  && PathPrefix(`/_matrix`)
+    - match: Host(`com.${DOMAIN_PUBLIC}`) && (Pathprefix(`/_matrix`) || Pathprefix(`/_synapse`))
       kind: Rule
       services:
         - name: synapse-matrix-synapse
           port: 8008
-    - match: Host(`com.${DOMAIN_PUBLIC}`)  && PathPrefix(`/_synapse`)
-      kind: Rule
-      services:
-        - name: synapse-matrix-synapse
-          port: 8008
-    - match: Host(`com.${DOMAIN_PUBLIC}`)  && PathPrefix(`/.well-known/matrix/`)
+    - match: Host(`com.${DOMAIN_PUBLIC}`) && Pathprefix(`/.well-known/matrix/`)
       kind: Rule
       services:
         - name: synapse-wellknown-lighttpd
+          port: 80
+    - match: Host(`com.${DOMAIN_PUBLIC}`) && Pathprefix(`/`) && !PathPrefix(`/_matrix`)
+        && !Pathprefix(`/_synapse`) && !PathPrefix(`/.well-known/matrix/`)
+      kind: Rule
+      services:
+        - name: element
           port: 80
   tls:
     domains:

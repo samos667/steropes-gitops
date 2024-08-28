@@ -1,0 +1,54 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n element
+spec:
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              version: v1
+              kind: Deployment
+              name: element
+            # https://github.com/kubernetes-sigs/kustomize/issues/907# issuecomment-722913790
+            patch: |
+              - op: add
+                path: /spec/template/metadata/labels/traefik.home.arpa~1ingress
+                value: allow
+          - target:
+              version: v1
+              kind: Deployment
+              name: element
+            # https://github.com/kubernetes-sigs/kustomize/issues/907# issuecomment-722913790
+            patch: |
+              - op: add
+                path: /spec/template/metadata/labels/egress.home.arpa~1internet-https
+                value: allow
+  chart:
+    spec:
+      chart: element-web
+      version: 1.3.32
+      sourceRef:
+        name: ananace
+        kind: HelmRepository
+        namespace: flux-system
+  values:
+    nameOverride: *n
+    defaultServer:
+      url: https://com.${DOMAIN_PUBLIC}
+      name: Steropes
+    nginxConfig: |-
+      add_header X-Frame-Options SAMEORIGIN;
+      add_header X-Content-Type-Options nosniff;
+      add_header X-XSS-Protection "1; mode=block";
+      add_header Content-Security-Policy "frame-ancestors 'self'";
+    ingress:
+      enabled: false
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
