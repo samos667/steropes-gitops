@@ -25,6 +25,23 @@ spec:
         kind: HelmRepository
         namespace: flux-system
   values:
+    extraConfig:
+      oidc_providers:
+        - idp_id: authelia
+          idp_name: Authelia
+          idp_icon: mxc://authelia.com/cKlrTPsGvlpKxAYeHWJsdVHI
+          discover: true
+          issuer: https://sso.${DOMAIN_PUBLIC}
+          client_id: ${SYNAPSE_OICD_CLIENT_ID}
+          client_secret: ${SYNAPSE_OICD_CLIENT_SECRET}
+          scopes: [openid, profile, email]
+          allow_existing_users: true
+          user_mapping_provider:
+            config:
+              subject_claim: sub
+              localpart_template: '{{ user.preferred_username }}'
+              display_name_template: '{{ user.name }}'
+              email_template: '{{ user.email }}'
     serverName: com.${DOMAIN_PUBLIC}
     image:
       repository: matrixdotorg/synapse
@@ -41,7 +58,7 @@ spec:
       recaptcha:
         publicKey: ${SYNAPSE_RECAPTCHA_KEY_PUB}
         privateKey: ${SYNAPSE_RECAPTCHA_KEY_PRIV}
-      enableRegistration: true
+      enableRegistration: false
       macaroonSecretKey: ${SYNAPSE_MACAROON_SECRET}
       trustedKeyServers:
         - server_name: matrix.org
@@ -53,6 +70,7 @@ spec:
       labels:
         traefik.home.arpa/ingress: allow
         egress.home.arpa/internet-https: allow
+        sso.home.arpa/egress: allow
       podSecurityContext:
         fsGroup: 666
         runAsGroup: 666

@@ -11,6 +11,11 @@ spec:
       services:
         - name: synapse-matrix-synapse
           port: 8008
+    - match: Host(`com.${DOMAIN_PUBLIC}`)  && PathPrefix(`/_synapse`)
+      kind: Rule
+      services:
+        - name: synapse-matrix-synapse
+          port: 8008
     - match: Host(`com.${DOMAIN_PUBLIC}`)  && PathPrefix(`/.well-known/matrix/`)
       kind: Rule
       services:
