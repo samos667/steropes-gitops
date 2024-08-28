@@ -1,0 +1,78 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &n syncthing
+  labels:
+    helm.flux.home.arpa/app-template: true
+spec:
+  values:
+    global:
+      annotations:
+        k8up.io/backup: 'true'
+    controllers:
+      syncthing:
+        initContainers:
+          # https://stackoverflow.com/questions/43544370/kubernetes-how-to-set-volumemount-user-group-and-file-permissions
+          take-data-dir-ownership:
+            image:
+              repository: alpine
+              tag: latest
+            command: [chown, -R, 1000:1000, &dataDir /var/syncthing]
+        type: deployment
+        strategy: Recreate
+        replicas: 1
+        pod:
+          labels:
+            traefik.home.arpa/ingress: allow
+            egress.home.arpa/internet: allow
+            ingress.home.arpa/world: allow
+            egress.home.arpa/world: allow  # TODO refine
+        containers:
+          application:
+            image:
+              repository: syncthing/syncthing
+              tag: latest
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+            resources:  # TODO refine
+              limits:
+                cpu: 1
+                memory: 1Gi
+              requests:
+                cpu: 1m
+                memory: 1Mi
+            env:
+              TZ: Europe/Paris
+              PUID: 1000
+              GUID: 1000
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        retain: true
+        globalMounts:
+          - path: *dataDir
+    service:
+      http:
+        controller: *n
+        ports:
+          http:
+            port: 8384
+            protocol: TCP
+      sync:  # TODO setup multicast for port 1900 https://docs.cilium.io/en/latest/network/multicast/
+        type: LoadBalancer
+        controller: *n
+        ports:
+          tcp:
+            port: 22000
+            protocol: TCP
+          udp:
+            port: 22000
+            protocol: UDP
+          discovery:
+            port: 21027
+            protocol: UDP

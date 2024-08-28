@@ -324,6 +324,10 @@ spec:
             policy: one_factor
             subject:
               -   - group:randoms
+          - domain: sync.${DOMAIN_PUBLIC}
+            policy: two_factor
+            subject:
+              -   - group:syncthing
       identity_providers:
         oidc:  # https://www.authelia.com/r/openid-connect/
           enabled: true
