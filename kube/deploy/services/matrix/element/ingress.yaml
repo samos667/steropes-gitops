@@ -1,0 +1,16 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: element
+spec:
+  routes:
+    - match: Host(`com.${DOMAIN_PUBLIC}`) && Pathprefix(`/`) && !PathPrefix(`/_matrix`)
+        && !Pathprefix(`/_synapse`) && !PathPrefix(`/.well-known/matrix/`)
+      kind: Rule
+      services:
+        - name: element
+          port: 80
+  tls:
+    domains:
+      - main: com.${DOMAIN_PUBLIC}

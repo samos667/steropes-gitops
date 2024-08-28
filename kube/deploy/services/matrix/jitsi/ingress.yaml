@@ -1,0 +1,15 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jitsi
+spec:
+  routes:
+    - match: Host(`meet.${DOMAIN_PUBLIC}`)
+      kind: Rule
+      services:
+        - name: jitsi-web
+          port: 80
+  tls:
+    domains:
+      - main: meet.${DOMAIN_PUBLIC}

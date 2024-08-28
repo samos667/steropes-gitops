@@ -38,6 +38,9 @@ spec:
     defaultServer:
       url: https://com.${DOMAIN_PUBLIC}
       name: Steropes
+    config:
+      jitsi:
+        preferred_domain: meet.${DOMAIN_PUBLIC}
     nginxConfig: |-
       add_header X-Frame-Options SAMEORIGIN;
       add_header X-Content-Type-Options nosniff;
