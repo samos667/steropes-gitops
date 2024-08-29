@@ -5,17 +5,17 @@ metadata:
   name: outline
 spec:
   backup:
-    schedule: 30 0 * * *
+    schedule: 30 12 * * *
     failedJobsHistoryLimit: 2
     successfulJobsHistoryLimit: 2
     # TODO
     # promURL: https://prometheus-io-instance:8443
   check:
-    schedule: 0 1 * * 1
+    schedule: 0 14 * * 1
     # TODO
     # promURL: https://prometheus-io-instance:8443
   prune:
-    schedule: 0 1 * * 0
+    schedule: 0 14 * * 0
     retention:
       keepLast: 10
       keepDaily: 7
