@@ -19,7 +19,7 @@ spec:
           labels:
             traefik.home.arpa/ingress: allow
             sso.home.arpa/egress: allow
-            egress.home.arpa/internet: allow
+            egress.home.arpa/internet-https: allow
         containers:
           application:
             image:
@@ -36,7 +36,7 @@ spec:
               ### General settings  ###
               TZ: Europe/Paris
               DEFAULT_LANGUAGE: fr_FR
-              URL: https://wiki.${DOMAIN_PUBLIC}
+              URL: https://wiki.${EXTERNAL_DOMAIN}
               NODE_ENV: production
               FORCE_HTTPS: false
               SECRET_KEY:
@@ -55,7 +55,7 @@ spec:
               ## S3 settings  ##
               AWS_S3_UPLOAD_MAX_SIZE: '26214400'
               AWS_REGION: us-east-1
-              AWS_S3_UPLOAD_BUCKET_URL: https://s3.${DOMAIN_PUBLIC}
+              AWS_S3_UPLOAD_BUCKET_URL: https://s3.${EXTERNAL_DOMAIN}
               AWS_S3_UPLOAD_BUCKET_NAME: steropes-outline
               AWS_ACCESS_KEY_ID:
                 secretKeyRef:
@@ -74,9 +74,9 @@ spec:
                   key: OUTLINE_DATABASE_URL
 
               ### OIDC settings  ###
-              OIDC_AUTH_URI: https://sso.${DOMAIN_PUBLIC}/api/oidc/authorization
-              OIDC_TOKEN_URI: https://sso.${DOMAIN_PUBLIC}/api/oidc/token
-              OIDC_USERINFO_URI: https://sso.${DOMAIN_PUBLIC}/api/oidc/userinfo
+              OIDC_AUTH_URI: https://sso.${EXTERNAL_DOMAIN}/api/oidc/authorization
+              OIDC_TOKEN_URI: https://sso.${EXTERNAL_DOMAIN}/api/oidc/token
+              OIDC_USERINFO_URI: https://sso.${EXTERNAL_DOMAIN}/api/oidc/userinfo
               OIDC_USERNAME_CLAIM: preferred_username
               OIDC_DISPLAY_NAME: Authelia
               OIDC_SCOPES: openid offline_access profile email

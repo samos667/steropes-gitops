@@ -5,8 +5,7 @@ metadata:
   name: authelia-authz
 spec:
   forwardAuth:
-    # address: "http://authelia.authelia.svc.cluster.local/api/authz/forward-auth?authelia_url=https%3A%2F%2Fsso.${DOMAIN_PUBLIC}%2F"
-    address: http://authelia.authelia.svc.cluster.local/api/authz/forward-auth
+    address: http://authelia.authelia.svc.cluster.local/api/authz/forward-auth?authelia_url=https%3A%2F%2Fsso.${EXTERNAL_DOMAIN}%2F
     authResponseHeaders:
       - Remote-User
       - Remote-Groups

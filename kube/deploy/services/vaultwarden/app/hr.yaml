@@ -37,7 +37,7 @@ spec:
             env:
               TZ: Europe/Paris
               ### General settings  ###
-              DOMAIN: https://vw.${DOMAIN_PUBLIC}
+              DOMAIN: https://vw.${EXTERNAL_DOMAIN}
               SIGNUPS_ALLOWED: true
               ORG_EVENTS_ENABLED: true
 

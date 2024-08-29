@@ -40,7 +40,7 @@ spec:
           idp_name: Authelia
           idp_icon: mxc://authelia.com/cKlrTPsGvlpKxAYeHWJsdVHI
           discover: true
-          issuer: https://sso.${DOMAIN_PUBLIC}
+          issuer: https://sso.${EXTERNAL_DOMAIN}
           client_id: ${SYNAPSE_OICD_CLIENT_ID}
           client_secret: ${SYNAPSE_OICD_CLIENT_SECRET}
           scopes: [openid, profile, email]
@@ -51,7 +51,7 @@ spec:
               localpart_template: '{{ user.preferred_username }}'
               display_name_template: '{{ user.name }}'
               email_template: '{{ user.email }}'
-    serverName: com.${DOMAIN_PUBLIC}
+    serverName: matrix.${EXTERNAL_DOMAIN}
     image:
       repository: matrixdotorg/synapse
       pullPolicy: IfNotPresent
@@ -60,9 +60,9 @@ spec:
         enabled: true
     ## Ref: https://github.com/matrix-org/synapse/blob/develop/docs/sample_config.yaml
     config:
-      turnUris: ['turn:call.${DOMAIN_PUBLIC}?transport=tcp']
+      turnUris: ['turn:call.${EXTERNAL_DOMAIN}?transport=tcp']
       turnSecret: ${SYNAPSE_TURN_SECRET}
-      publicBaseurl: https://com.${DOMAIN_PUBLIC}
+      publicBaseurl: https://matrix.${EXTERNAL_DOMAIN}
       reportStats: false
       recaptcha:
         publicKey: ${SYNAPSE_RECAPTCHA_KEY_PUB}
@@ -139,10 +139,10 @@ spec:
       replicaCount: 1
       useIpv6: false
       server:
-        m.server: com.${DOMAIN_PUBLIC}:443
+        m.server: matrix.${EXTERNAL_DOMAIN}:443
       client:
         m.homeserver:
-          base_url: https://com.${DOMAIN_PUBLIC}.com
+          base_url: https://matrix.${EXTERNAL_DOMAIN}.com
       service:
         type: ClusterIP
         port: 80

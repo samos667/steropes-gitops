@@ -9,4 +9,4 @@ spec:
       sso.home.arpa/egress: allow
   egress:
     - toFQDNs:
-        - matchName: sso.${DOMAIN_PUBLIC}
+        - matchName: sso.${EXTERNAL_DOMAIN}

@@ -9,7 +9,7 @@ db:
   dbname: invidious
 external_port: 443
 https_only: true
-domain: yt.${DOMAIN_PUBLIC}
+domain: yt.${EXTERNAL_DOMAIN}
 statistics_enabled: true
 hmac_key: ${INVIDIOUS_HMAC_KEY}
 port: 8080

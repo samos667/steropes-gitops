@@ -26,11 +26,11 @@ spec:
         namespace: flux-system
   values:
     extraOptions: ['--static-auth-secret=${SYNAPSE_TURN_SECRET}']
-    realm: call.${DOMAIN_PUBLIC}
+    realm: call.${EXTERNAL_DOMAIN}
     certificate:
       enabled: true
-      dnsName: call.${DOMAIN_PUBLIC}
-      issuerName: letsencrypt
+      dnsName: call.${EXTERNAL_DOMAIN}
+      issuerName: letsencrypt-prod-${EXTERNAL_DOMAIN}
     traefik:
       enabled: false
     replicaCount: 2

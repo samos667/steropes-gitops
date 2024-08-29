@@ -6,17 +6,17 @@ database:
   user: *n
   password: ${password}
 service:
-  publicurl: https://do.${DOMAIN_PUBLIC}
+  publicurl: https://do.${EXTERNAL_DOMAIN}
   JWTSecret: ${VIKUNJA_SERVICE_JWTSECRET}
 auth:
   local:
     enabled: false
   openid:
     enabled: true
-    redirecturl: https://do.${DOMAIN_PUBLIC}/auth/openid/
+    redirecturl: https://do.${EXTERNAL_DOMAIN}/auth/openid/
     providers:
       - name: Authelia
-        authurl: https://sso.${DOMAIN_PUBLIC}
+        authurl: https://sso.${EXTERNAL_DOMAIN}
         clientid: ${VIKUNJA_OICD_CLIENT_ID}
         clientsecret: ${VIKUNJA_OICD_CLIENT_SECRET}
         scope: openid profile email

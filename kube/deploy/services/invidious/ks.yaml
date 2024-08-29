@@ -19,6 +19,11 @@ spec:
   targetNamespace: *ns
   commonMetadata:
     labels: *l
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: barman-secrets
+        optional: false
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1  # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 kind: Kustomization

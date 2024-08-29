@@ -1,4 +1,18 @@
 ---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-cert-do.${EXTERNAL_DOMAIN}
+  namespace: vikunja
+  labels:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  secretName: tls-cert-do.${EXTERNAL_DOMAIN}
+  issuerRef:
+    name: letsencrypt-prod-${EXTERNAL_DOMAIN}
+    kind: ClusterIssuer
+  dnsNames: ['do.${EXTERNAL_DOMAIN}']
+---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -6,7 +20,7 @@ metadata:
   namespace: *n
 spec:
   routes:
-    - match: Host(`do.${DOMAIN_PUBLIC}`)
+    - match: Host(`do.${EXTERNAL_DOMAIN}`)
       kind: Rule
       services:
         - name: *n
@@ -15,5 +29,6 @@ spec:
         - name: compress
           namespace: ingress
   tls:
+    secretName: tls-cert-do.${EXTERNAL_DOMAIN}
     domains:
-      - main: do.${DOMAIN_PUBLIC}
+      - main: do.${EXTERNAL_DOMAIN}

@@ -9,5 +9,5 @@ resources:
   - ./vikunja/
   - ./memos/
   - ./invidious/
-  - ./matrix/
   - ./syncthing/
+  - ./matrix/

@@ -202,9 +202,9 @@ spec:
           path: session.encryption.key
         cookies:
           - name: steropes_session
-            domain: ${DOMAIN_PUBLIC}
+            domain: ${EXTERNAL_DOMAIN}
             subdomain: sso
-            default_redirection_url: https://tools.${DOMAIN_PUBLIC}
+            default_redirection_url: https://tools.${EXTERNAL_DOMAIN}
         redis:
           enabled: true
           enabledSecret: false
@@ -262,69 +262,69 @@ spec:
         default_policy: deny
         networks: []
         rules:
-          - domain: flux.${DOMAIN_PUBLIC}
+          - domain: flux.${EXTERNAL_DOMAIN}
             policy: two_factor
             subject:
               -   - group:admins
-          - domain: vw.${DOMAIN_PUBLIC}
+          - domain: vw.${EXTERNAL_DOMAIN}
             policy: two_factor
             resources: ^/admin(/.*)?$
             subject:
               -   - group:admins
-          - domain: vw.${DOMAIN_PUBLIC}
+          - domain: vw.${EXTERNAL_DOMAIN}
             policy: deny
             resources: ^/admin(/.*)?$
-          - domain: vw.${DOMAIN_PUBLIC}
+          - domain: vw.${EXTERNAL_DOMAIN}
             policy: bypass
             resources: ^/.*$
-          - domain: yt.${DOMAIN_PUBLIC}
+          - domain: yt.${EXTERNAL_DOMAIN}
             policy: two_factor
             resources: ^/admin(/.*)?$
             subject:
               -   - group:admins
-          - domain: yt.${DOMAIN_PUBLIC}
+          - domain: yt.${EXTERNAL_DOMAIN}
             policy: deny
             resources: ^/admin(/.*)?$
-          - domain: yt.${DOMAIN_PUBLIC}
+          - domain: yt.${EXTERNAL_DOMAIN}
             policy: bypass
             resources: ^/.*$
-          - domain: kuma.${DOMAIN_PUBLIC}
+          - domain: kuma.${EXTERNAL_DOMAIN}
             policy: two_factor
             subject:
               -   - group:admins
-          - domain: free.${DOMAIN_PUBLIC}
+          - domain: free.${EXTERNAL_DOMAIN}
             policy: two_factor
             subject:
               -   - group:admins
-          - domain: nas.${DOMAIN_PUBLIC}
+          - domain: nas.${EXTERNAL_DOMAIN}
             policy: two_factor
             subject:
               -   - group:admins
-          - domain: eyes.${DOMAIN_PUBLIC}
+          - domain: eyes.${EXTERNAL_DOMAIN}
             policy: one_factor
             subject:
               -   - group:devs
-          - domain: alert.${DOMAIN_PUBLIC}
+          - domain: alert.${EXTERNAL_DOMAIN}
             policy: one_factor
             subject:
               -   - group:devs
-          - domain: logs.${DOMAIN_PUBLIC}
+          - domain: logs.${EXTERNAL_DOMAIN}
             policy: two_factor
             subject:
               -   - group:devs
-          - domain: traefik.${DOMAIN_PUBLIC}
+          - domain: traefik.${EXTERNAL_DOMAIN}
             policy: one_factor
             subject:
               -   - group:devs
-          - domain: test.${DOMAIN_PUBLIC}
+          - domain: test.${EXTERNAL_DOMAIN}
             policy: one_factor
             subject:
               -   - group:devs
-          - domain: who.${DOMAIN_PUBLIC}
+          - domain: who.${EXTERNAL_DOMAIN}
             policy: one_factor
             subject:
               -   - group:randoms
-          - domain: sync.${DOMAIN_PUBLIC}
+          - domain: sync.${EXTERNAL_DOMAIN}
             policy: two_factor
             subject:
               -   - group:syncthing
@@ -363,7 +363,7 @@ spec:
               pkce_challenge_method: S256
               token_endpoint_auth_method: client_secret_basic
               userinfo_signed_response_alg: none
-              redirect_uris: ['https://graf.${DOMAIN_PUBLIC}/login/generic_oauth']
+              redirect_uris: ['https://graf.${EXTERNAL_DOMAIN}/login/generic_oauth']
               scopes:
                 - openid
                 - profile
@@ -377,7 +377,7 @@ spec:
               public: false
               authorization_policy: two_factor
               userinfo_signed_response_alg: none
-              redirect_uris: ['https://minio.${DOMAIN_PUBLIC}/oauth_callback']
+              redirect_uris: ['https://minio.${EXTERNAL_DOMAIN}/oauth_callback']
               scopes:
                 - openid
                 - profile
@@ -392,7 +392,7 @@ spec:
               authorization_policy: one_factor
               userinfo_signed_response_alg: none
               token_endpoint_auth_method: client_secret_post
-              redirect_uris: ['https://wiki.${DOMAIN_PUBLIC}/auth/oidc.callback']
+              redirect_uris: ['https://wiki.${EXTERNAL_DOMAIN}/auth/oidc.callback']
               scopes:
                 - offline_access
                 - openid
@@ -407,7 +407,7 @@ spec:
               authorization_policy: one_factor
               userinfo_signed_response_alg: none
               token_endpoint_auth_method: client_secret_basic
-              redirect_uris: ['https://do.${DOMAIN_PUBLIC}/auth/openid/authelia']
+              redirect_uris: ['https://do.${EXTERNAL_DOMAIN}/auth/openid/authelia']
               scopes:
                 - openid
                 - profile
@@ -421,7 +421,7 @@ spec:
               authorization_policy: one_factor
               userinfo_signed_response_alg: none
               token_endpoint_auth_method: client_secret_post
-              redirect_uris: ['https://memo.${DOMAIN_PUBLIC}/auth/callback']
+              redirect_uris: ['https://memos.${EXTERNAL_DOMAIN}/auth/callback']
               grant_types: [authorization_code]
               scopes: [openid, profile, email]
 
@@ -433,7 +433,7 @@ spec:
               authorization_policy: one_factor
               userinfo_signed_response_alg: none
               redirect_uris:
-                - https://com.${DOMAIN_PUBLIC}/_synapse/client/oidc/callback
+                - https://matrix.${EXTERNAL_DOMAIN}/_synapse/client/oidc/callback
               scopes: [openid, profile, email]
     secret:
       disabled: false

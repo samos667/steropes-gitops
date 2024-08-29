@@ -15,7 +15,7 @@ spec:
     nameOverride: *n
     enableAuth: false
     enableGuests: true
-    publicURL: meet.${DOMAIN_PUBLIC}
+    publicURL: meet.${EXTERNAL_DOMAIN}
     tz: Europe/Paris
     image:
       pullPolicy: IfNotPresent
@@ -31,14 +31,6 @@ spec:
       podLabels:
         traefik.home.arpa/ingress: allow
         egress.home.arpa/internet-https: allow
-      # podSecurityContext:
-      #   fsGroup: 2000
-      # securityContext:
-      #   capabilities:
-      #     drop: [ALL]
-      #   readOnlyRootFilesystem: true
-      #   runAsNonRoot: true
-      #   runAsUser: 1000
       resources:
         limits:
           cpu: 1000m
@@ -46,21 +38,12 @@ spec:
         requests:
           cpu: 100m
           memory: 128Mi
-    # xmpp:
-    #   domain: meet.${DOMAIN_PUBLIC}  # TODO ?
     prosody:
       enabled: true
       useExternalProsody: false
     jvb:
-      publicIPs: ['${IP_PUBLIC}', '${HOMELAB_GW_IP}']
+      publicIPs: ['${IP_PUBLIC}']
       podLabels:
         ingress.home.arpa/world: allow
       service:  # TODO setup traefik tcp ingress
         type: LoadBalancer
-    #   xmpp:
-    #     user: jvb
-    #     password: ${JITSI_XMPP_PASSWORD}
-    # jicofo:
-    #   xmpp:
-    #     password: ${JITSI_XMPP_PASSWORD}
-    #     componentSecret: ${JITSI_JICOFO_COMPONENT_SECRET}
