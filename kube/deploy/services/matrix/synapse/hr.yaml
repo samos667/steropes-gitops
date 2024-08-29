@@ -35,6 +35,7 @@ spec:
         namespace: flux-system
   values:
     extraConfig:
+      federation_domain_whitelist: [authelia.com]  # seems to be mandatory to use MCX icon x)
       oidc_providers:
         - idp_id: authelia
           idp_name: Authelia
