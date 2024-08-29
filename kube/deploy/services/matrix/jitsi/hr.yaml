@@ -53,6 +53,8 @@ spec:
       useExternalProsody: false
     jvb:
       publicIPs: ['${IP_PUBLIC}', '${HOMELAB_GW_IP}']
+      podLabels:
+        ingress.home.arpa/world: allow
       service:  # TODO setup traefik tcp ingress
         type: LoadBalancer
     #   xmpp:

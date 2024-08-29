@@ -78,7 +78,7 @@ spec:
       annotations: {}
       labels:
         traefik.home.arpa/ingress: allow
-        egress.home.arpa/internet-https: allow
+        egress.home.arpa/internet: allow
         sso.home.arpa/egress: allow
       podSecurityContext:
         fsGroup: 666
@@ -93,11 +93,11 @@ spec:
       ##TODO refine
       resources:
         limits:
-          cpu: 1000m
-          memory: 2500Mi
+          cpu: 4
+          memory: 6Gi
         requests:
-          cpu: 1000m
-          memory: 2500Mi
+          cpu: 1
+          memory: 1Gi
     workers:
       default:
         replicaCount: 1
