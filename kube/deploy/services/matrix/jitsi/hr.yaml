@@ -46,8 +46,8 @@ spec:
         requests:
           cpu: 100m
           memory: 128Mi
-    xmpp:
-      domain: meet.${DOMAIN_PUBLIC}  # TODO ?
+    # xmpp:
+    #   domain: meet.${DOMAIN_PUBLIC}  # TODO ?
     prosody:
       enabled: true
       useExternalProsody: false
