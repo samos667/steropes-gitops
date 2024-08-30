@@ -34,7 +34,7 @@ spec:
         allowExternalNameServices: false
       kubernetesIngress:
         enabled: false
-    metrics:
+      metrics:  # TODO setup metrics + upgrade https://github.com/traefik/traefik-helm-chart/releases
       addInternals:
       prometheus:
         entryPoint: metrics
