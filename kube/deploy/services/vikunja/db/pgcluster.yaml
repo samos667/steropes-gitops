@@ -1,38 +1,24 @@
 ---
+     # For bootstrapping, instant swap to externalClusters after.
 apiVersion: postgresql.cnpg.io/v1  # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/c6180cfc979a2fbe4b47934f114ddd81/raw/c091f03d5267ccacfe32f9c26d4eff1cf4a75962/pg-cluster.json
 kind: Cluster
 metadata:
   name: &n vikunja-db
-  annotations:
-    cnpg.io/skipEmptyWalArchiveCheck: enabled  # Needed for restore, TODO report the issue properly https://github.com/cloudnative-pg/cloudnative-pg/issues/2730 && https://github.com/cloudnative-pg/cloudnative-pg/issues/2678
 spec:
   instances: 1
   superuserSecret:
     name: vikunja-db-root-credentials
   storage:
     size: 10Gi
-  externalClusters:
-    - name: clusterBackup
-      barmanObjectStore:
-        serverName: *n
-        endpointURL: &e https://s3.us-west-000.backblazeb2.com
-        destinationPath: s3://${BARMAN_B2_BUCKET_NAME}/
-        s3Credentials:
-          accessKeyId:
-            name: barman-secrets
-            key: BARMAN_B2_ACCESS_KEY_ID
-          secretAccessKey:
-            name: barman-secrets
-            key: BARMAN_B2_ACCESS_KEY_SECRET
-        wal:
-          maxParallel: 8
   bootstrap:
-    recovery:
-      source: clusterBackup
+    initdb:
+      database: vikunja
+      owner: vikunja
+      secret:
+        name: vikunja-db-app-credentials
   backup:
-    retentionPolicy: 4w
     barmanObjectStore:
-      endpointURL: *e
+      endpointURL: https://s3.us-west-000.backblazeb2.com
       destinationPath: s3://${BARMAN_B2_BUCKET_NAME}/
       s3Credentials:
         accessKeyId:
@@ -57,29 +43,41 @@ spec:
   backupOwnerReference: cluster
   cluster:
     name: vikunja-db
-#
-# ---  # For bootstraping, instant swap to externalClusters after.
+# ---
 # apiVersion: postgresql.cnpg.io/v1  # yaml-language-server: $schema=https://gist.githubusercontent.com/samos667/c6180cfc979a2fbe4b47934f114ddd81/raw/c091f03d5267ccacfe32f9c26d4eff1cf4a75962/pg-cluster.json
 # kind: Cluster
 # metadata:
 #   name: &n vikunja-db
+#   annotations:
+#     cnpg.io/skipEmptyWalArchiveCheck: enabled  # Needed for restore, TODO report the issue properly https://github.com/cloudnative-pg/cloudnative-pg/issues/2730 && https://github.com/cloudnative-pg/cloudnative-pg/issues/2678
 # spec:
 #   instances: 1
 #   superuserSecret:
 #     name: vikunja-db-root-credentials
 #   storage:
 #     size: 10Gi
-#
+#   externalClusters:
+#     - name: clusterBackup
+#       barmanObjectStore:
+#         serverName: *n
+#         endpointURL: &e https://s3.us-west-000.backblazeb2.com
+#         destinationPath: s3://${BARMAN_B2_BUCKET_NAME}/
+#         s3Credentials:
+#           accessKeyId:
+#             name: barman-secrets
+#             key: BARMAN_B2_ACCESS_KEY_ID
+#           secretAccessKey:
+#             name: barman-secrets
+#             key: BARMAN_B2_ACCESS_KEY_SECRET
+#         wal:
+#           maxParallel: 8
 #   bootstrap:
-#     initdb:
-#       database: vikunja
-#       owner: vikunja
-#       secret:
-#         name: vikunja-db-app-credentials
-#
+#     recovery:
+#       source: clusterBackup
 #   backup:
+#     retentionPolicy: 4w
 #     barmanObjectStore:
-#       endpointURL: https://s3.us-west-000.backblazeb2.com
+#       endpointURL: *e
 #       destinationPath: s3://${BARMAN_B2_BUCKET_NAME}/
 #       s3Credentials:
 #         accessKeyId:
