@@ -24,7 +24,7 @@ spec:
           application:
             image:
               repository: neosmemo/memos
-              tag: '0.21'
+              tag: 0.22.4@sha256:b17a43b084327a8e37121fc3cce67a0a43b8a3ad75f9e9fa51c3f5b5ace290b4
             resources:  # TODO refine
               limits:
                 cpu: 1
