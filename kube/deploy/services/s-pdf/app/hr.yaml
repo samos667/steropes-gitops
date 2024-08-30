@@ -20,7 +20,7 @@ spec:
           application:
             image:
               repository: docker.io/frooodle/s-pdf
-              tag: 0.26.1-fat@sha256:2b2af9209386a181285c1d51ba90485e5da900ee48375d667ecc187ae03119d5
+              tag: 0.28.3-fat@sha256:24d1aa0fcb22bea89865e3567d940d8945e74af5085aa01dd101ef052e2629b9
             resources:  # TODO refine
               limits:
                 cpu: 1
