@@ -1,0 +1,35 @@
+---
+name: Flux Diff
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  flux-diff:
+    name: Flux Diff
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      matrix:
+        resource: [helmrelease, kustomization]
+    steps:
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
+      - name: Diff Resources
+        uses: allenporter/flux-local/action/diff@4f384c42088d48296cdc4aab3b709a525ba833f2  # 5.5.1
+        id: diff
+        with:
+          path: ./kube/flux/
+          resource: ${{ matrix.resource }}
+      - if: ${{ steps.diff.outputs.diff != '' }}
+        name: Add comment
+        uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc  # v2.8.2
+        with:
+          message-id: ${{ github.event.pull_request.number }}/${{ matrix.path }}/${{
+            matrix.resource }}
+          message-failure: Diff was not successful
+          message: |-
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
