@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: jitsi-meet
-      version: 1.4.0
+      version: 1.4.1
       sourceRef:
         name: *n
         kind: HelmRepository
