@@ -17,7 +17,7 @@ spec:
                   memory: 4Gi
           initContainers:
             - name: load-vm-ds-plugin
-              image: curlimages/curl:8.8.0
+              image: curlimages/curl:8.9.1@sha256:8addc281f0ea517409209f76832b6ddc2cabc3264feb1ebbec2a2521ffad24e4
               command: [/bin/sh]
               workingDir: /var/lib/grafana
               securityContext:
