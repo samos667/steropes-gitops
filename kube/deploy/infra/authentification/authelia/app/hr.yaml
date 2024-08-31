@@ -292,7 +292,7 @@ spec:
             policy: two_factor
             subject:
               -   - group:admins
-          - domain: free.${EXTERNAL_DOMAIN}
+          - domain: isp.${EXTERNAL_DOMAIN}
             policy: two_factor
             subject:
               -   - group:admins
