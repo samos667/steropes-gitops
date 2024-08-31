@@ -143,11 +143,12 @@ spec:
         m.server: matrix.${EXTERNAL_DOMAIN}:443
       client:
         m.homeserver:
-          base_url: https://matrix.${EXTERNAL_DOMAIN}.com
+          base_url: https://matrix.${EXTERNAL_DOMAIN}
+        im.vector.riot.jitsi:
+          preferredDomain: meet.${EXTERNAL_DOMAIN}
       service:
         type: ClusterIP
         port: 80
-      extraData: {}
       htdocsPath: /var/www/localhost/htdocs
       image:
         repository: ghcr.io/rtsp/docker-lighttpd
