@@ -52,6 +52,8 @@ spec:
       ui:
         enabled: true
         rollOutPods: true
+        podLabels:
+          traefik.home.arpa/ingress: allow
       metrics:
         enableOpenMetrics: true
         enabled:
