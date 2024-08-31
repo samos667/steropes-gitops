@@ -11,3 +11,4 @@ resources:
   - ./invidious/
   - ./syncthing/
   - ./matrix/
+  - ./proxy/
