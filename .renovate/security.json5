@@ -3,7 +3,6 @@
   "vulnerabilityAlerts": {
     "labels": ["security"],
     "automerge": true,
-    "automergeType": "branch",
     "schedule": ["at any time"],
     "assigneesFromCodeOwners": true
   },

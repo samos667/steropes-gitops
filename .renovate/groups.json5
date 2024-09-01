@@ -1,138 +1,60 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
-    // NOTE: Renovate processes rules from top to bottom, so the rules below take precedence over rules above it
+    // Default
     {
       "description": "Default options",
       "rebaseWhen": "conflicted",
-      "automerge": false
+      "automerge": false,
+      "dependencyDashboardApproval": false,
     },
+    // Renovate
     {
-      "description": "Auto merge Github Actions",
-      "matchManagers": ["github-actions"],
+      "description": "Auto merge Renovate versions",
+      "matchPackageNames": ["renovate"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true,
-      "automergeType": "pr",
-      "rebaseWhen": "behind-base-branch",
-      "ignoreTests": true,
-      "matchUpdateTypes": ["minor", "patch", "digest"]
+      "addLabels": ["renovate-itself"]
     },
+
+    // flux
     {
-      "description": "Auto merge all Renovate versions",
-      "matchPackagePatterns": ["renovate"],
-      "matchUpdateTypes": ["major", "minor", "patch", "digest"],
+      "description": "Flux Group (Automerge Patch)",
+      "matchPackageNames": ["fluxcd"],
+      "matchUpdateTypes": ["patch"],
       "automerge": true,
-      "automergeType": "branch",
-      "ignoreTests": true,
-      "labels": ["renovate-itself"]
     },
+    // app-template
+    {
+      "description": "Manually approve app-template major and minor releases",
+      "matchPackageNames": ["app-template"],
+      "matchDatasources": ["helm"],
+      "automerge": false,
+      "separateMultipleMajor": true,
+      "separateMinorPatch": true,
+      "addLabels": ["app-template"]
+    },
+    //services
     {
       "description": "Auto merge apps in path ./kube/deploy/services (these apps don't affect the entire Kubernetes cluster)",
-      // "matchDatasources": ["docker"],
       "automerge": true,
-      "automergeType": "pr",
-      "rebaseWhen": "behind-base-branch",
       "matchFileNames": ["kube/deploy/services/**"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
-      "matchCurrentVersion": "!/^0\\./", // avoid breaking changes in 0.x SemVer releases
-      "labels": ["kube-deploy-apps"]
     },
     {
       "description": "Don't auto merge specific apps in path ./kube/deploy/services",
-      "matchPackagePatterns": ["matrix", "vaultwarden"],
+      "matchPackageNames": ["matrix", "vaultwarden"],
       "automerge": false,
       "matchFileNames": ["kube/deploy/services/**"],
-      "labels": ["kube-deploy-apps"]
     },
-    {
-      "description": "Cilium Group",
-      "groupName": "Cilium",
-      "matchPackagePatterns": ["cilium"],
-      "versioning": "semver",
-      "sourceUrl": "https://github.com/cilium/cilium",
-      "separateMinorPatch": true,
-      "pinDigests": false,
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
-    },
-    {
-      "description": "Flux Group",
-      "groupName": "Flux",
-      "matchPackagePatterns": ["fluxcd"],
-      "matchDatasources": ["docker", "github-tags"],
-      "versioning": "semver",
-      "separateMinorPatch": true,
-      "sourceUrl": "https://github.com/fluxcd/flux2",
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
-    },
-    {
-      "description": "Flux Group (Automerge Patch)",
-      "groupName": "Flux",
-      "matchPackagePatterns": ["fluxcd"],
-      "matchDatasources": ["docker", "github-tags"],
-      "versioning": "semver",
-      "separateMinorPatch": true,
-      "matchUpdateTypes": ["patch"],
-      "automerge": true,
-      "automergeType": "pr",
-      "rebaseWhen": "behind-base-branch",
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
-    },
-    {
-      "description": "Manually approve app-template major releases",
-      "matchPackagePatterns": ["app-template"],
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true,
-      "automerge": false,
-      "separateMajorMinor": true,
-      "separateMultipleMajor": true,
-      "separateMinorPatch": true,
-      "groupName": "app-template-major",
-      "commitMessagePrefix": "feat(app-template/major)!: ",
-      "labels": ["app-template", "major"]
-    },
-    {
-      "description": "Auto merge patch app-template versions",
-      "matchPackagePatterns": ["app-template"],
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["patch"],
-      "dependencyDashboardApproval": false,
-      "automerge": true,
-      "automergeType": "pr",
-      "rebaseWhen": "behind-base-branch",
-      "separateMajorMinor": true,
-      "separateMultipleMajor": true,
-      "separateMinorPatch": true,
-      "groupName": "app-template-patch",
-      "commitMessagePrefix": "fix(app-template/patch): ",
-      "labels": ["app-template", "patch"]
-    },
-    {
-      "description": "Don't automerge app-template minor releases",
-      "matchPackagePatterns": ["app-template"],
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["minor"],
-      "dependencyDashboardApproval": false,
-      "automerge": false,
-      "separateMajorMinor": true,
-      "separateMultipleMajor": true,
-      "separateMinorPatch": true,
-      "groupName": "app-template-minor",
-      "commitMessagePrefix": "feat(app-template/minor): ",
-      "labels": ["app-template", "major"]
-    },
+    // core/infra
     {
       "description": "Configure more granular control for critical apps",
       "matchFileNames": ["kube/deploy/core/**", "kube/deploy/infra/**"],
       "automerge": false, // enforce no automerge
       "separateMultipleMajor": true,
       "separateMinorPatch": true,
-      "labels": ["kube-deploy-core"]
     },
+
   ]
 }
