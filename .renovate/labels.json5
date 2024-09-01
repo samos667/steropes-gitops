@@ -3,31 +3,43 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
-      "labels": ["type/major"]
+      "addLabels": ["type/major"]
     },
     {
       "matchUpdateTypes": ["minor"],
-      "labels": ["type/minor"]
+      "addLabels": ["type/minor"]
     },
     {
       "matchUpdateTypes": ["patch"],
-      "labels": ["type/patch"]
+      "addLabels": ["type/patch"]
     },
     {
       "matchDatasources": ["docker"],
-      "addLabels": ["renovate/container"]
+      "addLabels": ["container"]
     },
     {
       "matchDatasources": ["helm"],
-      "addLabels": ["renovate/helm"]
+      "addLabels": ["helm"]
     },
     {
-      "matchDatasources": ["github-releases", "github-tags"],
-      "addLabels": ["renovate/github-release"]
+      "matchFileNames": ["kube/deploy/infra/**"],
+      "addLabels": ["kube-deploy-infra"]
     },
     {
-      "matchManagers": ["github-actions"],
-      "addLabels": ["renovate/github-action"]
-    }
+      "matchFileNames": ["kube/deploy/core/**"],
+      "addLabels": ["kube-deploy-core"]
+    },
+    {
+      "matchFileNames": ["kube/deploy/services/**"],
+      "addLabels": ["kube-deploy-services"]
+    },
+    {
+      "matchPackageNames": ["fluxcd"],
+      "addLabels": ["flux"]
+    },
+    {
+      "matchPackageNames": ["cilium"],
+      "addLabels": ["cilium"]
+    },
   ]
 }
